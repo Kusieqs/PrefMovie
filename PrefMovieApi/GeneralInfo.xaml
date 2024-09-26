@@ -32,7 +32,7 @@
                 <TextBlock Text="PrefMovie" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontWeight="DemiBold" FontSize="35" Margin="30,5,0,0"/>
             </Border>
 
-            <Border Grid.Row="1" Background="#FF4E4E4E" CornerRadius="10,0,10,10" Panel.ZIndex ="1">
+            <Border Grid.Row="1" Background="#FF636262" CornerRadius="10,0,10,10" Panel.ZIndex ="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
@@ -98,7 +98,7 @@
                                     <Button Content="down" Grid.Column="1"/>
                                 </Grid>
                             </Border>
-                            
+
                             <TextBlock Text="Stars" Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                             <TextBlock Text="Dates" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -108,7 +108,18 @@
 
                     <Border Grid.Column="1" Margin="0,10,0,10">
                         <Grid>
-                            <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden"/>
+                            <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly">
+                                <StackPanel>
+                                    <TextBlock Text="1" Height="50"/>
+                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                    <TextBlock Text="2" Height="50"/>
+                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                    <TextBlock Text="3" Height="50"/>
+                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                    <TextBlock Text="4" Height="50"/>
+                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Grid>
                     </Border>
 
