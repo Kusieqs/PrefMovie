@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PrefMovieApi"
-             mc:Ignorable="d">
+             mc:Ignorable="d" FontFamily="Calibri">
     <Border CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
@@ -20,35 +20,89 @@
             <Border Grid.RowSpan="2" Background="White" CornerRadius="10,10,0,0" Panel.ZIndex ="0" Margin="0,0,0,40">
                 <Grid>
                     <Button Style="{StaticResource ButtonImage}" Margin="0,10,10,0" >
-                        <Image Source="Images/closeIcon.png" RenderOptions.BitmapScalingMode="HighQuality" />
+                        <Image Source="Images/closeIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                     </Button>
                     <Button Style="{StaticResource ButtonImage}"  Margin="0,10,40,0" >
-                        <Image Source="Images/infoIcon.png" RenderOptions.BitmapScalingMode="HighQuality" />
+                        <Image Source="Images/infoIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                     </Button>
                 </Grid>
             </Border>
 
             <Border Grid.Row="0" Background="Gray" CornerRadius="10,0,100,0" Margin="0,0,100,0" Panel.ZIndex="0">
-                <TextBlock Text="PrefMovie"/>
+                <TextBlock Text="PrefMovie" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontWeight="DemiBold" FontSize="35" Margin="30,5,0,0"/>
             </Border>
 
             <Border Grid.Row="1" Background="#FF4E4E4E" CornerRadius="10,0,10,10" Panel.ZIndex ="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="170"/>
-                        <ColumnDefinition Width="500"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="500"/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Column="0" Margin="0,10,0,10">
+                    <Border Grid.Column="0" Margin="10,10,10,10">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="80"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
+
+                            <TextBlock Text="Genre" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <ComboBox x:Name="Genre" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="120"/>
+
+                            <TextBlock Text="Popularity" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Border Grid.Row="3">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Content="up" Grid.Column="0"/>
+                                    <Button Content="down" Grid.Column="1"/>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="Relase_Date" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Border Grid.Row="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Content="up" Grid.Column="0"/>
+                                    <Button Content="down" Grid.Column="1"/>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="Vote_Average" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Border Grid.Row="7">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Content="up" Grid.Column="0"/>
+                                    <Button Content="down" Grid.Column="1"/>
+                                </Grid>
+                            </Border>
+                            
+                            <TextBlock Text="Stars" Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            <TextBlock Text="Dates" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
                         </Grid>
                     </Border>
 
@@ -65,7 +119,7 @@
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Library" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Library" Foreground="White" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22.5" FontWeight="DemiBold"/>
                             <ScrollViewer x:Name="Library" Grid.Row="1" VerticalScrollBarVisibility="Hidden"/>
                         </Grid>
                     </Border>
