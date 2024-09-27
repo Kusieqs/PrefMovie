@@ -23,6 +23,7 @@ namespace PrefMovieApi
         public NoConnection()
         {
             InitializeComponent();
+
         }
     }
 }
