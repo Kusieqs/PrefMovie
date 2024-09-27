@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -21,14 +22,28 @@ namespace PrefMovieApi
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static List<(LogLevel, string)> loggerMessages;
+        public static ILogger logger = new FileLogger();
         public MainWindow()
         {
             InitializeComponent();
 
+
+            if(logger is FileLogger && File.Exists("log.txt"))
+            {
+                File.WriteAllText("log.txt", "");
+            }
+
             if (ConnectionInternet.NetworkCheck())
+            {
+                logger.Log(LogLevel.Info, "Opening GeneralInfo control");
                 MainContent.Content = new GeneralInfo();
+            }
             else
+            {
+                logger.Log(LogLevel.Info, "Opening NoConnection control");
                 MainContent.Content = new NoConnection();
+            }
         }
     }
 }
