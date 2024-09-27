@@ -69,6 +69,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ConnectionInternet.cs" />
     <Compile Include="GeneralInfo.xaml.cs">
       <DependentUpon>GeneralInfo.xaml</DependentUpon>
     </Compile>

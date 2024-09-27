@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,7 +24,11 @@ namespace PrefMovieApi
         public MainWindow()
         {
             InitializeComponent();
-            MainContent.Content = new GeneralInfo();
+
+            if (ConnectionInternet.NetworkCheck())
+                MainContent.Content = new GeneralInfo();
+            else
+                MainContent.Content = new NoConnection();
         }
     }
 }
