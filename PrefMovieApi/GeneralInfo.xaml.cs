@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace PrefMovieApi
 {
     /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
+    /// Logika interakcji dla klasy GeneralInfo.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class GeneralInfo : UserControl
     {
-        public MainWindow()
+        public GeneralInfo()
         {
             InitializeComponent();
-            MainContent.Content = new GeneralInfo();
         }
     }
 }
