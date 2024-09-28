@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,8 +28,14 @@ namespace PrefMovieApi
 
     public partial class GeneralInfo : UserControl
     {
+        // Api Key
         const string API_KEY_TO_TMDB = "";
+
+        // client object
         TMDbClient client = null;
+
+        // special control
+        public static bool isReload = true;
 
         public GeneralInfo()
         {
@@ -44,10 +51,26 @@ namespace PrefMovieApi
                 var testRequest = client.GetMovieAsync(550).Result;
                 if(testRequest == null)
                 {
+                    MainWindow.logger.Log(LogLevel.Error, "Test request is null");
                     throw new FormatException();
                 }
 
-                // TODO: Załadowanie 5/6 list roznymi kategorami filmow ( od preferonwaych po reszte )
+                MainWindow.logger.Log(LogLevel.Info, "Api is correct");
+
+                // Setting movies
+                if (isReload)
+                {
+                    MainWindow.logger.Log(LogLevel.Info, "isReload = true");
+                    isReload = false;
+
+                    // TODO: Uzycie delegatu 
+                    SetMainWindoOfMovies();
+                }
+                else
+                {
+                    MainWindow.logger.Log(LogLevel.Warn, "isReload = false");
+                }
+
             }
             catch(Exception)
             {
@@ -56,9 +79,17 @@ namespace PrefMovieApi
                 // TODO: Zamkniecie okna glownego
             }
         }
-        public void SetListOfMovies()
+
+        /// <summary>
+        /// Setting list of prefering movies in main screen 
+        /// </summary>
+        public void SetMainWindoOfMovies()
         {
-            // TODO: Implement list of movies 
+            TheNewOnceMovies = SettingMovies.TheNewOnceMovies();
+            TheBestMovies = SettingMovies.TheBestMovies();
+            TheNewOnceSeries = SettingMovies.TheNewOnceSeries();
+            TheBestSeries = SettingMovies.TheBestSeries();
+            Preferences = SettingMovies.Preferences();
         }
 
     }

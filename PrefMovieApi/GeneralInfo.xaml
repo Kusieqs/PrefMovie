@@ -111,13 +111,15 @@
                             <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly">
                                 <StackPanel>
                                     <TextBlock Text="1" Height="50"/>
-                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                    <StackPanel x:Name="TheNewOnceMovies" Height="150" Orientation="Horizontal"/>
                                     <TextBlock Text="2" Height="50"/>
-                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                    <StackPanel x:Name="TheBestMovies" Height="150" Orientation="Horizontal"/>
                                     <TextBlock Text="3" Height="50"/>
-                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                    <StackPanel x:Name="TheNewOnceSeries" Height="150" Orientation="Horizontal"/>
                                     <TextBlock Text="4" Height="50"/>
-                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                    <StackPanel x:Name="TheBestSeries" Height="150" Orientation="Horizontal"/>
+                                    <TextBlock Text="5" Height="50"/>
+                                    <StackPanel x:Name="Preferences" Height="150" Orientation="Horizontal"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </Grid>
