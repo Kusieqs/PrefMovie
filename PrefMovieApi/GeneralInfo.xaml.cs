@@ -32,7 +32,7 @@ namespace PrefMovieApi
         const string API_KEY_TO_TMDB = "";
 
         // client object
-        TMDbClient client = null;
+        public static TMDbClient client = null;
 
         // special control
         public static bool isReload = true;
@@ -85,9 +85,9 @@ namespace PrefMovieApi
         /// </summary>
         public void SetMainWindoOfMovies()
         {
-            TheNewOnceMovies = SettingMovies.TheNewOnceMovies();
+            TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
             TheBestMovies = SettingMovies.TheBestMovies();
-            TheNewOnceSeries = SettingMovies.TheNewOnceSeries();
+            TheNewOnceSeries = SettingMovies.TheLatestSeries();
             TheBestSeries = SettingMovies.TheBestSeries();
             Preferences = SettingMovies.Preferences();
         }
