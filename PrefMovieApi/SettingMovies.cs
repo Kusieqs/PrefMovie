@@ -37,7 +37,7 @@ namespace PrefMovieApi
 
             // Taking 3 random films 
             Random random = new Random();
-            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(3);
+            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(5);
 
 
             foreach (var movie in randomMovies)

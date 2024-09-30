@@ -8,14 +8,14 @@
     <Border CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="500"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="700"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="820"/>
+                <ColumnDefinition Width="1400"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.RowSpan="2" Background="White" CornerRadius="10,0,0,0" Panel.ZIndex ="1" Margin="0,50,0,40">
+            <Border Grid.RowSpan="2" Background="White" CornerRadius="10,0,0,0" Panel.ZIndex ="1" Margin="0,60,0,40">
             </Border>
             <Border Grid.RowSpan="2" Background="White" CornerRadius="10,10,0,0" Panel.ZIndex ="0" Margin="0,0,0,40">
                 <Grid>
@@ -40,7 +40,7 @@
                         <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="500"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <Border Grid.Column="0" Margin="10,10,10,10">

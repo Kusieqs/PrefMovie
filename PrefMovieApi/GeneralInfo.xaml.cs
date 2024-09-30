@@ -92,5 +92,62 @@ namespace PrefMovieApi
             Preferences = SettingMovies.Preferences();
         }
 
+        /// <summary>
+        /// Method to miss the child scroll viewer to focus on parent scroll viewer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ParentScrollViewer(object sender, MouseWheelEventArgs e)
+        {
+            // Przekazujemy zdarzenie do głównego ScrollViewer
+            MainContentMoviesPref.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+            {
+                RoutedEvent = MouseWheelEvent
+            });
+            e.Handled = true; // Powstrzymujemy wewnętrzny ScrollViewer od obsługi zdarzenia
+        }
+
+        /// <summary>
+        /// Methods to Scroll Viewer to scroll by button on mouse
+        /// </summary>
+        private bool isMouseDown = false;
+        private Point mouseStartPosition;
+        private double scrollViewerStartOffset;
+
+        private void ScrollViewerMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            isMouseDown = true;
+
+            // Override Position of mouse
+            mouseStartPosition = e.GetPosition(null); 
+
+            // Downwrite start position
+            scrollViewerStartOffset = ScrollViewer.HorizontalOffset;
+
+            // Block mouse
+            ScrollViewer.CaptureMouse(); 
+        }
+
+        private void ScrollViewerMouseMove(object sender, MouseEventArgs e)
+        {
+            if (isMouseDown)
+            {
+                Point currentMousePosition = e.GetPosition(null);
+
+                // Position of mouse
+                double delta = currentMousePosition.X - mouseStartPosition.X; 
+
+                // Scroll to new position
+                ScrollViewer.ScrollToHorizontalOffset(scrollViewerStartOffset - delta); 
+            }
+        }
+
+        private void ScrollViewerMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            isMouseDown = false;
+
+            //unblock mouse
+            ScrollViewer.ReleaseMouseCapture();
+        }
     }
 }
