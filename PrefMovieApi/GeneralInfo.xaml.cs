@@ -29,7 +29,7 @@ namespace PrefMovieApi
     public partial class GeneralInfo : UserControl
     {
         // Api Key
-        const string API_KEY_TO_TMDB = "decf79472a955c7ad50abf83302e8ff8";
+        const string API_KEY_TO_TMDB = "";
 
         // client object
         public static TMDbClient client = null;
@@ -72,9 +72,10 @@ namespace PrefMovieApi
                 }
 
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 MessageBox.Show("Crticial Error!","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                MainWindow.logger.Log(LogLevel.Error, ex.Message);
                 Window window = Window.GetWindow(this);
                 // TODO: Zamkniecie okna glownego
             }
@@ -87,7 +88,7 @@ namespace PrefMovieApi
         {
             TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
             TheBestMovies = SettingMovies.TheBestMovies(TheBestMovies);
-            TheNewOnceSeries = SettingMovies.TheLatestSeries();
+            TheNewOnceSeries = SettingMovies.TheLatestSeries(TheNewOnceSeries);
             TheBestSeries = SettingMovies.TheBestSeries();
             Preferences = SettingMovies.Preferences();
         }

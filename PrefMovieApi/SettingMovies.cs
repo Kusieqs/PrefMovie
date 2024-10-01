@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
+using TMDbLib.Objects.TvShows;
 
 namespace PrefMovieApi
 {
@@ -68,13 +69,29 @@ namespace PrefMovieApi
             return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomMovies);
         }
 
-        public static StackPanel TheLatestSeries()
+        public static StackPanel TheLatestSeries(StackPanel mainStackPanel)
         {
-            return null;
+            MainWindow.logger.Log(LogLevel.Info, "TheLatestSeries method activated");
+
+            // Setting date for -3 months ago
+            DateTime today = DateTime.Today;
+            DateTime threeMonthsAgo = today.AddMonths(-3);
+
+            // The new once movies from last 3 months
+            var tvShows = GeneralInfo.client.DiscoverTvShowsAsync()
+                .WhereFirstAirDateIsAfter(threeMonthsAgo)
+                .WhereFirstAirDateIsBefore(today)
+                .Query().Result;
+
+            // Taking 5 random films 
+            var randomTvShows = tvShows.Results.OrderBy(x => random.Next()).Take(5);
+
+            return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomTvShows);
         }
 
         public static StackPanel TheBestSeries()
         {
+            dynamic s;
             return null;
         }
 
@@ -86,11 +103,11 @@ namespace PrefMovieApi
         /// <summary>
         /// Setting poster as image to application
         /// </summary>
-        /// <param name="movie">Object of movie instance</param>
+        /// <param name="randomMoviesOrTvShows">Object of SearchMovie or SearchTv instance</param>
         /// <returns>BitmapImage object</returns>
-        private static BitmapImage SetPoster(SearchMovie movie)
+        private static BitmapImage SetPoster(dynamic randomMoviesOrTvShows)
         {
-            string posterUrl = BASE_URL + movie.PosterPath;
+            string posterUrl = BASE_URL + randomMoviesOrTvShows.PosterPath;
             BitmapImage image = new BitmapImage();
             image.BeginInit();
             image.UriSource = new Uri(posterUrl, UriKind.Absolute);
@@ -103,14 +120,12 @@ namespace PrefMovieApi
         /// Setting information about movie.
         /// </summary>
         /// <param name="mainStackPanel">Stack panel where it will be</param>
-        /// <param name="randomMovies">IEnumerable<SearchMovie> with movies</param>
+        /// <param name="randomMoviesOrTvShows">IEnumerable<dynamic> with diffrent class</param>
         /// <returns>Stack panel with inputed information about movies</returns>
-        private static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<SearchMovie> randomMovies)
+        private static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<dynamic> randomMoviesOrTvShows)
         {
-            foreach (var movie in randomMovies)
+            foreach (var movieOrTvShow in randomMoviesOrTvShows)
             {
-                MainWindow.logger.Log(LogLevel.Info, $"Foreach loop activated: {movie.Title}");
-
                 // Setting stack panel for poster and informations 
                 StackPanel itemStackPanel = new StackPanel()
                 {
@@ -119,7 +134,7 @@ namespace PrefMovieApi
 
                 // Adding poster to stack panel
                 System.Windows.Controls.Image poster = new System.Windows.Controls.Image();
-                poster.Source = SetPoster(movie);
+                poster.Source = SetPoster(movieOrTvShow);
                 itemStackPanel.Children.Add(poster);
 
                 // Setting stack panel for information of movie
@@ -135,18 +150,16 @@ namespace PrefMovieApi
                     switch (i)
                     {
                         case 1:
-                            text.Text = movie.Title;
+                            text.Text = movieOrTvShow is SearchMovie ? $"{movieOrTvShow.Title}" : $"{movieOrTvShow.Name}";
                             break;
                         case 2:
-                            // TODO: Wywala nam opis obiektu (listy)
-                            text.Text = movie.GenreIds.ToString();
+                            text.Text = movieOrTvShow.VoteAverage.ToString();
                             break;
                         case 3:
-                            text.Text = movie.VoteAverage.ToString();
+                            // TODO: Ogarniecie 3 danej informacji
                             break;
                         case 4:
                             // TODO: Ogarniecie 4 danej informacji
-                            text.Text = movie.ToString();
                             break;
                     }
                     informationMovie.Children.Add(text);
