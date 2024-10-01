@@ -15,11 +15,17 @@ namespace PrefMovieApi
 {
     public static class SettingMovies
     {
+        // base url to posters
         private const string BASE_URL = "https://image.tmdb.org/t/p/w500";
+
+        // random object
+        public static Random random = new Random();
+
         /// <summary>
-        /// Setting StackPanel with diffrent movies to main window
+        /// Setting StackPanel with diffrent latest movies to main window
         /// </summary>
-        /// <returns>StackPanel object with new once movies</returns>
+        /// <param name="mainStackPanel">Stack panel where diffrent elemnts will input</param>
+        /// <returns>Stack panel with proposal movies</returns>
         public static StackPanel TheLatestMovies(StackPanel mainStackPanel)
         {
             MainWindow.logger.Log(LogLevel.Info, "TheNewOnceMovies method activated");
@@ -34,66 +40,32 @@ namespace PrefMovieApi
                 .WhereReleaseDateIsBefore(today)          
                 .Query().Result;
 
-
-            // Taking 3 random films 
-            Random random = new Random();
+            // Taking 5 random films 
             var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(5);
 
-
-            foreach (var movie in randomMovies)
-            {
-                MainWindow.logger.Log(LogLevel.Info, $"Movie as new once: {movie.Title}");
-
-                // Setting stack panel for poster and informations 
-                StackPanel itemStackPanel = new StackPanel()
-                {
-                    Orientation = Orientation.Horizontal,
-                };
-
-                // Adding poster to stack panel
-                System.Windows.Controls.Image poster = new System.Windows.Controls.Image();
-                poster.Source = SetPoster(movie);
-                itemStackPanel.Children.Add(poster);
-
-                // Setting stack panel for information of movie
-                StackPanel informationMovie = new StackPanel()
-                {
-                    Orientation = Orientation.Vertical
-                };
-
-                // Setting information of movie
-                for(int i = 0; i < 4; i ++)
-                {
-                    TextBlock text = new TextBlock();
-                    switch(i)
-                    {
-                        case 1:
-                            text.Text = movie.Title;
-                            break;
-                        case 2:
-                            text.Text = movie.GenreIds.ToString();
-                            break;
-                        case 3:
-                            text.Text = movie.VoteAverage.ToString();
-                            break;
-                        case 4:
-                            // TODO: Ogarniecie 4 danej infomracji
-                            text.Text = movie.ToString();
-                            break;
-                    }
-                    informationMovie.Children.Add(text);
-                }
-
-                itemStackPanel.Children.Add(informationMovie);
-                mainStackPanel.Children.Add(itemStackPanel);
-            }
-
-            return mainStackPanel;
+            // setting main panel to application
+            return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomMovies);
         }
 
-        public static StackPanel TheBestMovies()
+        /// <summary>
+        /// Setting StackPanel with diffrent the best movies to main window
+        /// </summary>
+        /// <param name="mainStackPanel">Stack panel where diffrent elemnts will input</param>
+        /// <returns>Stack panel with proposal movies</returns>
+        public static StackPanel TheBestMovies(StackPanel mainStackPanel)
         {
-            return null;
+            MainWindow.logger.Log(LogLevel.Info, "TheBestMovies method activated");
+
+            // setting movies with the best average vote
+            var movies = GeneralInfo.client.DiscoverMoviesAsync()
+                .WhereVoteAverageIsAtLeast(8)
+                .Query().Result;
+
+            // Taking 5 random films 
+            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(5);
+
+            // setting main panel to application
+            return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomMovies);
         }
 
         public static StackPanel TheLatestSeries()
@@ -125,6 +97,66 @@ namespace PrefMovieApi
             image.EndInit();
 
             return image;
+        }
+
+        /// <summary>
+        /// Setting information about movie.
+        /// </summary>
+        /// <param name="mainStackPanel">Stack panel where it will be</param>
+        /// <param name="randomMovies">IEnumerable<SearchMovie> with movies</param>
+        /// <returns>Stack panel with inputed information about movies</returns>
+        private static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<SearchMovie> randomMovies)
+        {
+            foreach (var movie in randomMovies)
+            {
+                MainWindow.logger.Log(LogLevel.Info, $"Foreach loop activated: {movie.Title}");
+
+                // Setting stack panel for poster and informations 
+                StackPanel itemStackPanel = new StackPanel()
+                {
+                    Orientation = Orientation.Horizontal,
+                };
+
+                // Adding poster to stack panel
+                System.Windows.Controls.Image poster = new System.Windows.Controls.Image();
+                poster.Source = SetPoster(movie);
+                itemStackPanel.Children.Add(poster);
+
+                // Setting stack panel for information of movie
+                StackPanel informationMovie = new StackPanel()
+                {
+                    Orientation = Orientation.Vertical
+                };
+
+                // Setting information of movie
+                for (int i = 0; i < 4; i++)
+                {
+                    TextBlock text = new TextBlock();
+                    switch (i)
+                    {
+                        case 1:
+                            text.Text = movie.Title;
+                            break;
+                        case 2:
+                            // TODO: Wywala nam opis obiektu (listy)
+                            text.Text = movie.GenreIds.ToString();
+                            break;
+                        case 3:
+                            text.Text = movie.VoteAverage.ToString();
+                            break;
+                        case 4:
+                            // TODO: Ogarniecie 4 danej informacji
+                            text.Text = movie.ToString();
+                            break;
+                    }
+                    informationMovie.Children.Add(text);
+                }
+
+                itemStackPanel.Children.Add(informationMovie);
+                mainStackPanel.Children.Add(itemStackPanel);
+            }
+
+            return mainStackPanel;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace PrefMovieApi
     public partial class GeneralInfo : UserControl
     {
         // Api Key
-        const string API_KEY_TO_TMDB = "";
+        const string API_KEY_TO_TMDB = "decf79472a955c7ad50abf83302e8ff8";
 
         // client object
         public static TMDbClient client = null;
@@ -86,7 +86,7 @@ namespace PrefMovieApi
         public void SetMainWindoOfMovies()
         {
             TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
-            TheBestMovies = SettingMovies.TheBestMovies();
+            TheBestMovies = SettingMovies.TheBestMovies(TheBestMovies);
             TheNewOnceSeries = SettingMovies.TheLatestSeries();
             TheBestSeries = SettingMovies.TheBestSeries();
             Preferences = SettingMovies.Preferences();
@@ -113,41 +113,46 @@ namespace PrefMovieApi
         private bool isMouseDown = false;
         private Point mouseStartPosition;
         private double scrollViewerStartOffset;
+        private ScrollViewer scrollViewer;
 
         private void ScrollViewerMouseDown(object sender, MouseButtonEventArgs e)
         {
             isMouseDown = true;
+            scrollViewer = sender as ScrollViewer;
 
             // Override Position of mouse
             mouseStartPosition = e.GetPosition(null); 
 
             // Downwrite start position
-            scrollViewerStartOffset = ScrollViewer.HorizontalOffset;
+            scrollViewerStartOffset = scrollViewer.HorizontalOffset;
 
             // Block mouse
-            ScrollViewer.CaptureMouse(); 
+            scrollViewer.CaptureMouse(); 
         }
 
         private void ScrollViewerMouseMove(object sender, MouseEventArgs e)
         {
+            scrollViewer = sender as ScrollViewer;
+
             if (isMouseDown)
             {
                 Point currentMousePosition = e.GetPosition(null);
 
                 // Position of mouse
-                double delta = currentMousePosition.X - mouseStartPosition.X; 
+                double delta = currentMousePosition.X - mouseStartPosition.X;
 
                 // Scroll to new position
-                ScrollViewer.ScrollToHorizontalOffset(scrollViewerStartOffset - delta); 
+                scrollViewer.ScrollToHorizontalOffset(scrollViewerStartOffset - delta); 
             }
         }
 
         private void ScrollViewerMouseUp(object sender, MouseButtonEventArgs e)
         {
+            scrollViewer = sender as ScrollViewer;
             isMouseDown = false;
 
             //unblock mouse
-            ScrollViewer.ReleaseMouseCapture();
+            scrollViewer.ReleaseMouseCapture();
         }
     }
 }

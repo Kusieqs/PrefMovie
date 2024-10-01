@@ -114,14 +114,21 @@
                             <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly">
                                 <StackPanel>
                                     <TextBlock Text="1" Height="70"/>
-                                    <ScrollViewer x:Name="ScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
                                                   MouseDown="ScrollViewerMouseDown" 
                                                   MouseMove="ScrollViewerMouseMove" 
-                                                  MouseUp="ScrollViewerMouseUp">
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer">
                                         <StackPanel x:Name="TheNewOnceMovies" Height="250" Orientation="Horizontal"/>
                                     </ScrollViewer>
                                     <TextBlock Text="2" Height="70"/>
-                                    <StackPanel x:Name="TheBestMovies" Height="250" Orientation="Horizontal"/>
+                                    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                                  MouseDown="ScrollViewerMouseDown" 
+                                                  MouseMove="ScrollViewerMouseMove" 
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer">
+                                        <StackPanel x:Name="TheBestMovies" Height="250" Orientation="Horizontal"/>
+                                    </ScrollViewer>
                                     <TextBlock Text="3" Height="70"/>
                                     <StackPanel x:Name="TheNewOnceSeries" Height="250" Orientation="Horizontal"/>
                                     <TextBlock Text="4" Height="70"/>
