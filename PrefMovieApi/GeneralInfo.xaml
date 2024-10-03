@@ -8,16 +8,16 @@
     <Border CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="500"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="700"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="820"/>
+                <ColumnDefinition Width="1400"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.RowSpan="2" Background="White" CornerRadius="10,0,0,0" Panel.ZIndex ="1" Margin="0,50,0,40">
+            <Border Grid.RowSpan="2" Background="White" CornerRadius="10,0,0,0" Panel.ZIndex ="1" Margin="0,60,0,40">
             </Border>
-            <Border Grid.RowSpan="2" Background="White" CornerRadius="10,10,0,0" Panel.ZIndex ="0" Margin="0,0,0,40">
+            <Border Grid.RowSpan="2" Background="White" CornerRadius="10,10,0,0" Panel.ZIndex ="0" Margin="0,0,0,40" Cursor="">
                 <Grid>
                     <Button Style="{StaticResource ButtonImage}" Margin="0,10,10,0" >
                         <Image Source="Images/closeIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
@@ -25,10 +25,13 @@
                     <Button Style="{StaticResource ButtonImage}"  Margin="0,10,40,0" >
                         <Image Source="Images/infoIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                     </Button>
+                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,70,0" >
+                        <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                    </Button>
                 </Grid>
             </Border>
 
-            <Border Grid.Row="0" Background="Gray" CornerRadius="10,0,100,0" Margin="0,0,100,0" Panel.ZIndex="0">
+            <Border Grid.Row="0" Background="Gray" CornerRadius="10,0,100,0" Margin="0,0,140,0" Panel.ZIndex="0">
                 <TextBlock Text="PrefMovie" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontWeight="DemiBold" FontSize="35" Margin="30,5,0,0"/>
             </Border>
 
@@ -40,7 +43,7 @@
                         <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="500"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <Border Grid.Column="0" Margin="10,10,10,10">
@@ -109,15 +112,56 @@
                     <Border Grid.Column="1" Margin="0,10,0,10">
                         <Grid>
                             <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly">
-                                <StackPanel>
-                                    <TextBlock Text="1" Height="50"/>
-                                    <StackPanel Height="150" Orientation="Horizontal"/>
-                                    <TextBlock Text="2" Height="50"/>
-                                    <StackPanel Height="150" Orientation="Horizontal"/>
-                                    <TextBlock Text="3" Height="50"/>
-                                    <StackPanel Height="150" Orientation="Horizontal"/>
-                                    <TextBlock Text="4" Height="50"/>
-                                    <StackPanel Height="150" Orientation="Horizontal"/>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="1" Height="70"/>
+                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0" Click="SetLatestMovie"/>
+                                    </StackPanel>
+                                    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                                  MouseDown="ScrollViewerMouseDown" 
+                                                  MouseMove="ScrollViewerMouseMove" 
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer">
+                                        <StackPanel x:Name="TheNewOnceMovies" Height="250" Orientation="Horizontal"/>
+                                    </ScrollViewer>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="2" Height="70"/>
+                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0" Click="SetTheBestMovie"/>
+                                    </StackPanel>
+                                    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                                  MouseDown="ScrollViewerMouseDown" 
+                                                  MouseMove="ScrollViewerMouseMove" 
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer">
+                                        <StackPanel x:Name="TheBestMovies" Height="250" Orientation="Horizontal"/>
+                                    </ScrollViewer>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="3" Height="70"/>
+                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0" Click="SetLatestTvShow"/>
+                                    </StackPanel>
+                                    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                                  MouseDown="ScrollViewerMouseDown" 
+                                                  MouseMove="ScrollViewerMouseMove" 
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer">
+                                        <StackPanel x:Name="TheNewOnceSeries" Height="250" Orientation="Horizontal"/>
+                                    </ScrollViewer>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="4" Height="70"/>
+                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0" Click="SetTheBestTvShow"/>
+                                    </StackPanel>
+                                    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                                  MouseDown="ScrollViewerMouseDown" 
+                                                  MouseMove="ScrollViewerMouseMove" 
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer">
+                                        <StackPanel x:Name="TheBestSeries" Height="250" Orientation="Horizontal"/>
+                                    </ScrollViewer>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="5" Height="70"/>
+                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel x:Name="Preferences" Height="250" Orientation="Horizontal"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </Grid>
