@@ -31,15 +31,28 @@ namespace PrefMovieApi
         // Api Key
         const string API_KEY_TO_TMDB = "";
 
-        // client object
+        // Client object
         public static TMDbClient client = null;
 
-        // special control
+        // Special control
         public static bool isReload = true;
+
+        // Delegate for loading content page
+        public delegate void LoadContent(object sender, RoutedEventArgs e);
+        public LoadContent loadContent;
 
         public GeneralInfo()
         {
             InitializeComponent();
+
+            // Adding methods to delegate 
+            loadContent = (LoadContent)Delegate.Combine(
+                new LoadContent(SetLatestMovie),
+                new LoadContent(SetTheBestMovie),
+                new LoadContent(SetLatestTvShow),
+                new LoadContent(SetTheBestTvShow)
+                );
+
             try
             {
                 // Connect to API TMDb
@@ -63,8 +76,8 @@ namespace PrefMovieApi
                     MainWindow.logger.Log(LogLevel.Info, "isReload = true");
                     isReload = false;
 
-                    // TODO: Uzycie delegatu 
-                    SetMainWindoOfMovies();
+                    // Setting list of prefering movies in main screen 
+                    loadContent(null, null);
                 }
                 else
                 {
@@ -82,32 +95,46 @@ namespace PrefMovieApi
         }
 
         /// <summary>
-        /// Setting list of prefering movies in main screen 
-        /// </summary>
-        public void SetMainWindoOfMovies()
-        {
-            TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
-            TheBestMovies = SettingMovies.TheBestMovies(TheBestMovies);
-            TheNewOnceSeries = SettingMovies.TheLatestSeries(TheNewOnceSeries);
-            TheBestSeries = SettingMovies.TheBestSeries();
-            Preferences = SettingMovies.Preferences();
-        }
-
-        /// <summary>
-        /// Method to miss the child scroll viewer to focus on parent scroll viewer
+        /// Setting latest movies
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ParentScrollViewer(object sender, MouseWheelEventArgs e)
+        private void SetLatestMovie(object sender, RoutedEventArgs e)
         {
-            // Przekazujemy zdarzenie do głównego ScrollViewer
-            MainContentMoviesPref.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
-            {
-                RoutedEvent = MouseWheelEvent
-            });
-            e.Handled = true; // Powstrzymujemy wewnętrzny ScrollViewer od obsługi zdarzenia
+            TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
         }
 
+        /// <summary>
+        /// Setting the best movies
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetTheBestMovie(object sender, RoutedEventArgs e)
+        {
+            TheBestMovies = SettingMovies.TheBestMovies(TheBestMovies);
+        }
+
+        /// <summary>
+        /// Setting latest tv shows
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetLatestTvShow(object sender, RoutedEventArgs e)
+        {
+            TheNewOnceSeries = SettingMovies.TheLatestSeries(TheNewOnceSeries);
+        }
+
+        /// <summary>
+        /// Setting the best tv shows
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetTheBestTvShow(object sender, RoutedEventArgs e)
+        {
+            TheBestSeries = SettingMovies.TheBestSeries(TheBestSeries);
+        }
+
+        #region Scroll viewer logic
         /// <summary>
         /// Methods to Scroll Viewer to scroll by button on mouse
         /// </summary>
@@ -116,6 +143,11 @@ namespace PrefMovieApi
         private double scrollViewerStartOffset;
         private ScrollViewer scrollViewer;
 
+        /// <summary>
+        ///  Blocking mouse with override position of mouse
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ScrollViewerMouseDown(object sender, MouseButtonEventArgs e)
         {
             isMouseDown = true;
@@ -131,6 +163,11 @@ namespace PrefMovieApi
             scrollViewer.CaptureMouse(); 
         }
 
+        /// <summary>
+        /// Setting new position for mouse
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ScrollViewerMouseMove(object sender, MouseEventArgs e)
         {
             scrollViewer = sender as ScrollViewer;
@@ -147,6 +184,11 @@ namespace PrefMovieApi
             }
         }
 
+        /// <summary>
+        /// Unblocking mouse
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ScrollViewerMouseUp(object sender, MouseButtonEventArgs e)
         {
             scrollViewer = sender as ScrollViewer;
@@ -155,5 +197,21 @@ namespace PrefMovieApi
             //unblock mouse
             scrollViewer.ReleaseMouseCapture();
         }
+
+        /// <summary>
+        /// Method to miss the child scroll viewer to focus on parent scroll viewer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ParentScrollViewer(object sender, MouseWheelEventArgs e)
+        {
+            // Przekazujemy zdarzenie do głównego ScrollViewer
+            MainContentMoviesPref.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+            {
+                RoutedEvent = MouseWheelEvent
+            });
+            e.Handled = true; // Powstrzymujemy wewnętrzny ScrollViewer od obsługi zdarzenia
+        }
+        #endregion
     }
 }

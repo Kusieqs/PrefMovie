@@ -41,8 +41,8 @@ namespace PrefMovieApi
                 .WhereReleaseDateIsBefore(today)          
                 .Query().Result;
 
-            // Taking 5 random films 
-            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(5);
+            // Taking 8 random films 
+            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(8);
 
             // setting main panel to application
             return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomMovies);
@@ -62,13 +62,18 @@ namespace PrefMovieApi
                 .WhereVoteAverageIsAtLeast(8)
                 .Query().Result;
 
-            // Taking 5 random films 
-            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(5);
+            // Taking 8 random films 
+            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(8);
 
             // setting main panel to application
             return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomMovies);
         }
 
+        /// <summary>
+        /// Setting StackPanel with diffrent latest tvShows to main window
+        /// </summary>
+        /// <param name="mainStackPanel">Stack panel where diffrent elemnts will input</param>
+        /// <returns>Stack panel with proposal tvShows</returns>
         public static StackPanel TheLatestSeries(StackPanel mainStackPanel)
         {
             MainWindow.logger.Log(LogLevel.Info, "TheLatestSeries method activated");
@@ -83,16 +88,30 @@ namespace PrefMovieApi
                 .WhereFirstAirDateIsBefore(today)
                 .Query().Result;
 
-            // Taking 5 random films 
-            var randomTvShows = tvShows.Results.OrderBy(x => random.Next()).Take(5);
+            // Taking 8 random tvShows 
+            var randomTvShows = tvShows.Results.OrderBy(x => random.Next()).Take(8);
 
             return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomTvShows);
         }
 
-        public static StackPanel TheBestSeries()
+        /// <summary>
+        /// Setting StackPanel with diffrent the best tvShows to main window
+        /// </summary>
+        /// <param name="mainStackPanel">Stack panel where diffrent elemnts will input</param>
+        /// <returns>Stack panel with proposal tvShows</returns>
+        public static StackPanel TheBestSeries(StackPanel mainStackPanel)
         {
-            dynamic s;
-            return null;
+            MainWindow.logger.Log(LogLevel.Info, "TheBestSeries method activated");
+
+            // setting tvShows with the best average vote
+            var tvShows = GeneralInfo.client.DiscoverTvShowsAsync()
+                .WhereVoteAverageIsAtLeast(8)
+                .Query().Result;
+
+            // Taking 8 random tvShows
+            var randomTvShows = tvShows.Results.OrderBy(x => random.Next()).Take(8);
+
+            return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomTvShows);
         }
 
         public static StackPanel Preferences()
