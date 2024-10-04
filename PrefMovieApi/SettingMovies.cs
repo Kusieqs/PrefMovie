@@ -114,11 +114,6 @@ namespace PrefMovieApi
             return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomTvShows);
         }
 
-        public static StackPanel Preferences()
-        {
-            return null;
-        }
-
         /// <summary>
         /// Setting poster as image to application
         /// </summary>
@@ -130,6 +125,7 @@ namespace PrefMovieApi
             BitmapImage image = new BitmapImage();
             image.BeginInit();
             image.UriSource = new Uri(posterUrl, UriKind.Absolute);
+            image.DecodePixelWidth = 200;
             image.EndInit();
 
             return image;
@@ -149,6 +145,8 @@ namespace PrefMovieApi
                 StackPanel itemStackPanel = new StackPanel()
                 {
                     Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(20, 0, 30, 0),
+                    Width = 370
                 };
 
                 // Adding poster to stack panel
@@ -159,25 +157,33 @@ namespace PrefMovieApi
                 // Setting stack panel for information of movie
                 StackPanel informationMovie = new StackPanel()
                 {
-                    Orientation = Orientation.Vertical
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(20,10,0,0)
                 };
 
                 // Setting information of movie
                 for (int i = 0; i < 4; i++)
                 {
-                    TextBlock text = new TextBlock();
+                    double fontSize = i == 0 ? 20 : 17.5;
+                    TextBlock text = new TextBlock()
+                    {
+                        Style = GeneralInfo.styleThemeOfElement,
+                        FontSize = fontSize,
+                        Margin = new Thickness(0, 0, 0, 10)
+                    };
+
                     switch (i)
                     {
-                        case 1:
+                        case 0:
                             text.Text = movieOrTvShow is SearchMovie ? $"{movieOrTvShow.Title}" : $"{movieOrTvShow.Name}";
                             break;
-                        case 2:
-                            text.Text = movieOrTvShow.VoteAverage.ToString();
+                        case 1:
+                            text.Text = "Average vote: " + movieOrTvShow.VoteAverage.ToString("N2");
                             break;
-                        case 3:
+                        case 2:
                             // TODO: Ogarniecie 3 danej informacji
                             break;
-                        case 4:
+                        case 3:
                             // TODO: Ogarniecie 4 danej informacji
                             break;
                     }

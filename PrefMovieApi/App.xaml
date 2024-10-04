@@ -69,5 +69,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="InfomrationAboutMovieOrShow" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Width" Value="150"/>
+        </Style>
     </Application.Resources>
 </Application>
