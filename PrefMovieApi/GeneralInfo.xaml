@@ -109,59 +109,62 @@
                         </Grid>
                     </Border>
 
-                    <Border Grid.Column="1" Margin="0,10,0,10">
+                    <Border Grid.Column="1" Margin="10,10,10,10">
                         <Grid>
                             <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly">
                                 <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="1" Height="70"/>
-                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0" Click="SetLatestMovie"/>
-                                    </StackPanel>
+                                    <Grid Height="60">
+                                        <TextBlock Text="The latest movies" Style="{StaticResource ThemeOfElements}"/>
+                                        <Button Click="SetLatestMovie" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
+                                            <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                                        </Button>
+                                    </Grid>
                                     <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
                                                   MouseDown="ScrollViewerMouseDown" 
                                                   MouseMove="ScrollViewerMouseMove" 
                                                   MouseUp="ScrollViewerMouseUp"
-                                                  PreviewMouseWheel="ParentScrollViewer">
-                                        <StackPanel x:Name="TheNewOnceMovies" Height="250" Orientation="Horizontal"/>
+                                                  PreviewMouseWheel="ParentScrollViewer" Margin="0,10,0,40">
+                                        <StackPanel x:Name="TheNewOnceMovies" Height="290" Orientation="Horizontal"/>
                                     </ScrollViewer>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="2" Height="70"/>
-                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0" Click="SetTheBestMovie"/>
-                                    </StackPanel>
+                                    <Grid Height="60">
+                                        <TextBlock Text="The best movies" Style="{StaticResource ThemeOfElements}"/>
+                                        <Button Click="SetTheBestMovie" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
+                                            <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                                        </Button>
+                                    </Grid>
                                     <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
                                                   MouseDown="ScrollViewerMouseDown" 
                                                   MouseMove="ScrollViewerMouseMove" 
                                                   MouseUp="ScrollViewerMouseUp"
-                                                  PreviewMouseWheel="ParentScrollViewer">
-                                        <StackPanel x:Name="TheBestMovies" Height="250" Orientation="Horizontal"/>
+                                                  PreviewMouseWheel="ParentScrollViewer" Margin="0,10,0,40">
+                                        <StackPanel x:Name="TheBestMovies" Height="290" Orientation="Horizontal"/>
                                     </ScrollViewer>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="3" Height="70"/>
-                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0" Click="SetLatestTvShow"/>
-                                    </StackPanel>
+                                    <Grid Height="60">
+                                        <TextBlock Text="The latest tv shows" Style="{StaticResource ThemeOfElements}"/>
+                                        <Button Click="SetLatestTvShow" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
+                                            <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                                        </Button>
+                                    </Grid>
                                     <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
                                                   MouseDown="ScrollViewerMouseDown" 
                                                   MouseMove="ScrollViewerMouseMove" 
                                                   MouseUp="ScrollViewerMouseUp"
-                                                  PreviewMouseWheel="ParentScrollViewer">
-                                        <StackPanel x:Name="TheNewOnceSeries" Height="250" Orientation="Horizontal"/>
+                                                  PreviewMouseWheel="ParentScrollViewer" Margin="0,10,0,40">
+                                        <StackPanel x:Name="TheNewOnceSeries" Height="290" Orientation="Horizontal"/>
                                     </ScrollViewer>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="4" Height="70"/>
-                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0" Click="SetTheBestTvShow"/>
-                                    </StackPanel>
+                                    <Grid Height="60">
+                                        <TextBlock Text="The best tv shows" Style="{StaticResource ThemeOfElements}"/>
+                                        <Button Click="SetTheBestTvShow" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
+                                            <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                                        </Button>
+                                    </Grid>
                                     <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
                                                   MouseDown="ScrollViewerMouseDown" 
                                                   MouseMove="ScrollViewerMouseMove" 
                                                   MouseUp="ScrollViewerMouseUp"
-                                                  PreviewMouseWheel="ParentScrollViewer">
-                                        <StackPanel x:Name="TheBestSeries" Height="250" Orientation="Horizontal"/>
+                                                  PreviewMouseWheel="ParentScrollViewer" Margin="0,10,0,40">
+                                        <StackPanel x:Name="TheBestSeries" Height="290" Orientation="Horizontal"/>
                                     </ScrollViewer>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="5" Height="70"/>
-                                        <Button Content="ref" Width="50" Height="50" Margin="950,0,0,0"/>
-                                    </StackPanel>
-                                    <StackPanel x:Name="Preferences" Height="250" Orientation="Horizontal"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </Grid>
