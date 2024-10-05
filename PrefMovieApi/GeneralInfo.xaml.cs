@@ -58,7 +58,7 @@ namespace PrefMovieApi
                     MainWindow.logger.Log(LogLevel.Error, "Test request is null");
                     throw new FormatException();
                 }
-                MainWindow.logger.Log(LogLevel.Info, "Api is correct");
+                MainWindow.logger.Log(LogLevel.Info, "API is correct");
 
                 // Setting new style for infomration
                 styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;

@@ -38,7 +38,7 @@ namespace PrefMovieApi
             // The new once movies from last 3 months
             var movies = GeneralInfo.client.DiscoverMoviesAsync()
                 .WhereReleaseDateIsAfter(threeMonthsAgo)  
-                .WhereReleaseDateIsBefore(today)          
+                .WhereReleaseDateIsBefore(today) 
                 .Query().Result;
 
             // Taking 8 random films 
@@ -139,6 +139,8 @@ namespace PrefMovieApi
         /// <returns>Stack panel with inputed information about movies</returns>
         private static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<dynamic> randomMoviesOrTvShows)
         {
+            MainWindow.logger.Log(LogLevel.Info, "SetInformationToStackPanel activated");
+
             foreach (var movieOrTvShow in randomMoviesOrTvShows)
             {
                 // Setting stack panel for poster and informations 
@@ -174,19 +176,49 @@ namespace PrefMovieApi
 
                     switch (i)
                     {
+                        // Title
                         case 0:
                             text.Text = movieOrTvShow is SearchMovie ? $"{movieOrTvShow.Title}" : $"{movieOrTvShow.Name}";
                             break;
+                        // Average Vote
                         case 1:
-                            text.Text = "Average vote: " + movieOrTvShow.VoteAverage.ToString("N2");
+                            text.Text = "Average vote: " + movieOrTvShow.VoteAverage.ToString("N1");
                             break;
+                        // Release Date
                         case 2:
-                            // TODO: Ogarniecie 3 danej informacji
+                            text.Text = movieOrTvShow is SearchMovie ? $"{movieOrTvShow.ReleaseDate.Year}" : $"{movieOrTvShow.FirstAirDate.Year}";
                             break;
+                        // Genre
                         case 3:
-                            // TODO: Ogarniecie 4 danej informacji
+                            List<int> genreId = movieOrTvShow.GenreIds;
+
+                            if (movieOrTvShow is SearchMovie)
+                            {
+                                foreach(var genre in genreId)
+                                {
+                                    var genreName = (MoviesGenre)genre;
+                                    string changedGenre = genreName.ToString().Replace('_', ' ') + Environment.NewLine;
+                                    text.Text += changedGenre;
+                                }
+                            }
+                            else
+                            {
+                                foreach (var genre in genreId) 
+                                {
+                                    var genreName = (TvShowsGenre)genre;
+                                    string changedGenre = genreName.ToString().Replace("AND","&").Replace('_',' ') + Environment.NewLine;
+                                    text.Text += changedGenre;
+                                }
+                            }
                             break;
                     }
+
+                    if(string.IsNullOrEmpty(text.Text))
+                    {
+                        string nameOfTheme = i == 0 ? "Title" : i == 1 ? "Average Vote" : i == 2 ? "Date Relase" : "Genre";
+                        MainWindow.logger.Log(LogLevel.Warn, $"Text is empty for: {nameOfTheme} {nameof(randomMoviesOrTvShows)}");
+                    }
+
                     informationMovie.Children.Add(text);
                 }
 
