@@ -11,6 +11,8 @@ using System.Windows.Media.Imaging;
 using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
 using TMDbLib.Objects.TvShows;
+using System.Windows.Shapes;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace PrefMovieApi
 {
@@ -150,11 +152,53 @@ namespace PrefMovieApi
                     Margin = new Thickness(20, 0, 30, 0),
                     Width = 370
                 };
+                
+                // Setting poster to posterBrush
+                var posterBrush = new ImageBrush
+                {
+                    ImageSource = SetPoster(movieOrTvShow), 
+                    Stretch = Stretch.UniformToFill 
+                };
 
-                // Adding poster to stack panel
-                System.Windows.Controls.Image poster = new System.Windows.Controls.Image();
-                poster.Source = SetPoster(movieOrTvShow);
-                itemStackPanel.Children.Add(poster);
+                // Create a Rectangle to display the image with rounded corners
+                Rectangle posterRectangle = new Rectangle
+                {
+                    RadiusX = 10, 
+                    RadiusY = 10,
+                    Width = 200,
+                    Fill = posterBrush 
+                };
+
+                // Average rate
+                TextBlock averageRate = new TextBlock()
+                {
+                    Text = movieOrTvShow.VoteAverage.ToString("N1"),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontWeight = FontWeights.DemiBold,
+                    FontSize = 15
+                };
+
+                // Border for textblock
+                Border averageBorder = new Border()
+                {
+                    CornerRadius = new CornerRadius(10),
+                    Child = averageRate,
+                    Width = 30,
+                    Height = 30,
+                    Background = new SolidColorBrush(Colors.White),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    Margin = new Thickness(0,0,7,7)
+                };
+
+                // Grid for poster with average vote
+                Grid posterGrid = new Grid();
+                posterGrid.Children.Add(posterRectangle);
+                posterGrid.Children.Add(averageBorder);
+
+                // Add the bordered poster to the item stack panel
+                itemStackPanel.Children.Add(posterGrid);
 
                 // Setting stack panel for information of movie
                 StackPanel informationMovie = new StackPanel()
@@ -180,21 +224,17 @@ namespace PrefMovieApi
                         case 0:
                             text.Text = movieOrTvShow is SearchMovie ? $"{movieOrTvShow.Title}" : $"{movieOrTvShow.Name}";
                             break;
-                        // Average Vote
-                        case 1:
-                            text.Text = "Average vote: " + movieOrTvShow.VoteAverage.ToString("N1");
-                            break;
                         // Release Date
-                        case 2:
+                        case 1:
                             text.Text = movieOrTvShow is SearchMovie ? $"{movieOrTvShow.ReleaseDate.Year}" : $"{movieOrTvShow.FirstAirDate.Year}";
                             break;
                         // Genre
-                        case 3:
+                        case 2:
                             List<int> genreId = movieOrTvShow.GenreIds;
 
                             if (movieOrTvShow is SearchMovie)
                             {
-                                foreach(var genre in genreId)
+                                foreach (var genre in genreId)
                                 {
                                     var genreName = (MoviesGenre)genre;
                                     string changedGenre = genreName.ToString().Replace('_', ' ') + Environment.NewLine;
@@ -203,10 +243,10 @@ namespace PrefMovieApi
                             }
                             else
                             {
-                                foreach (var genre in genreId) 
+                                foreach (var genre in genreId)
                                 {
                                     var genreName = (TvShowsGenre)genre;
-                                    string changedGenre = genreName.ToString().Replace("AND","&").Replace('_',' ') + Environment.NewLine;
+                                    string changedGenre = genreName.ToString().Replace("AND", "&").Replace('_', ' ') + Environment.NewLine;
                                     text.Text += changedGenre;
                                 }
                             }

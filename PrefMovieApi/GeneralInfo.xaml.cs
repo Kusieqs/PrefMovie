@@ -77,7 +77,6 @@ namespace PrefMovieApi
                 {
                     MainWindow.logger.Log(LogLevel.Warn, $"{nameof(isReload)} = {isReload}");
                 }
-
             }
             catch(Exception ex)
             {
