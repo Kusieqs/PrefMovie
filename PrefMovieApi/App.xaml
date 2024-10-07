@@ -75,7 +75,7 @@
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Width" Value="150"/>
+            <Setter Property="Width" Value="180"/>
         </Style>
     </Application.Resources>
 </Application>

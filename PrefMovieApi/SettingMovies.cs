@@ -150,7 +150,7 @@ namespace PrefMovieApi
                 {
                     Orientation = Orientation.Horizontal,
                     Margin = new Thickness(20, 0, 30, 0),
-                    Width = 370
+                    Width = 400
                 };
                 
                 // Setting poster to posterBrush
@@ -210,7 +210,7 @@ namespace PrefMovieApi
                 // Setting information of movie
                 for (int i = 0; i < 4; i++)
                 {
-                    double fontSize = i == 0 ? 20 : 17.5;
+                    double fontSize = i == 0 ? 22 : 19;
                     TextBlock text = new TextBlock()
                     {
                         Style = GeneralInfo.styleThemeOfElement,
