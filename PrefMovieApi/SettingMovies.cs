@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +10,8 @@ using System.Windows.Media.Imaging;
 using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
 using TMDbLib.Objects.TvShows;
+using System.Windows.Shapes;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace PrefMovieApi
 {
@@ -38,7 +39,7 @@ namespace PrefMovieApi
             // The new once movies from last 3 months
             var movies = GeneralInfo.client.DiscoverMoviesAsync()
                 .WhereReleaseDateIsAfter(threeMonthsAgo)  
-                .WhereReleaseDateIsBefore(today)          
+                .WhereReleaseDateIsBefore(today) 
                 .Query().Result;
 
             // Taking 8 random films 
@@ -114,11 +115,6 @@ namespace PrefMovieApi
             return mainStackPanel = SetInformationToStackPanel(mainStackPanel, randomTvShows);
         }
 
-        public static StackPanel Preferences()
-        {
-            return null;
-        }
-
         /// <summary>
         /// Setting poster as image to application
         /// </summary>
@@ -130,6 +126,7 @@ namespace PrefMovieApi
             BitmapImage image = new BitmapImage();
             image.BeginInit();
             image.UriSource = new Uri(posterUrl, UriKind.Absolute);
+            image.DecodePixelWidth = 200;
             image.EndInit();
 
             return image;
@@ -143,44 +140,125 @@ namespace PrefMovieApi
         /// <returns>Stack panel with inputed information about movies</returns>
         private static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<dynamic> randomMoviesOrTvShows)
         {
+            MainWindow.logger.Log(LogLevel.Info, "SetInformationToStackPanel activated");
+
             foreach (var movieOrTvShow in randomMoviesOrTvShows)
             {
                 // Setting stack panel for poster and informations 
                 StackPanel itemStackPanel = new StackPanel()
                 {
                     Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(20, 0, 10, 0),
+                    Width = 440
+                };
+                
+                // Setting poster to posterBrush
+                var posterBrush = new ImageBrush
+                {
+                    ImageSource = SetPoster(movieOrTvShow), 
+                    Stretch = Stretch.UniformToFill 
                 };
 
-                // Adding poster to stack panel
-                System.Windows.Controls.Image poster = new System.Windows.Controls.Image();
-                poster.Source = SetPoster(movieOrTvShow);
-                itemStackPanel.Children.Add(poster);
+                // Create a Rectangle to display the image with rounded corners
+                Rectangle posterRectangle = new Rectangle
+                {
+                    RadiusX = 10, 
+                    RadiusY = 10,
+                    Width = 200,
+                    Fill = posterBrush 
+                };
+
+                // Average rate
+                TextBlock averageRate = new TextBlock()
+                {
+                    Text = movieOrTvShow.VoteAverage == 10 ? movieOrTvShow.VoteAverage.ToString("N0") : movieOrTvShow.VoteAverage.ToString("N1"),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontWeight = FontWeights.DemiBold,
+                    FontSize = 15,
+                    FontFamily = new FontFamily("Calibri")
+                };
+
+                // Border for textblock
+                Border averageBorder = new Border()
+                {
+                    CornerRadius = new CornerRadius(10),
+                    Child = averageRate,
+                    Width = 30,
+                    Height = 30,
+                    Background = new SolidColorBrush(Colors.White),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    Margin = new Thickness(0,0,7,7)
+                };
+
+                // Grid for poster with average vote
+                Grid posterGrid = new Grid();
+                posterGrid.Children.Add(posterRectangle);
+                posterGrid.Children.Add(averageBorder);
+
+                // Add the bordered poster to the item stack panel
+                itemStackPanel.Children.Add(posterGrid);
 
                 // Setting stack panel for information of movie
                 StackPanel informationMovie = new StackPanel()
                 {
-                    Orientation = Orientation.Vertical
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(20,10,0,0)
                 };
 
                 // Setting information of movie
                 for (int i = 0; i < 4; i++)
                 {
-                    TextBlock text = new TextBlock();
+                    double fontSize = i == 0 ? 22 : 17;
+                    TextBlock text = new TextBlock()
+                    {
+                        Style = GeneralInfo.styleThemeOfElement,
+                        FontSize = fontSize,
+                        Margin = new Thickness(0, 0, 0, 10)
+                    };
+
                     switch (i)
                     {
-                        case 1:
+                        // Title
+                        case 0:
                             text.Text = movieOrTvShow is SearchMovie ? $"{movieOrTvShow.Title}" : $"{movieOrTvShow.Name}";
                             break;
+                        // Release Date
+                        case 1:
+                            text.Text = movieOrTvShow is SearchMovie ? $"{movieOrTvShow.ReleaseDate.Year}" : $"{movieOrTvShow.FirstAirDate.Year}";
+                            break;
+                        // Genre
                         case 2:
-                            text.Text = movieOrTvShow.VoteAverage.ToString();
-                            break;
-                        case 3:
-                            // TODO: Ogarniecie 3 danej informacji
-                            break;
-                        case 4:
-                            // TODO: Ogarniecie 4 danej informacji
+                            List<int> genreId = movieOrTvShow.GenreIds;
+
+                            if (movieOrTvShow is SearchMovie)
+                            {
+                                foreach (var genre in genreId)
+                                {
+                                    var genreName = (MoviesGenre)genre;
+                                    string changedGenre = genreName.ToString().Replace('_', ' ') + Environment.NewLine;
+                                    text.Text += changedGenre;
+                                }
+                            }
+                            else
+                            {
+                                foreach (var genre in genreId)
+                                {
+                                    var genreName = (TvShowsGenre)genre;
+                                    string changedGenre = genreName.ToString().Replace("AND", "&").Replace('_', ' ') + Environment.NewLine;
+                                    text.Text += changedGenre;
+                                }
+                            }
                             break;
                     }
+
+                    if(string.IsNullOrEmpty(text.Text))
+                    {
+                        string nameOfTheme = i == 0 ? "Title" : i == 1 ? "Average Vote" : i == 2 ? "Date Relase" : "Genre";
+                        MainWindow.logger.Log(LogLevel.Warn, $"Text is empty for: {nameOfTheme} {nameof(randomMoviesOrTvShows)}");
+                    }
+
                     informationMovie.Children.Add(text);
                 }
 
