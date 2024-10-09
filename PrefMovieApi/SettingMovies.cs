@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -149,8 +148,8 @@ namespace PrefMovieApi
                 StackPanel itemStackPanel = new StackPanel()
                 {
                     Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(20, 0, 30, 0),
-                    Width = 400
+                    Margin = new Thickness(20, 0, 10, 0),
+                    Width = 440
                 };
                 
                 // Setting poster to posterBrush
@@ -172,11 +171,12 @@ namespace PrefMovieApi
                 // Average rate
                 TextBlock averageRate = new TextBlock()
                 {
-                    Text = movieOrTvShow.VoteAverage.ToString("N1"),
+                    Text = movieOrTvShow.VoteAverage == 10 ? movieOrTvShow.VoteAverage.ToString("N0") : movieOrTvShow.VoteAverage.ToString("N1"),
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
                     FontWeight = FontWeights.DemiBold,
-                    FontSize = 15
+                    FontSize = 15,
+                    FontFamily = new FontFamily("Calibri")
                 };
 
                 // Border for textblock
@@ -210,7 +210,7 @@ namespace PrefMovieApi
                 // Setting information of movie
                 for (int i = 0; i < 4; i++)
                 {
-                    double fontSize = i == 0 ? 22 : 19;
+                    double fontSize = i == 0 ? 22 : 17;
                     TextBlock text = new TextBlock()
                     {
                         Style = GeneralInfo.styleThemeOfElement,

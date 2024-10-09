@@ -33,7 +33,7 @@
             </Border>
 
             <Border Grid.Row="0" Background="Gray" CornerRadius="10,0,100,0" Margin="0,0,140,0" Panel.ZIndex="0">
-                <TextBlock Text="PrefMovie" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="45" Margin="30,5,0,0"/>
+                <TextBlock Text="PrefMovie" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="50" Margin="35,0,0,0"/>
             </Border>
 
             <Border Grid.Row="1" Background="#FF636262" CornerRadius="10,0,10,10" Panel.ZIndex ="1">
@@ -194,7 +194,7 @@
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Library" Foreground="White" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
+                            <TextBlock Text="Library" Foreground="White" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
                             <ScrollViewer x:Name="Library" Grid.Row="1" VerticalScrollBarVisibility="Hidden"/>
                         </Grid>
                     </Border>
