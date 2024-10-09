@@ -18,9 +18,6 @@ using TMDbLib.Objects.Movies;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
@@ -45,6 +42,48 @@ namespace PrefMovieApi
                 logger.Log(LogLevel.Info, "New log");
             }
 
+            // Deploying content
+            DeployMainContent();
+        }
+
+        /// <summary>
+        /// Exit from app by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitWindow(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Closing window");
+            this.Close();
+        }
+
+        /// <summary>
+        /// Showing information about window by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InfoClick(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Checking infomration about app");
+            // TODO: Infomracja odnosnie okna
+        }
+
+        /// <summary>
+        /// Refreshing window by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshWindow(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Refreshing window");
+            DeployMainContent();
+        }
+
+        /// <summary>
+        /// Deploying content to control by Network connection
+        /// </summary>
+        public void DeployMainContent()
+        {
             // Checking netowrk connection
             if (ConnectionInternet.NetworkCheck())
             {

@@ -19,18 +19,18 @@
             <Border Grid.RowSpan="2" Background="White" CornerRadius="10,0,0,0" Panel.ZIndex ="1" Margin="0,60,0,40"/>
             <Border Grid.RowSpan="2" Background="White" CornerRadius="10,10,0,0" Panel.ZIndex ="0" Margin="0,0,0,40" Cursor="">
                 <Grid>
-                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,10,0" >
+                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,10,0" Click="ExitWindow">
                         <Image Source="Images/closeIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                     </Button>
-                    <Button Style="{StaticResource ButtonImage}"  Margin="0,10,40,0" >
+                    <Button Style="{StaticResource ButtonImage}"  Margin="0,10,70,0" Click="InfoClick">
                         <Image Source="Images/infoIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                     </Button>
-                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,70,0" >
+                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,130,0" Click="RefreshWindow">
                         <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                     </Button>
                 </Grid>
             </Border>
-            <Border Grid.Row="0" Background="Gray" CornerRadius="10,0,100,0" Margin="0,0,140,0" Panel.ZIndex="0">
+            <Border Grid.Row="0" Background="Gray" CornerRadius="10,0,100,0" Margin="0,0,300,0" Panel.ZIndex="0">
                 <TextBlock Text="PrefMovie" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="50" Margin="35,0,0,0"/>
             </Border>
             <Border Grid.Row="1" Background="#FF636262" CornerRadius="10,0,10,10" Panel.ZIndex ="1">
