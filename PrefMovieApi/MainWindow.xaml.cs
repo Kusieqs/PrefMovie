@@ -22,6 +22,9 @@ namespace PrefMovieApi
     {
         public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
         public static ILogger logger = new FileLogger();
+        public GeneralInfo GeneralInfo;
+        public NoConnection NoConnection = new NoConnection();
+        private bool isConnection = true; 
         public static string path = "log.txt";
         public MainWindow()
         {
@@ -88,13 +91,34 @@ namespace PrefMovieApi
             if (ConnectionInternet.NetworkCheck())
             {
                 logger.Log(LogLevel.Info, "Opening GeneralInfo control");
-                MainContent.Content = new GeneralInfo();
+
+                if(GeneralInfo == null)
+                {
+                    logger.Log(LogLevel.Warn, "General info is creating");
+                    GeneralInfo = new GeneralInfo();
+                }
+
+                MainContent.Content = GeneralInfo;
+                SortingFeatures.IsEnabled = true;
+
             }
             else
             {
                 logger.Log(LogLevel.Info, "Opening NoConnection control");
-                MainContent.Content = new NoConnection();
+                MainContent.Content = NoConnection;
+                SortingFeatures.IsEnabled = false;
             }
+        }
+
+        /// <summary>
+        /// Feature to allows us to move our app throw the screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BorderClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
     }
 }

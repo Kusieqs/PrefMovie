@@ -94,6 +94,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetLatestMovie(object sender, RoutedEventArgs e)
         {
+            TheNewOnceMovies.Children.Clear();
             TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
         }
 
@@ -104,6 +105,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetTheBestMovie(object sender, RoutedEventArgs e)
         {
+            TheBestMovies.Children.Clear();
             TheBestMovies = SettingMovies.TheBestMovies(TheBestMovies);
         }
 
@@ -114,6 +116,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetLatestTvShow(object sender, RoutedEventArgs e)
         {
+            TheNewOnceSeries.Children.Clear();
             TheNewOnceSeries = SettingMovies.TheLatestSeries(TheNewOnceSeries);
         }
 
@@ -124,6 +127,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetTheBestTvShow(object sender, RoutedEventArgs e)
         {
+            TheBestSeries.Children.Clear();
             TheBestSeries = SettingMovies.TheBestSeries(TheBestSeries);
         }
 
