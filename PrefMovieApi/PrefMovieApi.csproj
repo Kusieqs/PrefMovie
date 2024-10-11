@@ -162,11 +162,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\closeIcon.png" />
-    <Resource Include="Images\infoIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\refreshIcon.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

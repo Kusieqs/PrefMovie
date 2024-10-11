@@ -22,8 +22,6 @@ namespace PrefMovieApi
     {
         public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
         public static ILogger logger = new FileLogger();
-        public GeneralInfo GeneralInfo;
-        public NoConnection NoConnection = new NoConnection();
         private bool isConnection = true; 
         public static string path = "log.txt";
         public MainWindow()
@@ -57,18 +55,7 @@ namespace PrefMovieApi
         private void ExitWindow(object sender, EventArgs e)
         {
             logger.Log(LogLevel.Info, "Closing window");
-            this.Close();
-        }
-
-        /// <summary>
-        /// Showing information about window by button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void InfoClick(object sender, EventArgs e)
-        {
-            logger.Log(LogLevel.Info, "Checking infomration about app");
-            // TODO: Infomracja odnosnie okna
+            Close();
         }
 
         /// <summary>
@@ -91,21 +78,15 @@ namespace PrefMovieApi
             if (ConnectionInternet.NetworkCheck())
             {
                 logger.Log(LogLevel.Info, "Opening GeneralInfo control");
-
-                if(GeneralInfo == null)
-                {
-                    logger.Log(LogLevel.Warn, "General info is creating");
-                    GeneralInfo = new GeneralInfo();
-                }
-
-                MainContent.Content = GeneralInfo;
                 SortingFeatures.IsEnabled = true;
 
+                logger.Log(LogLevel.Warn, "General info is creating");
+                MainContent.Content = new GeneralInfo(this);
             }
             else
             {
                 logger.Log(LogLevel.Info, "Opening NoConnection control");
-                MainContent.Content = NoConnection;
+                MainContent.Content = new NoConnection();
                 SortingFeatures.IsEnabled = false;
             }
         }
@@ -117,8 +98,18 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void BorderClick(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
+            try
+            {
+                if (e.ChangedButton == MouseButton.Left)
+                {
+                    logger.Log(LogLevel.Info, "Window is changing place on screen");
+                    this.DragMove();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Log(LogLevel.Error, ex.ToString());
+            }
         }
     }
 }

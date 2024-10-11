@@ -208,7 +208,7 @@ namespace PrefMovieApi
                 };
 
                 // Setting information of movie
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     double fontSize = i == 0 ? 22 : 17;
                     TextBlock text = new TextBlock()
@@ -255,7 +255,7 @@ namespace PrefMovieApi
 
                     if(string.IsNullOrEmpty(text.Text))
                     {
-                        string nameOfTheme = i == 0 ? "Title" : i == 1 ? "Average Vote" : i == 2 ? "Date Relase" : "Genre";
+                        string nameOfTheme = i == 0 ? "Title" : i == 1 ? "Date Relase" : "Genre";
                         MainWindow.logger.Log(LogLevel.Warn, $"Text is empty for: {nameOfTheme} {nameof(randomMoviesOrTvShows)}");
                     }
 
