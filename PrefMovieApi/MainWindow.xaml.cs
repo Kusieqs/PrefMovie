@@ -89,6 +89,7 @@ namespace PrefMovieApi
                 MainContent.Content = new NoConnection();
                 SortingFeatures.IsEnabled = false;
             }
+            Library.Content = new Library();
         }
 
         /// <summary>

@@ -99,9 +99,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="GenreEnums\MovieGenre.cs" />
+    <Compile Include="Library.xaml.cs">
+      <DependentUpon>Library.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingMovies.cs" />
     <Compile Include="GenreEnums\TvShowGenre.cs" />
     <Page Include="GeneralInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Library.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,7 +121,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Logger\LogLevel.cs" />
-    <Compile Include="ConnectionInternet.cs" />
+    <Compile Include="ConnectioToInternet\ConnectionInternet.cs" />
     <Compile Include="GeneralInfo.xaml.cs">
       <DependentUpon>GeneralInfo.xaml</DependentUpon>
     </Compile>
@@ -124,13 +131,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NoConnection.xaml">
+    <Page Include="ConnectioToInternet\NoConnection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NoConnection.xaml.cs">
+    <Compile Include="ConnectioToInternet\NoConnection.xaml.cs">
       <DependentUpon>NoConnection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -166,5 +173,6 @@
   <ItemGroup>
     <Resource Include="Images\refreshIcon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
