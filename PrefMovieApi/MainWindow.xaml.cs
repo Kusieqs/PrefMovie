@@ -18,13 +18,11 @@ using TMDbLib.Objects.Movies;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
         public static ILogger logger = new FileLogger();
+        private bool isConnection = true; 
         public static string path = "log.txt";
         public MainWindow()
         {
@@ -45,16 +43,72 @@ namespace PrefMovieApi
                 logger.Log(LogLevel.Info, "New log");
             }
 
+            // Deploying content
+            DeployMainContent();
+        }
+
+        /// <summary>
+        /// Exit from app by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitWindow(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Closing window");
+            Close();
+        }
+
+        /// <summary>
+        /// Refreshing window by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshWindow(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Refreshing window");
+            DeployMainContent();
+        }
+
+        /// <summary>
+        /// Deploying content to control by Network connection
+        /// </summary>
+        public void DeployMainContent()
+        {
             // Checking netowrk connection
             if (ConnectionInternet.NetworkCheck())
             {
                 logger.Log(LogLevel.Info, "Opening GeneralInfo control");
-                MainContent.Content = new GeneralInfo();
+                SortingFeatures.IsEnabled = true;
+
+                logger.Log(LogLevel.Warn, "General info is creating");
+                MainContent.Content = new GeneralInfo(this);
             }
             else
             {
                 logger.Log(LogLevel.Info, "Opening NoConnection control");
                 MainContent.Content = new NoConnection();
+                SortingFeatures.IsEnabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Feature to allows us to move our app throw the screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BorderClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (e.ChangedButton == MouseButton.Left)
+                {
+                    logger.Log(LogLevel.Info, "Window is changing place on screen");
+                    this.DragMove();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Log(LogLevel.Error, ex.ToString());
             }
         }
     }

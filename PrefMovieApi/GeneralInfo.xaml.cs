@@ -23,9 +23,6 @@ namespace PrefMovieApi
         // Client object
         public static TMDbClient client = null;
 
-        // Special control
-        public static bool isReload = true;
-
         // Delegate for loading content page
         public delegate void LoadContent(object sender, RoutedEventArgs e);
         public LoadContent loadContent;
@@ -33,7 +30,7 @@ namespace PrefMovieApi
         // Style for infomration about element
         public static Style styleThemeOfElement;
 
-        public GeneralInfo()
+        public GeneralInfo(Window mainWindow)
         {
             InitializeComponent();
 
@@ -53,7 +50,7 @@ namespace PrefMovieApi
 
                 // Checking that the API key is correct
                 var testRequest = client.GetMovieAsync(550).Result;
-                if(testRequest == null)
+                if (testRequest == null)
                 {
                     MainWindow.logger.Log(LogLevel.Error, "Test request is null");
                     throw new FormatException();
@@ -61,30 +58,19 @@ namespace PrefMovieApi
                 MainWindow.logger.Log(LogLevel.Info, "API is correct");
 
                 // Setting new style for infomration
-                styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
                 MainWindow.logger.Log(LogLevel.Info, "Style for infomrations about elemnts was loaded");
+                styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
 
                 // Setting movies
-                if (isReload)
-                {
-                    MainWindow.logger.Log(LogLevel.Info, $"{nameof(isReload)} = {isReload}");
-                    isReload = false;
-
-                    // Setting list of prefering movies in main screen 
-                    loadContent(null, null);
-                }
-                else
-                {
-                    MainWindow.logger.Log(LogLevel.Warn, $"{nameof(isReload)} = {isReload}");
-                }
+                loadContent(null, null);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Crticial Error!","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Crticial Error!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 MainWindow.logger.Log(LogLevel.Error, ex.Message);
-                Window window = Window.GetWindow(this);
-                // TODO: Zamkniecie okna glownego
+                mainWindow.Close();
             }
+
         }
 
         /// <summary>
@@ -94,6 +80,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetLatestMovie(object sender, RoutedEventArgs e)
         {
+            TheNewOnceMovies.Children.Clear();
             TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
         }
 
@@ -104,6 +91,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetTheBestMovie(object sender, RoutedEventArgs e)
         {
+            TheBestMovies.Children.Clear();
             TheBestMovies = SettingMovies.TheBestMovies(TheBestMovies);
         }
 
@@ -114,6 +102,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetLatestTvShow(object sender, RoutedEventArgs e)
         {
+            TheNewOnceSeries.Children.Clear();
             TheNewOnceSeries = SettingMovies.TheLatestSeries(TheNewOnceSeries);
         }
 
@@ -124,6 +113,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetTheBestTvShow(object sender, RoutedEventArgs e)
         {
+            TheBestSeries.Children.Clear();
             TheBestSeries = SettingMovies.TheBestSeries(TheBestSeries);
         }
 
