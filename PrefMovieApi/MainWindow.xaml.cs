@@ -22,14 +22,17 @@ namespace PrefMovieApi
     {
         public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
         public static ILogger logger = new FileLogger();
-        private bool isConnection = true; 
+        private bool isConnection = true;
+        public static Style styleForButton;
         public static string path = "log.txt";
         public MainWindow()
         {
             InitializeComponent();
 
+            styleForButton = FindResource("ButtonImage") as Style; // ???
+
             // Logger checking
-            if(logger is FileLogger && !File.Exists(path))
+            if (logger is FileLogger && !File.Exists(path))
             {
                 File.WriteAllText(path, "");
             }

@@ -12,6 +12,7 @@ using TMDbLib.Objects.Search;
 using TMDbLib.Objects.TvShows;
 using System.Windows.Shapes;
 using Rectangle = System.Windows.Shapes.Rectangle;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace PrefMovieApi
 {
@@ -131,7 +132,6 @@ namespace PrefMovieApi
 
             return image;
         }
-
         /// <summary>
         /// Setting information about movie.
         /// </summary>
@@ -153,7 +153,7 @@ namespace PrefMovieApi
                 };
                 
                 // Setting poster to posterBrush
-                var posterBrush = new ImageBrush
+                ImageBrush posterBrush = new ImageBrush
                 {
                     ImageSource = SetPoster(movieOrTvShow), 
                     Stretch = Stretch.UniformToFill 
@@ -189,12 +189,36 @@ namespace PrefMovieApi
                     Background = new SolidColorBrush(Colors.White),
                     HorizontalAlignment = HorizontalAlignment.Right,
                     VerticalAlignment = VerticalAlignment.Bottom,
-                    Margin = new Thickness(0,0,7,7)
+                    Margin = new Thickness(0, 0, 7, 7)
                 };
+
+                // Creating image as star
+                Image star = new Image()
+                {
+                    Source = new BitmapImage(new Uri("Images/emptyStar.png", UriKind.Relative)),
+                    Stretch = Stretch.UniformToFill
+                };
+
+                // Creating button as star
+                Button favoriteButton = new Button()
+                {
+                    Content = star,
+                    Width = 30,
+                    Height = 30,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    Background = Brushes.Transparent,
+                    BorderBrush = null,
+                    Margin = new Thickness(7, 0, 0, 7),
+                    Style = MainWindow.styleForButton,
+                };
+                favoriteButton.MouseDown += FavoriteButtonMouseDown;
+                favoriteButton.MouseLeave += FavoriteButtonMouseLeave;
 
                 // Grid for poster with average vote
                 Grid posterGrid = new Grid();
                 posterGrid.Children.Add(posterRectangle);
+                posterGrid.Children.Add(favoriteButton);
                 posterGrid.Children.Add(averageBorder);
 
                 // Add the bordered poster to the item stack panel
@@ -267,6 +291,14 @@ namespace PrefMovieApi
             }
 
             return mainStackPanel;
+        }
+
+        private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+        }
+
+        private static void FavoriteButtonMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+        {
         }
     }
 }
