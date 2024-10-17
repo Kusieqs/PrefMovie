@@ -105,7 +105,7 @@
     <Compile Include="Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingContent\SettingMovies.cs" />
+    <Compile Include="SettingContent\SettingElements.cs" />
     <Compile Include="GenreEnums\TvShowGenre.cs" />
     <Page Include="GeneralInfo.xaml">
       <SubType>Designer</SubType>
@@ -124,7 +124,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Logger\LogLevel.cs" />
-    <Compile Include="ConnectioToInternet\ConnectionInternet.cs" />
+    <Compile Include="ConnectionToInternet\ConnectionInternet.cs" />
     <Compile Include="GeneralInfo.xaml.cs">
       <DependentUpon>GeneralInfo.xaml</DependentUpon>
     </Compile>
@@ -134,13 +134,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ConnectioToInternet\NoConnection.xaml">
+    <Page Include="ConnectionToInternet\NoConnection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectioToInternet\NoConnection.xaml.cs">
+    <Compile Include="ConnectionToInternet\NoConnection.xaml.cs">
       <DependentUpon>NoConnection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">

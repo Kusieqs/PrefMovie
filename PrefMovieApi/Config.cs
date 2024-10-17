@@ -26,5 +26,8 @@ namespace PrefMovieApi
 
         //Style for buttom
         public static Style styleForButton;
+
+        // Special dicitoniary to read movies
+        public static Dictionary<string, string> IdForMovie = new Dictionary<string, string>();
     }
 }

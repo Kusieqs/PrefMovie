@@ -12,11 +12,16 @@ using TMDbLib.Objects.Search;
 using TMDbLib.Objects.TvShows;
 using System.Windows.Shapes;
 using Rectangle = System.Windows.Shapes.Rectangle;
+using static System.Net.Mime.MediaTypeNames;
+using Image = System.Windows.Controls.Image;
 
 namespace PrefMovieApi
 {
     internal static class ElementInfo
     {
+        // id for element
+        private static int id = 0;
+
         /// <summary>
         /// Setting information about movie.
         /// </summary>
@@ -41,7 +46,9 @@ namespace PrefMovieApi
                 Grid posterGrid = new Grid();
                 posterGrid.Children.Add(PosterDiploy(movieOrTvShow));
                 posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
-                posterGrid.Children.Add(FavortieElementDiploy());
+
+                string idOfElement;
+                posterGrid.Children.Add(FavortieElementDiploy(out idOfElement));
 
                 // Add the bordered poster to the item stack panel
                 itemStackPanel.Children.Add(posterGrid);
@@ -55,10 +62,11 @@ namespace PrefMovieApi
                 };
 
                 // Adding infomration about element
-                informationMovie.Children.Add(SettingInformationAboutElement(movieOrTvShow,randomMoviesOrTvShows));
-
+                informationMovie = SettingInformationAboutElement(movieOrTvShow,randomMoviesOrTvShows,informationMovie);
                 itemStackPanel.Children.Add(informationMovie);
                 mainStackPanel.Children.Add(itemStackPanel);
+
+                Config.IdForMovie.Add(idOfElement, movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name);
             }
 
             return mainStackPanel;
@@ -127,8 +135,9 @@ namespace PrefMovieApi
         /// <summary>
         /// Creating button which add new feature to add element to library
         /// </summary>
+        /// <param name="idOfElement">name of id of element</param>
         /// <returns>Favorite button star</returns>
-        private static Button FavortieElementDiploy()
+        private static Button FavortieElementDiploy(out string idOfElement)
         {
             // Creating image as star
             Image star = new Image()
@@ -137,10 +146,13 @@ namespace PrefMovieApi
                 Stretch = Stretch.UniformToFill
             };
 
+            idOfElement = $"Id{++id}";
+
             // Creating button as star
             Button favoriteButton = new Button()
             {
                 Content = star,
+                Name = idOfElement,
                 Width = 30,
                 Height = 30,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -150,8 +162,11 @@ namespace PrefMovieApi
                 Margin = new Thickness(7, 0, 0, 7),
                 Style = Config.styleForButton,
             };
-            favoriteButton.MouseDown += FavoriteButtonMouseDown;
+
+
             favoriteButton.MouseLeave += FavoriteButtonMouseLeave;
+            favoriteButton.MouseEnter += FavoriteButtonMouseEnter;
+            favoriteButton.Click += AddingElementToLibrary;
 
             return favoriteButton;
         }
@@ -162,7 +177,7 @@ namespace PrefMovieApi
         /// <param name="movieOrTvShow"></param>
         /// <param name="randomMoviesOrTvShows"></param>
         /// <returns>Infomration about element</returns>
-        private static TextBlock SettingInformationAboutElement(dynamic movieOrTvShow, dynamic randomMoviesOrTvShows)
+        private static StackPanel SettingInformationAboutElement(dynamic movieOrTvShow, dynamic randomMoviesOrTvShows, StackPanel information)
         {
             // Setting information of movie
             for (int i = 0; i < 3; i++)
@@ -216,9 +231,10 @@ namespace PrefMovieApi
                     MainWindow.logger.Log(LogLevel.Warn, $"Text is empty for: {nameOfTheme} {nameof(randomMoviesOrTvShows)}");
                 }
 
-                return text;
+                information.Children.Add(text);
+
             }
-            return null;
+            return information;
         }
 
         /// <summary>
@@ -240,11 +256,46 @@ namespace PrefMovieApi
 
         private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            Button button = sender as Button;
+
+            // Creating image as star
+            Image star = new Image()
+            {
+                Source = new BitmapImage(new Uri("Images/emptyStar.png", UriKind.Relative)),
+                Stretch = Stretch.UniformToFill
+            };
+
+            button.Content = star;
         }
 
-        private static void FavoriteButtonMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+        private static void FavoriteButtonMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            Button button = sender as Button;
+
+            // Creating image as star
+            Image star = new Image()
+            {
+                Source = new BitmapImage(new Uri("Images/star.png", UriKind.Relative)),
+                Stretch = Stretch.UniformToFill
+            };
+
+            button.Content = star;
         }
 
+        private static void AddingElementToLibrary(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            // Creating image as star
+            Image star = new Image()
+            {
+                Source = new BitmapImage(new Uri("Images/star.png", UriKind.Relative)),
+                Stretch = Stretch.UniformToFill
+            };
+            button.Content = star;
+
+            // TODO: Naprawienie gwiazdki (gdy jest kliknieta bool potrzebny jako string bool
+            MainWindow.library.AddingNewElement(button.Name);
+        }
     }
 }

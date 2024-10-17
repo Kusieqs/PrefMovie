@@ -24,6 +24,9 @@ namespace PrefMovieApi
         public delegate void LoadContent(object sender, RoutedEventArgs e);
         public LoadContent loadContent;
 
+        // Main window
+        public Window mainWindow;
+
         public GeneralInfo(Window mainWindow)
         {
             InitializeComponent();
@@ -35,6 +38,8 @@ namespace PrefMovieApi
                 new LoadContent(SetLatestTvShow),
                 new LoadContent(SetTheBestTvShow)
                 );
+
+            this.mainWindow = mainWindow;
 
             try
             {
@@ -74,7 +79,7 @@ namespace PrefMovieApi
         private void SetLatestMovie(object sender, RoutedEventArgs e)
         {
             TheNewOnceMovies.Children.Clear();
-            TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
+            TheNewOnceMovies = SettingElements.TheLatestMovies(TheNewOnceMovies);
         }
 
         /// <summary>
@@ -85,7 +90,7 @@ namespace PrefMovieApi
         private void SetTheBestMovie(object sender, RoutedEventArgs e)
         {
             TheBestMovies.Children.Clear();
-            TheBestMovies = SettingMovies.TheBestMovies(TheBestMovies);
+            TheBestMovies = SettingElements.TheBestMovies(TheBestMovies);
         }
 
         /// <summary>
@@ -96,7 +101,7 @@ namespace PrefMovieApi
         private void SetLatestTvShow(object sender, RoutedEventArgs e)
         {
             TheNewOnceSeries.Children.Clear();
-            TheNewOnceSeries = SettingMovies.TheLatestSeries(TheNewOnceSeries);
+            TheNewOnceSeries = SettingElements.TheLatestSeries(TheNewOnceSeries);
         }
 
         /// <summary>
@@ -107,7 +112,7 @@ namespace PrefMovieApi
         private void SetTheBestTvShow(object sender, RoutedEventArgs e)
         {
             TheBestSeries.Children.Clear();
-            TheBestSeries = SettingMovies.TheBestSeries(TheBestSeries);
+            TheBestSeries = SettingElements.TheBestSeries(TheBestSeries);
         }
 
         #region Scroll viewer logic

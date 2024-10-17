@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +23,7 @@ namespace PrefMovieApi
     {
         public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
         public static ILogger logger = new FileLogger();
+        public static Library library = new Library();
         public MainWindow()
         {
             InitializeComponent();
@@ -49,28 +51,6 @@ namespace PrefMovieApi
         }
 
         /// <summary>
-        /// Exit from app by button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExitWindow(object sender, EventArgs e)
-        {
-            logger.Log(LogLevel.Info, "Closing window");
-            Close();
-        }
-
-        /// <summary>
-        /// Refreshing window by button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RefreshWindow(object sender, EventArgs e)
-        {
-            logger.Log(LogLevel.Info, "Refreshing window");
-            DeployMainContent();
-        }
-
-        /// <summary>
         /// Deploying content to control by Network connection
         /// </summary>
         public void DeployMainContent()
@@ -90,7 +70,33 @@ namespace PrefMovieApi
                 MainContent.Content = new NoConnection();
                 SortingFeatures.IsEnabled = false;
             }
-            Library.Content = new Library();
+            library = new Library();
+            Library.Content = library;
+
+
+        }
+
+
+        /// <summary>
+        /// Exit from app by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitWindow(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Closing window");
+            Close();
+        }
+
+        /// <summary>
+        /// Refreshing window by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshWindow(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Refreshing window");
+            DeployMainContent();
         }
 
         /// <summary>

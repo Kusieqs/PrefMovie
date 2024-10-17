@@ -16,8 +16,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace PrefMovieApi
 {
-    public static class SettingMovies
+    public static class SettingElements
     {
+
         // random object
         public static Random random = new Random();
 

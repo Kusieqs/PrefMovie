@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace PrefMovieApi
         public void SettingStackPanelLibrary()
         {
             MainWindow.logger.Log(LogLevel.Info, "Setting Library of items activated");
-            foreach( var item in titles )
+            foreach(var item in titles )
             {
                 // Creating item for stackpanel
                 TextBlock title = new TextBlock()
@@ -47,6 +48,20 @@ namespace PrefMovieApi
                 // Adding item to stackpanel
                 FavoriteMovies.Children.Add(title);
             }
+        }
+
+        public void AddingNewElement(string id)
+        {
+            string title = Config.IdForMovie[id];
+            titles.Add(title);
+
+            TextBlock textBlock = new TextBlock()
+            {
+                Text = title,
+            };
+
+            FavoriteMovies.Children.Add(textBlock);
+            // TODO: Dodanie logiki dalszej
         }
     }
 }
