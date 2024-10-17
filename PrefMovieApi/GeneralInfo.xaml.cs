@@ -17,18 +17,12 @@ namespace PrefMovieApi
 
     public partial class GeneralInfo : UserControl
     {
-        // Api Key
-        const string API_KEY_TO_TMDB = "";
-
         // Client object
         public static TMDbClient client = null;
 
         // Delegate for loading content page
         public delegate void LoadContent(object sender, RoutedEventArgs e);
         public LoadContent loadContent;
-
-        // Style for infomration about element
-        public static Style styleThemeOfElement;
 
         public GeneralInfo(Window mainWindow)
         {
@@ -45,7 +39,7 @@ namespace PrefMovieApi
             try
             {
                 // Connect to API TMDb
-                client = new TMDbClient(API_KEY_TO_TMDB);
+                client = new TMDbClient(Config.API_KEY_TO_TMDB);
                 client.DefaultLanguage = "en";
 
                 // Checking that the API key is correct
@@ -59,7 +53,6 @@ namespace PrefMovieApi
 
                 // Setting new style for infomration
                 MainWindow.logger.Log(LogLevel.Info, "Style for infomrations about elemnts was loaded");
-                styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
 
                 // Setting movies
                 loadContent(null, null);

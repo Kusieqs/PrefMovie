@@ -21,7 +21,7 @@ namespace PrefMovieApi
             {
                 MainWindow.logger.Log(LogLevel.Info, "Library is NOT empty");
                 string jsonSerialize = JsonConvert.SerializeObject(listOfMoviesAndTvShows);
-                File.WriteAllText("LibraryFile.txt", jsonSerialize);
+                File.WriteAllText(Config.PATH_TO_JSON, jsonSerialize);
             }
             else
             {
@@ -36,10 +36,10 @@ namespace PrefMovieApi
         public List<string> DeserializeLibrary()
         {
             MainWindow.logger.Log(LogLevel.Info, "DeserializeLibrary Activated");
-            if (File.Exists("LibraryFile.txt"))
+            if (File.Exists(Config.PATH_TO_JSON))
             {
                 MainWindow.logger.Log(LogLevel.Info, "Reading file");
-                string readerFile = File.ReadAllText("LibraryFile.txt");
+                string readerFile = File.ReadAllText(Config.PATH_TO_JSON);
                 return JsonConvert.DeserializeObject<List<string>>(readerFile);
             }
             else

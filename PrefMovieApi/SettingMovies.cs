@@ -18,9 +18,6 @@ namespace PrefMovieApi
 {
     public static class SettingMovies
     {
-        // base url to posters
-        private const string BASE_URL = "https://image.tmdb.org/t/p/w500";
-
         // random object
         public static Random random = new Random();
 
@@ -123,7 +120,7 @@ namespace PrefMovieApi
         /// <returns>BitmapImage object</returns>
         private static BitmapImage SetPoster(dynamic randomMoviesOrTvShows)
         {
-            string posterUrl = BASE_URL + randomMoviesOrTvShows.PosterPath;
+            string posterUrl = Config.BASE_URL + randomMoviesOrTvShows.PosterPath;
             BitmapImage image = new BitmapImage();
             image.BeginInit();
             image.UriSource = new Uri(posterUrl, UriKind.Absolute);
@@ -210,7 +207,7 @@ namespace PrefMovieApi
                     Background = Brushes.Transparent,
                     BorderBrush = null,
                     Margin = new Thickness(7, 0, 0, 7),
-                    Style = MainWindow.styleForButton,
+                    Style = Config.styleForButton,
                 };
                 favoriteButton.MouseDown += FavoriteButtonMouseDown;
                 favoriteButton.MouseLeave += FavoriteButtonMouseLeave;
@@ -237,7 +234,7 @@ namespace PrefMovieApi
                     double fontSize = i == 0 ? 22 : 17;
                     TextBlock text = new TextBlock()
                     {
-                        Style = GeneralInfo.styleThemeOfElement,
+                        Style = Config.styleThemeOfElement,
                         FontSize = fontSize,
                         Margin = new Thickness(0, 0, 0, 10)
                     };
