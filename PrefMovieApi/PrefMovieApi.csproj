@@ -99,12 +99,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
+    <Compile Include="SettingContent\ElementInfo.cs" />
     <Compile Include="GenreEnums\MovieGenre.cs" />
     <Compile Include="JsonFile.cs" />
     <Compile Include="Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingMovies.cs" />
+    <Compile Include="SettingContent\SettingMovies.cs" />
     <Compile Include="GenreEnums\TvShowGenre.cs" />
     <Page Include="GeneralInfo.xaml">
       <SubType>Designer</SubType>
