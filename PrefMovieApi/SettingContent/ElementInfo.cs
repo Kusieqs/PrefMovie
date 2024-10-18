@@ -48,8 +48,10 @@ namespace PrefMovieApi
                 posterGrid.Children.Add(PosterDiploy(movieOrTvShow));
                 posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
 
+                bool isInLibrary = Library.titles.Any(x => x == (movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name));
+
                 string idOfElement;
-                posterGrid.Children.Add(FavortieElementDiploy(out idOfElement));
+                posterGrid.Children.Add(FavortieElementDiploy(out idOfElement, isInLibrary));
 
                 // Add the bordered poster to the item stack panel
                 itemStackPanel.Children.Add(posterGrid);
@@ -83,7 +85,7 @@ namespace PrefMovieApi
             // Setting poster to posterBrush
             ImageBrush posterBrush = new ImageBrush
             {
-                ImageSource = SetPoster(movieOrTvShow),
+                ImageSource = CreatingImage.SetPoster(movieOrTvShow),
                 Stretch = Stretch.UniformToFill
             };
 
@@ -138,21 +140,15 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="idOfElement">name of id of element</param>
         /// <returns>Favorite button star</returns>
-        private static Button FavortieElementDiploy(out string idOfElement)
+        private static Button FavortieElementDiploy(out string idOfElement, bool isInLibrary)
         {
-            // Creating image as star
-            Image star = new Image()
-            {
-                Source = new BitmapImage(new Uri("Images/emptyStar.png", UriKind.Relative)),
-                Stretch = Stretch.UniformToFill
-            };
-
+            // Creating id of button
             idOfElement = $"Id{++id}";
 
             // Creating button as star
             Button favoriteButton = new Button()
             {
-                Content = star,
+                Content = CreatingImage.SettingImage(isInLibrary == true ? "Images/star.png" : "Images/emptyStar.png"),
                 Name = idOfElement,
                 Width = 30,
                 Height = 30,
@@ -239,22 +235,10 @@ namespace PrefMovieApi
         }
 
         /// <summary>
-        /// Setting poster as image to application
+        /// When mouse is enter into star then image will be change
         /// </summary>
-        /// <param name="randomMoviesOrTvShows">Object of SearchMovie or SearchTv instance</param>
-        /// <returns>BitmapImage object</returns>
-        private static BitmapImage SetPoster(dynamic randomMoviesOrTvShows)
-        {
-            string posterUrl = Config.BASE_URL + randomMoviesOrTvShows.PosterPath;
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.UriSource = new Uri(posterUrl, UriKind.Absolute);
-            image.DecodePixelWidth = 200;
-            image.EndInit();
-
-            return image;
-        }
-
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void FavoriteButtonMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
@@ -263,15 +247,20 @@ namespace PrefMovieApi
             if (Library.titles.Any(x => x == title))
             {
                 // Creating image as star
-                button.Content = CreatingImage("Images/emptyStar.png");
+                button.Content = CreatingImage.SettingImage("Images/emptyStar.png");
             }
             else
             {
                 // Creating image as star
-                button.Content = CreatingImage("Images/star.png");
+                button.Content = CreatingImage.SettingImage("Images/star.png");
             }
         }
 
+        /// <summary>
+        /// When mouse is enter into star then image will be change
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
@@ -280,16 +269,20 @@ namespace PrefMovieApi
             if(Library.titles.Any(x => x == title))
             {
                 // Creating image as star
-                button.Content = CreatingImage("Images/star.png");
+                button.Content = CreatingImage.SettingImage("Images/star.png");
             }
             else
             {
                 // Creating image as star
-                button.Content = CreatingImage("Images/emptyStar.png");
+                button.Content = CreatingImage.SettingImage("Images/emptyStar.png");
             }
         }
 
-
+        /// <summary>
+        /// Adding or deleting elemnt from library. It depends on fill of star
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void AddingElementToLibraryOrDeleting(object sender, RoutedEventArgs e) 
         {
             Button button = sender as Button;
@@ -297,26 +290,18 @@ namespace PrefMovieApi
 
             if(Library.titles.Any(x => x == title))
             {
-                button.Content = CreatingImage("Images/emptyStar.png");
+                MainWindow.logger.Log(LogLevel.Info, "Deleting element");
+                button.Content = CreatingImage.SettingImage("Images/emptyStar.png");
                 MainWindow.library.DeletingNewElement(button.Name);
             }
             else
             {
-                button.Content = CreatingImage("Images/star.png");
+                MainWindow.logger.Log(LogLevel.Info, "Adding element");
+                button.Content = CreatingImage.SettingImage("Images/star.png");
                 MainWindow.library.AddingNewElement(button.Name);
             }
 
         }
 
-        private static Image CreatingImage(string path)
-        {
-            Image star = new Image()
-            {
-                Source = new BitmapImage(new Uri(path, UriKind.Relative)),
-                Stretch = Stretch.UniformToFill
-            };
-
-            return star;
-        }
     }
 }

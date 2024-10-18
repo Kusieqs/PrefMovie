@@ -31,42 +31,40 @@ namespace PrefMovieApi
             if(titles.Count > 0 )
             {
                 MainWindow.logger.Log(LogLevel.Info, "In file is more than 0 titles");
-                SettingStackPanelLibrary();
-            }
-        }
-        public void SettingStackPanelLibrary()
-        {
-            MainWindow.logger.Log(LogLevel.Info, "Setting Library of items activated");
-            foreach(var item in titles )
-            {
-                // Creating item for stackpanel
-                TextBlock title = new TextBlock()
-                {
-                    Text = item,
-                };
-
-                // Adding item to stackpanel
-                FavoriteMovies.Children.Add(title);
+                LoadFavoriteMovies();
             }
         }
 
+        /// <summary>
+        /// Adding element from list and library
+        /// </summary>
+        /// <param name="id">id of button</param>
         public void AddingNewElement(string id)
         {
             string title = Config.IdForMovie[id];
             titles.Add(title);
 
-            LoadFavoriteMovies(title);
+            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {title}");
+            LoadFavoriteMovies();
         }
 
+        /// <summary>
+        /// Deleting element from list and library
+        /// </summary>
+        /// <param name="id">id of button</param>
         public void DeletingNewElement(string id)
         {
             string title = Config.IdForMovie[id];
             titles.Remove(title);
 
-            LoadFavoriteMovies(title);
+            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {title}");
+            LoadFavoriteMovies();
         }
 
-        public void LoadFavoriteMovies(string title)
+        /// <summary>
+        /// Loading library on the right side of window
+        /// </summary>
+        public void LoadFavoriteMovies()
         {
             FavoriteMovies.Children.Clear();
 
@@ -78,7 +76,6 @@ namespace PrefMovieApi
                 };
                 FavoriteMovies.Children.Add(textBlock);
             }
-
             jsonFile.SerializeLibrary();
         }
     }
