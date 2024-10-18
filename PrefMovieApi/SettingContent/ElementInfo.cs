@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Rectangle = System.Windows.Shapes.Rectangle;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace PrefMovieApi
 {
@@ -166,7 +167,7 @@ namespace PrefMovieApi
 
             favoriteButton.MouseLeave += FavoriteButtonMouseLeave;
             favoriteButton.MouseEnter += FavoriteButtonMouseEnter;
-            favoriteButton.Click += AddingElementToLibrary;
+            favoriteButton.Click += AddingElementToLibraryOrDeleting;
 
             return favoriteButton;
         }
@@ -254,48 +255,68 @@ namespace PrefMovieApi
             return image;
         }
 
-        private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Button button = sender as Button;
-
-            // Creating image as star
-            Image star = new Image()
-            {
-                Source = new BitmapImage(new Uri("Images/emptyStar.png", UriKind.Relative)),
-                Stretch = Stretch.UniformToFill
-            };
-
-            button.Content = star;
-        }
-
         private static void FavoriteButtonMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
+            string title = Config.IdForMovie[button.Name];
 
-            // Creating image as star
-            Image star = new Image()
+            if (Library.titles.Any(x => x == title))
             {
-                Source = new BitmapImage(new Uri("Images/star.png", UriKind.Relative)),
-                Stretch = Stretch.UniformToFill
-            };
-
-            button.Content = star;
+                // Creating image as star
+                button.Content = CreatingImage("Images/emptyStar.png");
+            }
+            else
+            {
+                // Creating image as star
+                button.Content = CreatingImage("Images/star.png");
+            }
         }
 
-        private static void AddingElementToLibrary(object sender, RoutedEventArgs e)
+        private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
+            string title = Config.IdForMovie[button.Name];
 
-            // Creating image as star
+            if(Library.titles.Any(x => x == title))
+            {
+                // Creating image as star
+                button.Content = CreatingImage("Images/star.png");
+            }
+            else
+            {
+                // Creating image as star
+                button.Content = CreatingImage("Images/emptyStar.png");
+            }
+        }
+
+
+        private static void AddingElementToLibraryOrDeleting(object sender, RoutedEventArgs e) 
+        {
+            Button button = sender as Button;
+            string title = Config.IdForMovie[button.Name];
+
+            if(Library.titles.Any(x => x == title))
+            {
+                button.Content = CreatingImage("Images/emptyStar.png");
+                MainWindow.library.DeletingNewElement(button.Name);
+            }
+            else
+            {
+                button.Content = CreatingImage("Images/star.png");
+                MainWindow.library.AddingNewElement(button.Name);
+            }
+
+        }
+
+        private static Image CreatingImage(string path)
+        {
             Image star = new Image()
             {
-                Source = new BitmapImage(new Uri("Images/star.png", UriKind.Relative)),
+                Source = new BitmapImage(new Uri(path, UriKind.Relative)),
                 Stretch = Stretch.UniformToFill
             };
-            button.Content = star;
 
-            // TODO: Naprawienie gwiazdki (gdy jest kliknieta bool potrzebny jako string bool
-            MainWindow.library.AddingNewElement(button.Name);
+            return star;
         }
     }
 }

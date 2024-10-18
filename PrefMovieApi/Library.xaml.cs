@@ -55,13 +55,31 @@ namespace PrefMovieApi
             string title = Config.IdForMovie[id];
             titles.Add(title);
 
-            TextBlock textBlock = new TextBlock()
-            {
-                Text = title,
-            };
+            LoadFavoriteMovies(title);
+        }
 
-            FavoriteMovies.Children.Add(textBlock);
-            // TODO: Dodanie logiki dalszej
+        public void DeletingNewElement(string id)
+        {
+            string title = Config.IdForMovie[id];
+            titles.Remove(title);
+
+            LoadFavoriteMovies(title);
+        }
+
+        public void LoadFavoriteMovies(string title)
+        {
+            FavoriteMovies.Children.Clear();
+
+            foreach(var item in titles)
+            {
+                TextBlock textBlock = new TextBlock()
+                {
+                    Text = item,
+                };
+                FavoriteMovies.Children.Add(textBlock);
+            }
+
+            jsonFile.SerializeLibrary();
         }
     }
 }

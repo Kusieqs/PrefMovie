@@ -14,13 +14,13 @@ namespace PrefMovieApi
         /// Serialize list to file
         /// </summary>
         /// <param name="listOfMoviesAndTvShows"> List of movies and tv shows</param>
-        public void SerializeLibrary(List<string> listOfMoviesAndTvShows)
+        public void SerializeLibrary()
         {
             MainWindow.logger.Log(LogLevel.Info, "SerializeLibrary Activated");
-            if(!(listOfMoviesAndTvShows.Count == 0 || listOfMoviesAndTvShows is null))
+            if(!(Library.titles.Count == 0 || Library.titles is null))
             {
                 MainWindow.logger.Log(LogLevel.Info, "Library is NOT empty");
-                string jsonSerialize = JsonConvert.SerializeObject(listOfMoviesAndTvShows);
+                string jsonSerialize = JsonConvert.SerializeObject(Library.titles);
                 File.WriteAllText(Config.PATH_TO_JSON, jsonSerialize);
             }
             else
