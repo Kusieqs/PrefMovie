@@ -17,9 +17,6 @@ namespace PrefMovieApi
 
     public partial class GeneralInfo : UserControl
     {
-        // Api Key
-        const string API_KEY_TO_TMDB = "";
-
         // Client object
         public static TMDbClient client = null;
 
@@ -27,8 +24,8 @@ namespace PrefMovieApi
         public delegate void LoadContent(object sender, RoutedEventArgs e);
         public LoadContent loadContent;
 
-        // Style for infomration about element
-        public static Style styleThemeOfElement;
+        // Main window
+        public Window mainWindow;
 
         public GeneralInfo(Window mainWindow)
         {
@@ -42,10 +39,12 @@ namespace PrefMovieApi
                 new LoadContent(SetTheBestTvShow)
                 );
 
+            this.mainWindow = mainWindow;
+
             try
             {
                 // Connect to API TMDb
-                client = new TMDbClient(API_KEY_TO_TMDB);
+                client = new TMDbClient(Config.API_KEY_TO_TMDB);
                 client.DefaultLanguage = "en";
 
                 // Checking that the API key is correct
@@ -59,7 +58,6 @@ namespace PrefMovieApi
 
                 // Setting new style for infomration
                 MainWindow.logger.Log(LogLevel.Info, "Style for infomrations about elemnts was loaded");
-                styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
 
                 // Setting movies
                 loadContent(null, null);
@@ -81,7 +79,7 @@ namespace PrefMovieApi
         private void SetLatestMovie(object sender, RoutedEventArgs e)
         {
             TheNewOnceMovies.Children.Clear();
-            TheNewOnceMovies = SettingMovies.TheLatestMovies(TheNewOnceMovies);
+            TheNewOnceMovies = SettingElements.TheLatestMovies(TheNewOnceMovies);
         }
 
         /// <summary>
@@ -92,7 +90,7 @@ namespace PrefMovieApi
         private void SetTheBestMovie(object sender, RoutedEventArgs e)
         {
             TheBestMovies.Children.Clear();
-            TheBestMovies = SettingMovies.TheBestMovies(TheBestMovies);
+            TheBestMovies = SettingElements.TheBestMovies(TheBestMovies);
         }
 
         /// <summary>
@@ -103,7 +101,7 @@ namespace PrefMovieApi
         private void SetLatestTvShow(object sender, RoutedEventArgs e)
         {
             TheNewOnceSeries.Children.Clear();
-            TheNewOnceSeries = SettingMovies.TheLatestSeries(TheNewOnceSeries);
+            TheNewOnceSeries = SettingElements.TheLatestSeries(TheNewOnceSeries);
         }
 
         /// <summary>
@@ -114,7 +112,7 @@ namespace PrefMovieApi
         private void SetTheBestTvShow(object sender, RoutedEventArgs e)
         {
             TheBestSeries.Children.Clear();
-            TheBestSeries = SettingMovies.TheBestSeries(TheBestSeries);
+            TheBestSeries = SettingElements.TheBestSeries(TheBestSeries);
         }
 
         #region Scroll viewer logic

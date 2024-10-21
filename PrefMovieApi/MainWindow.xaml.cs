@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,20 +23,22 @@ namespace PrefMovieApi
     {
         public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
         public static ILogger logger = new FileLogger();
-        private bool isConnection = true; 
-        public static string path = "log.txt";
+        public static Library library = new Library();
         public MainWindow()
         {
             InitializeComponent();
 
+            Config.styleForButton = FindResource("ButtonImage") as Style;
+            Config.styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
+
             // Logger checking
-            if(logger is FileLogger && !File.Exists(path))
+            if (logger is FileLogger && !File.Exists(Config.PATH_TO_LOG))
             {
-                File.WriteAllText(path, "");
+                File.WriteAllText(Config.PATH_TO_LOG, "");
             }
             else if(logger is FileLogger)
             {
-                File.AppendAllText(path, "\n\n");
+                File.AppendAllText(Config.PATH_TO_LOG, "\n\n");
                 logger.Log(LogLevel.Info, "New log");
             }
             else
@@ -44,28 +47,6 @@ namespace PrefMovieApi
             }
 
             // Deploying content
-            DeployMainContent();
-        }
-
-        /// <summary>
-        /// Exit from app by button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExitWindow(object sender, EventArgs e)
-        {
-            logger.Log(LogLevel.Info, "Closing window");
-            Close();
-        }
-
-        /// <summary>
-        /// Refreshing window by button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RefreshWindow(object sender, EventArgs e)
-        {
-            logger.Log(LogLevel.Info, "Refreshing window");
             DeployMainContent();
         }
 
@@ -89,6 +70,33 @@ namespace PrefMovieApi
                 MainContent.Content = new NoConnection();
                 SortingFeatures.IsEnabled = false;
             }
+            library = new Library();
+            Library.Content = library;
+
+
+        }
+
+
+        /// <summary>
+        /// Exit from app by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitWindow(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Closing window");
+            Close();
+        }
+
+        /// <summary>
+        /// Refreshing window by button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshWindow(object sender, EventArgs e)
+        {
+            logger.Log(LogLevel.Info, "Refreshing window");
+            DeployMainContent();
         }
 
         /// <summary>
