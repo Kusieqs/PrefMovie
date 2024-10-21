@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Packaging;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -70,13 +71,35 @@ namespace PrefMovieApi
 
             foreach(var item in titles)
             {
-                TextBlock textBlock = new TextBlock()
+                // Creating button as title in library
+                Button titleButton = new Button()
                 {
-                    Text = item,
+                    Content = item,
+                    Style = FindResource("TitleButton") as Style,
                 };
-                FavoriteMovies.Children.Add(textBlock);
+                titleButton.Click += OpenElement;
+
+
+                // If item is longer than 25 characters than we will add Tooltip
+                ToolTip longTitle = null;
+                if (item.Length > 25)
+                {
+                    longTitle = new ToolTip()
+                    {
+                        Content = item,
+                    };
+                }
+                titleButton.ToolTip = longTitle;
+                ToolTipService.SetInitialShowDelay(titleButton, 0);
+                FavoriteMovies.Children.Add(titleButton);
             }
             jsonFile.SerializeLibrary();
+        }
+
+        public void OpenElement(object sender,  RoutedEventArgs e)
+        {
+            MainWindow.logger.Log(LogLevel.Info, "Opening new element as window");
+            //TODO: Opening new window
         }
     }
 }
