@@ -55,11 +55,14 @@ namespace PrefMovieApi
         /// </summary>
         public void DeployMainContent()
         {
+            Sorting.Content = new Sorting();
+            Library.Content = library;
+
             // Checking netowrk connection
             if (ConnectionInternet.NetworkCheck())
             {
                 logger.Log(LogLevel.Info, "Opening GeneralInfo control");
-                SortingFeatures.IsEnabled = true;
+                Sorting.IsEnabled = true;
 
                 logger.Log(LogLevel.Warn, "General info is creating");
                 MainContent.Content = new GeneralInfo(this);
@@ -68,12 +71,8 @@ namespace PrefMovieApi
             {
                 logger.Log(LogLevel.Info, "Opening NoConnection control");
                 MainContent.Content = new NoConnection();
-                SortingFeatures.IsEnabled = false;
+                Sorting.IsEnabled = false;
             }
-            library = new Library();
-            Library.Content = library;
-
-
         }
 
 
