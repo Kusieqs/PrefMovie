@@ -191,12 +191,6 @@
     <Resource Include="Images\star.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\up.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\down.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\film.png" />
     <Resource Include="Images\tvShow.png" />
   </ItemGroup>
@@ -204,6 +198,16 @@
     <Resource Include="Images\empty.png" />
     <Resource Include="Images\search.png" />
     <Resource Include="Images\shuffle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\up.png" />
+    <Resource Include="Images\down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\fillDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\fillUp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
