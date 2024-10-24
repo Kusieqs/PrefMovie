@@ -27,6 +27,9 @@ namespace PrefMovieApi
             ["VoteAverageUpButton"] = false,
             ["VoteAverageDownButton"] = false,
         };
+
+        private int selectedStars = 0;
+
         public Sorting()
         {
             MainWindow.logger.Log(LogLevel.Info, "Sorting content was loaded");
@@ -157,5 +160,63 @@ namespace PrefMovieApi
                 button.Content = CreatingImage.SettingImage("Images/fillDown.png");
             }
         }
+
+
+        private void StarMouseEnter(object sender, MouseEventArgs e)
+        {
+            var button = sender as Button;
+            int starIndex = int.Parse(button.Tag.ToString());
+            HighlightStars(starIndex);
+        }
+
+        private void StarMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (selectedStars == 0)
+            {
+                ResetStars();
+            }
+            else
+            {
+                HighlightStars(selectedStars);
+            }
+        }
+
+        private void StarClick(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            selectedStars = int.Parse(button.Tag.ToString());
+            HighlightStars(selectedStars);
+        }
+
+        private void HighlightStars(int count)
+        {
+            for (int i = 5; i >= 1; i--)
+            {
+                var starButton = FindName($"Star{i}") as Button;
+                if (i >= count)
+                {
+                    starButton.Content = CreatingImage.SettingImage("Images/star.png");
+                    starButton.Width = 30;
+                    starButton.Height = 30;
+                }
+                else
+                {
+                    starButton.Content = CreatingImage.SettingImage("Images/emptyStar.png");
+                    starButton.Width = 30;
+                    starButton.Height = 30;
+                }
+            }
+        }
+
+        /*
+        private void ResetStars()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                var starButton = FindName($"Star{i}") as Button;
+                starButton.Foreground = Brushes.Gray;
+            }
+        }
+        */
     }
 }

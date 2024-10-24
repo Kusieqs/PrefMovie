@@ -9,20 +9,27 @@
     <Grid x:Name="SortingFeatures">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="4"/>
             <RowDefinition Height="90"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="0,0,0,10">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -43,7 +50,8 @@
 
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Separator Grid.Row="1" Background="DimGray"/>
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -86,11 +94,12 @@
             </Border>
         </Grid>
 
-        <TextBlock Text="Genre" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <ComboBox x:Name="Genre" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="120"/>
-
-        <TextBlock Text="Relase_Date" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Border Grid.Row="5">
+        <Separator Grid.Row="3" Background="DimGray"/>
+        <TextBlock Text="Genre" Grid.Row="4" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <ComboBox x:Name="Genre" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="30"/>
+        <Separator Grid.Row="6" Background="DimGray"/>
+        <TextBlock Text="Relase Date" Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <Border Grid.Row="8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -105,9 +114,9 @@
                 </Button>
             </Grid>
         </Border>
-
-        <TextBlock Text="Vote_Average" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Border Grid.Row="7">
+        <Separator Grid.Row="9" Background="DimGray"/>
+        <TextBlock Text="Vote Average" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <Border Grid.Row="11">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -123,9 +132,36 @@
             </Grid>
         </Border>
 
-        <TextBlock Text="Stars" Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Separator Grid.Row="12"/>
+        <TextBlock Text="Stars" Grid.Row="13" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <Grid Grid.Row="14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Dates" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button x:Name="Star1" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="0" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="1">
+                <Image Source="Images/emptyStar.png" Width="30"/>
+            </Button>
+            <Button x:Name="Star2" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="1" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="2">
+                <Image Source="Images/emptyStar.png" Width="30"/>
+            </Button>
+            <Button x:Name="Star3" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="2" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="3">
+                <Image Source="Images/emptyStar.png" Width="30"/>
+            </Button>
+            <Button x:Name="Star4" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="3" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="4">
+                <Image Source="Images/emptyStar.png" Width="30"/>
+            </Button>
+            <Button x:Name="Star5" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="4" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="5">
+                <Image Source="Images/emptyStar.png" Width="30"/>
+            </Button>
+
+        </Grid>
+        <Separator Grid.Row="15" Background="DimGray"/>
+        <TextBlock Text="Dates" Grid.Row="16" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
 
     </Grid>
 </UserControl>
