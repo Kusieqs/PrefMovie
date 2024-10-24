@@ -20,10 +20,16 @@ namespace PrefMovieApi
     /// </summary>
     public partial class Sorting : UserControl
     {
-        private bool relaseDateUp = false;
-        private bool relaseDateDown = false;
+        private Dictionary<string, bool> arrowsAsButtons = new Dictionary<string, bool>()
+        {
+            ["RelaseDateUpButton"] = false,
+            ["RelaseDateDownButton"] = false,
+            ["VoteAverageUpButton"] = false,
+            ["VoteAverageDownButton"] = false,
+        };
         public Sorting()
         {
+            MainWindow.logger.Log(LogLevel.Info, "Sorting content was loaded");
             InitializeComponent();
             Genre.IsEnabled = false;
         }
@@ -46,6 +52,8 @@ namespace PrefMovieApi
 
         private void LoadingComboBox(bool isItFilm = false)
         {
+            MainWindow.logger.Log(LogLevel.Info, "Loading combobox with items");
+
             // TODO: Optymalizacja metody
             Genre.Items.Clear(); 
             Genre.IsEnabled = true;
@@ -68,30 +76,86 @@ namespace PrefMovieApi
                     Genre.Items.Add(genre.Replace('_', ' ').Replace("AND","and"));
                 }
             }
+
+            if(Genre.Items.Count == 0)
+            {
+                MainWindow.logger.Log(LogLevel.Warn, "Empty Combobox");
+            }
+        }
+
+        private void RelaseDateClickUp(object sender, RoutedEventArgs e)
+        {
+            if (arrowsAsButtons["RelaseDateDownButton"])
+            {
+                arrowsAsButtons["RelaseDateDownButton"] = false;
+            }
+            RelaseDateUpButton.Content = CreatingImage.SettingImage("Images/fillUp.png");
+            RelaseDateDownButton.Content = CreatingImage.SettingImage("Images/down.png");
+            arrowsAsButtons["RelaseDateUpButton"] = true;
+        }
+        private void RelaseDateClickDown(object sender, RoutedEventArgs e)
+        {
+            if (arrowsAsButtons["RelaseDateUpButton"])
+            {
+                arrowsAsButtons["RelaseDateUpButton"] = false;
+            }
+            RelaseDateDownButton.Content = CreatingImage.SettingImage("Images/fillDown.png");
+            RelaseDateUpButton.Content = CreatingImage.SettingImage("Images/up.png");
+            arrowsAsButtons["RelaseDateDownButton"] = true;
+        }
+        private void AverageVoteClickUp(object sender, RoutedEventArgs e)
+        {
+            if (arrowsAsButtons["VoteAverageDownButton"])
+            {
+                arrowsAsButtons["VoteAverageDownButton"] = false;
+            }
+            VoteAverageUpButton.Content = CreatingImage.SettingImage("Images/fillUp.png");
+            VoteAverageDownButton.Content = CreatingImage.SettingImage("Images/down.png");
+            arrowsAsButtons["VoteAverageUpButton"] = true;
+        }
+        private void AverageVoteClickDown(object sender, RoutedEventArgs e)
+        {
+            if (arrowsAsButtons["VoteAverageUpButton"])
+            {
+                arrowsAsButtons["VoteAverageUpButton"] = false;
+            }
+            VoteAverageDownButton.Content = CreatingImage.SettingImage("Images/fillDown.png");
+            VoteAverageUpButton.Content = CreatingImage.SettingImage("Images/up.png");
+            arrowsAsButtons["VoteAverageDownButton"] = true;
         }
 
 
         private void MouseLeaveUp(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            button.Content = CreatingImage.SettingImage("Images/up.png");
+            if (!arrowsAsButtons[button.Name])
+            {
+                button.Content = CreatingImage.SettingImage("Images/up.png");
+            }
         }
         private void MouseEnterUp(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            button.Content = CreatingImage.SettingImage("Images/fillUp.png");
+            if (!arrowsAsButtons[button.Name])
+            {
+                button.Content = CreatingImage.SettingImage("Images/fillUp.png");
+            }
         }
-
         private void MouseLeaveDown(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            button.Content = CreatingImage.SettingImage("Images/down.png");
+            if (!arrowsAsButtons[button.Name])
+            {
+                button.Content = CreatingImage.SettingImage("Images/down.png");
+            }
         }
-
         private void MouseEnterDown(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            button.Content = CreatingImage.SettingImage("Images/fillDown.png");
+            if (!arrowsAsButtons[button.Name])
+            {
+                button.Content = CreatingImage.SettingImage("Images/fillDown.png");
+            }
         }
     }
 }

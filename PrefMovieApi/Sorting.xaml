@@ -96,11 +96,11 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Style="{StaticResource ButtonImage}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveUp" MouseEnter="MouseEnterUp">
+                <Button x:Name="RelaseDateUpButton" Grid.Column="0" Style="{StaticResource ButtonImage}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveUp" MouseEnter="MouseEnterUp" Click="RelaseDateClickUp">
                     <Image Source="Images/up.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
                 </Button>
 
-                <Button Grid.Column="1" Style="{StaticResource ButtonImage}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveDown" MouseEnter="MouseEnterDown">
+                <Button x:Name="RelaseDateDownButton" Grid.Column="1" Style="{StaticResource ButtonImage}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveDown" MouseEnter="MouseEnterDown" Click="RelaseDateClickDown">
                     <Image Source="Images/down.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
                 </Button>
             </Grid>
@@ -113,11 +113,11 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Style="{StaticResource ButtonImage}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveUp" MouseEnter="MouseEnterUp">
+                <Button x:Name="VoteAverageUpButton" Grid.Column="0" Style="{StaticResource ButtonImage}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveUp" MouseEnter="MouseEnterUp" Click="AverageVoteClickUp">
                     <Image Source="Images/up.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
                 </Button>
 
-                <Button Grid.Column="1" Style="{StaticResource ButtonImage}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveDown" MouseEnter="MouseEnterDown">
+                <Button x:Name="VoteAverageDownButton" Grid.Column="1" Style="{StaticResource ButtonImage}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveDown" MouseEnter="MouseEnterDown" Click="AverageVoteClickDown">
                     <Image Source="Images/down.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
                 </Button>
             </Grid>

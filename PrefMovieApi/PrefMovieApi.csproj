@@ -99,7 +99,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
-    <Compile Include="Images\CreatingImage.cs" />
+    <Compile Include="SettingContent\CreatingImage.cs" />
     <Compile Include="SettingContent\ElementInfo.cs" />
     <Compile Include="GenreEnums\MovieGenre.cs" />
     <Compile Include="JsonFile.cs" />
