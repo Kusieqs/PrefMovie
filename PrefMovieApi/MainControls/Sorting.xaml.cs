@@ -28,6 +28,8 @@ namespace PrefMovieApi
             ["VoteAverageDownButton"] = false,
         };
 
+        private bool isFilmSorting = false;
+        private bool isTvShowsSorting = false;
         private int selectedStars = 0;
 
         public Sorting()
@@ -39,6 +41,9 @@ namespace PrefMovieApi
 
         private void FilmSelectorClick(object sender, RoutedEventArgs e)
         {
+            isFilmSorting = true;
+            isTvShowsSorting = false;
+
             FilmButton.Background = new SolidColorBrush(Colors.Gray);
             TvShowButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
             LoadingComboBox(true);
@@ -46,11 +51,12 @@ namespace PrefMovieApi
 
         private void TvShowSelectorClick(object sender, RoutedEventArgs e)
         {
+            isFilmSorting = false;
+            isTvShowsSorting = true;
+
             TvShowButton.Background = new SolidColorBrush(Colors.Gray);
             FilmButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
             LoadingComboBox();
-
-            // TODO: Metoda do zmienienia ComboBoxa z danymi itemami
         }
 
         private void LoadingComboBox(bool isItFilm = false)
@@ -161,6 +167,24 @@ namespace PrefMovieApi
             }
         }
 
+        private void MenuMouseLeave(object sender, MouseEventArgs e)
+        {
+            Button button = sender as Button;
+            if((button.Name == "FilmButton" && isFilmSorting) || (button.Name == "TvShowButton" && isTvShowsSorting))
+            {
+                button.Background = new SolidColorBrush(Colors.Gray);
+            }
+            else
+            {
+                button.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
+            }
+           
+        }
+        private void MenuMouseEnter(object sender, MouseEventArgs e)
+        {
+            Button button = sender as Button;
+            button.Background = new SolidColorBrush(Colors.Gray);
+        }
 
         private void StarMouseEnter(object sender, MouseEventArgs e)
         {

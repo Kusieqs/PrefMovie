@@ -36,17 +36,68 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30">
-                <Image Source="/PrefMovieApi;component/Images/shuffle.png"/>
-            </Button>
+            <Border Grid.Column="0">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                CornerRadius="7">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/PrefMovieApi;component/Images/shuffle.png" Width="30"/>
+                </Button>
+            </Border>
 
-            <Button Grid.Column="1" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30">
-                <Image Source="/PrefMovieApi;component/Images/search.png"/>
-            </Button>
+            <Border Grid.Column="1">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                CornerRadius="7">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/PrefMovieApi;component/Images/search.png" Width="30"/>
+                </Button>
+            </Border>
 
-            <Button Grid.Column="2" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30">
-                <Image Source="/PrefMovieApi;component/Images/empty.png" />
-            </Button>
+            <Border Grid.Column="2">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                CornerRadius="7">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/PrefMovieApi;component/Images/empty.png" Width="27"/>
+                </Button>
+            </Border>
 
         </Grid>
         <Grid Grid.Row="2">
@@ -55,7 +106,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0">
-                <Button x:Name="FilmButton" Background="#FF484848" Margin="5" Cursor="Hand" Click="FilmSelectorClick">
+                <Button x:Name="FilmButton" Background="#FF484848" Margin="5" Tag="Film" Cursor="Hand" Click="FilmSelectorClick" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 
@@ -76,7 +127,7 @@
             </Border>
 
             <Border Grid.Column="1">
-                <Button x:Name="TvShowButton" Background="#FF484848" Margin="5" Cursor="Hand" Click="TvShowSelectorClick">
+                <Button x:Name="TvShowButton" Background="#FF484848" Margin="5" Tag="TvShow" Cursor="Hand" Click="TvShowSelectorClick" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 
