@@ -37,20 +37,18 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30">
-                <Image Source="Images/shuffle.png"/>
+                <Image Source="/PrefMovieApi;component/Images/shuffle.png"/>
             </Button>
 
             <Button Grid.Column="1" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30">
-                <Image Source="Images/search.png"/>
+                <Image Source="/PrefMovieApi;component/Images/search.png"/>
             </Button>
 
             <Button Grid.Column="2" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30">
-                <Image Source="Images/empty.png" />
+                <Image Source="/PrefMovieApi;component/Images/empty.png" />
             </Button>
 
         </Grid>
-
-        <Separator Grid.Row="1" Background="DimGray"/>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -73,7 +71,7 @@
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Button.Template>
-                    <Image Source="Images/film.png" Width="50"/>
+                    <Image Source="/PrefMovieApi;component/Images/film.png" Width="50"/>
                 </Button>
             </Border>
 
@@ -89,32 +87,32 @@
                             </Border>
                         </ControlTemplate>
                     </Button.Template>
-                    <Image Source="Images/tvShow.png" Width="50"/>
+                    <Image Source="/PrefMovieApi;component/Images/tvShow.png" Width="50"/>
                 </Button>
             </Border>
         </Grid>
 
-        <Separator Grid.Row="3" Background="DimGray"/>
+        <Border Grid.Row="3" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
         <TextBlock Text="Genre" Grid.Row="4" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
         <ComboBox x:Name="Genre" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="30"/>
-        <Separator Grid.Row="6" Background="DimGray"/>
+        <Border Grid.Row="6" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
         <TextBlock Text="Relase Date" Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
         <Border Grid.Row="8">
-            <Grid>
+            <Grid Cursor="Hand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="RelaseDateUpButton" Grid.Column="0" Style="{StaticResource ButtonImage}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveUp" MouseEnter="MouseEnterUp" Click="RelaseDateClickUp">
-                    <Image Source="Images/up.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
+                    <Image Source="/PrefMovieApi;component/Images/up.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
                 </Button>
 
                 <Button x:Name="RelaseDateDownButton" Grid.Column="1" Style="{StaticResource ButtonImage}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveDown" MouseEnter="MouseEnterDown" Click="RelaseDateClickDown">
-                    <Image Source="Images/down.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
+                    <Image Source="/PrefMovieApi;component/Images/down.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
                 </Button>
             </Grid>
         </Border>
-        <Separator Grid.Row="9" Background="DimGray"/>
+        <Border Grid.Row="9" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
         <TextBlock Text="Vote Average" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
         <Border Grid.Row="11">
             <Grid>
@@ -123,16 +121,16 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="VoteAverageUpButton" Grid.Column="0" Style="{StaticResource ButtonImage}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveUp" MouseEnter="MouseEnterUp" Click="AverageVoteClickUp">
-                    <Image Source="Images/up.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
+                    <Image Source="/PrefMovieApi;component/Images/up.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
                 </Button>
 
                 <Button x:Name="VoteAverageDownButton" Grid.Column="1" Style="{StaticResource ButtonImage}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveDown" MouseEnter="MouseEnterDown" Click="AverageVoteClickDown">
-                    <Image Source="Images/down.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
+                    <Image Source="/PrefMovieApi;component/Images/down.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
                 </Button>
             </Grid>
         </Border>
 
-        <Separator Grid.Row="12"/>
+        <Border Grid.Row="12" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
         <TextBlock Text="Stars" Grid.Row="13" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
         <Grid Grid.Row="14">
             <Grid.ColumnDefinitions>
@@ -144,23 +142,23 @@
             </Grid.ColumnDefinitions>
 
             <Button x:Name="Star1" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="0" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="1">
-                <Image Source="Images/emptyStar.png" Width="30"/>
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
             <Button x:Name="Star2" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="1" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="2">
-                <Image Source="Images/emptyStar.png" Width="30"/>
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
             <Button x:Name="Star3" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="2" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="3">
-                <Image Source="Images/emptyStar.png" Width="30"/>
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
             <Button x:Name="Star4" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="3" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="4">
-                <Image Source="Images/emptyStar.png" Width="30"/>
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
             <Button x:Name="Star5" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="4" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="5">
-                <Image Source="Images/emptyStar.png" Width="30"/>
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
 
         </Grid>
-        <Separator Grid.Row="15" Background="DimGray"/>
+        <Border Grid.Row="15" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
         <TextBlock Text="Dates" Grid.Row="16" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
 
     </Grid>
