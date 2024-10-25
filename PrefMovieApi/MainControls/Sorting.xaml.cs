@@ -39,6 +39,151 @@ namespace PrefMovieApi
             Genre.IsEnabled = false;
         }
 
+        private void ClearSortingButton(object sender = null, RoutedEventArgs e = null)
+        {
+            isFilmSorting = false;
+            isTvShowsSorting = false;
+            FilmButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
+            TvShowButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
+
+            Genre.IsEnabled = false;
+            Genre.SelectedItem = null;
+
+            foreach(var keys in arrowsAsButtons.Keys.ToList())
+            {
+                arrowsAsButtons[keys] = false;
+            }
+            RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/up.png");
+            RelaseDateDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/down.png");
+            VoteAverageUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/up.png");
+            VoteAverageDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/down.png");
+
+            selectedStars = 0;
+            for (int i = 1; i <= 5; i++)
+            {
+                var starButton = FindName($"Star{i}") as Button;
+                starButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+            }
+
+            DateFrom.SelectedDate = null;
+            DateTo.SelectedDate = null;
+        }
+        private void RandomSelectorButton(object sender, RoutedEventArgs e)
+        {
+            ClearSortingButton();
+            Random random = new Random();
+
+            int number = random.Next(0, 3);
+
+            if(number == 1)
+            {
+                isFilmSorting = true;
+                FilmButton.Background = new SolidColorBrush(Colors.Gray);
+                LoadingComboBox(true);
+                int enumCount = Enum.GetNames(typeof(MoviesGenre)).Length;
+                int selectorGenre = random.Next(-1, enumCount);
+                if(selectorGenre == -1)
+                {
+                    Genre.SelectedItem = null;
+                }
+                else
+                {
+                    Genre.SelectedItem = Genre.Items[selectorGenre];
+                }
+            }
+            else if(number == 2)
+            {
+                isTvShowsSorting = true;
+                TvShowButton.Background = new SolidColorBrush(Colors.Gray);
+                LoadingComboBox();
+                int enumCount = Enum.GetNames(typeof(TvShowsGenre)).Length;
+                int selectorGenre = random.Next(-1, enumCount);
+                if (selectorGenre == -1)
+                {
+                    Genre.SelectedItem = null;
+                }
+                else
+                {
+                    Genre.SelectedItem = Genre.Items[selectorGenre];
+                }
+            }
+
+            number = random.Next(0,3);
+
+            if(number == 1)
+            {
+                arrowsAsButtons["RelaseDateUpButton"] = true;
+                RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillUp.png");
+            }
+            else if(number == 2)
+            {
+                arrowsAsButtons["RelaseDateDownButton"] = true;
+                RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillDown.png");
+            }
+
+            number = random.Next(0, 3);
+
+            if (number == 1)
+            {
+                arrowsAsButtons["VoteAverageUpButton"] = true;
+                VoteAverageUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillUp.png");
+            }
+            else if (number == 2)
+            {
+                arrowsAsButtons["VoteAverageDownButton"] = true;
+                VoteAverageDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillDown.png");
+            }
+
+            selectedStars = random.Next(0, 6);
+            if(selectedStars == 0)
+            {
+                // TODO: Zresetowanie gwiazdek
+            }
+            HighlightStars(selectedStars);
+
+
+            bool isFromRelase = random.Next(0, 2) == 1;
+            int fromYear = 0;
+            int fromMonth = 0;
+            if(isFromRelase)
+            {
+                fromYear = random.Next(1980, DateTime.Now.Year + 1);
+                if(fromYear == DateTime.Now.Year)
+                {
+                    fromMonth = random.Next(1,DateTime.Now.Month+1);
+                }
+                else
+                {
+                    fromMonth = random.Next(1, 13);
+                }
+
+                DateFrom.SelectedDate = new DateTime(fromYear, fromMonth, 1);
+            }
+
+            bool isToRelase = random.Next(0, 2) == 1;
+            int toYear;
+            int toMonth;
+            if (isToRelase)
+            {
+                int selectToYear = isFromRelase == true ? fromYear : 1980;
+                toYear = random.Next(selectToYear, DateTime.Now.Year + 1);
+
+                int selectToMonth = isFromRelase == true ? fromMonth : 1;
+
+                if (fromYear == DateTime.Now.Year)
+                {
+                    toMonth = random.Next(selectToMonth, DateTime.Now.Month + 1);
+                }
+                else
+                {
+                    toMonth = random.Next(1, 13);
+                }
+
+                DateTo.SelectedDate = new DateTime(toYear, toMonth, 1);
+            }
+
+        }
+
         private void FilmSelectorClick(object sender, RoutedEventArgs e)
         {
             isFilmSorting = true;
@@ -48,7 +193,6 @@ namespace PrefMovieApi
             TvShowButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
             LoadingComboBox(true);
         }
-
         private void TvShowSelectorClick(object sender, RoutedEventArgs e)
         {
             isFilmSorting = false;
@@ -58,7 +202,6 @@ namespace PrefMovieApi
             FilmButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
             LoadingComboBox();
         }
-
         private void LoadingComboBox(bool isItFilm = false)
         {
             MainWindow.logger.Log(LogLevel.Info, "Loading combobox with items");
@@ -91,6 +234,7 @@ namespace PrefMovieApi
                 MainWindow.logger.Log(LogLevel.Warn, "Empty Combobox");
             }
         }
+
 
         private void RelaseDateClickUp(object sender, RoutedEventArgs e)
         {
@@ -227,16 +371,5 @@ namespace PrefMovieApi
                 }
             }
         }
-
-        /*
-        private void ResetStars()
-        {
-            for (int i = 1; i <= 5; i++)
-            {
-                var starButton = FindName($"Star{i}") as Button;
-                starButton.Foreground = Brushes.Gray;
-            }
-        }
-        */
     }
 }

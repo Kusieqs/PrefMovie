@@ -37,7 +37,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0">
-                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter" Click="RandomSelectorButton">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 
@@ -79,7 +79,7 @@
             </Border>
 
             <Border Grid.Column="2">
-                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter" Click="ClearSortingButton">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 
@@ -224,14 +224,14 @@
             <TextBlock Text="From" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
             <TextBlock Text="To" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
 
-            <DatePicker Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="130">
+            <DatePicker x:Name="DateFrom" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="130">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="IsReadOnly" Value="True" />
                     </Style>
                 </DatePicker.Resources>
             </DatePicker>
-            <DatePicker Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="130">
+            <DatePicker x:Name="DateTo" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="130">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="IsReadOnly" Value="True" />
