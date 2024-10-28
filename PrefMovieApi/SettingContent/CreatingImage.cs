@@ -18,13 +18,13 @@ namespace PrefMovieApi
         /// <returns></returns>
         public static Image SettingImage(string path)
         {
-            Image star = new Image()
+            Image image = new Image()
             {
                 Source = new BitmapImage(new Uri(path, UriKind.Relative)),
                 Stretch = Stretch.UniformToFill
             };
 
-            return star;
+            return image;
         }
 
         /// <summary>

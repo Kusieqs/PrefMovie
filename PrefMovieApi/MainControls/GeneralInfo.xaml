@@ -14,7 +14,7 @@
                         <Grid Height="60">
                             <TextBlock Text="The latest movies" Style="{StaticResource ThemeOfElements}"/>
                             <Button Click="SetLatestMovie" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
-                                <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                             </Button>
                         </Grid>
                     </Border>
@@ -31,7 +31,7 @@
                         <Grid Height="60">
                             <TextBlock Text="The best movies" Style="{StaticResource ThemeOfElements}"/>
                             <Button Click="SetTheBestMovie" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
-                                <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                             </Button>
                         </Grid>
                     </Border>
@@ -48,7 +48,7 @@
                         <Grid Height="60">
                             <TextBlock Text="The latest tv shows" Style="{StaticResource ThemeOfElements}"/>
                             <Button Click="SetLatestTvShow" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
-                                <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                             </Button>
                         </Grid>
                     </Border>
@@ -65,7 +65,7 @@
                         <Grid Height="60">
                             <TextBlock Text="The best tv shows" Style="{StaticResource ThemeOfElements}"/>
                             <Button Click="SetTheBestTvShow" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
-                                <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                             </Button>
                         </Grid>
                     </Border>

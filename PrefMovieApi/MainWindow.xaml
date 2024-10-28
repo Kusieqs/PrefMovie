@@ -42,66 +42,7 @@
                     </Grid.RowDefinitions>
 
                     <Border Grid.Column="0" Margin="10,10,10,10">
-                        <Grid x:Name="SortingFeatures">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Text="Genre" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <ComboBox x:Name="Genre" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="120"/>
-
-                            <TextBlock Text="Popularity" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <Border Grid.Row="3">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Content="up" Grid.Column="0"/>
-                                    <Button Content="down" Grid.Column="1"/>
-                                </Grid>
-                            </Border>
-
-                            <TextBlock Text="Relase_Date" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <Border Grid.Row="5">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Content="up" Grid.Column="0"/>
-                                    <Button Content="down" Grid.Column="1"/>
-                                </Grid>
-                            </Border>
-
-                            <TextBlock Text="Vote_Average" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <Border Grid.Row="7">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Content="up" Grid.Column="0"/>
-                                    <Button Content="down" Grid.Column="1"/>
-                                </Grid>
-                            </Border>
-
-                            <TextBlock Text="Stars" Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                            <TextBlock Text="Dates" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                        </Grid>
+                        <ContentControl x:Name="Sorting"/>
                     </Border>
 
                     <Border Grid.Column="1" Margin="10,10,10,10">

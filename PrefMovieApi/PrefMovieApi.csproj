@@ -98,21 +98,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Config.cs" />
-    <Compile Include="Images\CreatingImage.cs" />
+    <Compile Include="Config\Config.cs" />
+    <Compile Include="SettingContent\CreatingImage.cs" />
     <Compile Include="SettingContent\ElementInfo.cs" />
     <Compile Include="GenreEnums\MovieGenre.cs" />
-    <Compile Include="JsonFile.cs" />
-    <Compile Include="Library.xaml.cs">
+    <Compile Include="JsonLoading\JsonFile.cs" />
+    <Compile Include="MainControls\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingContent\SettingElements.cs" />
     <Compile Include="GenreEnums\TvShowGenre.cs" />
-    <Page Include="GeneralInfo.xaml">
+    <Compile Include="MainControls\Sorting.xaml.cs">
+      <DependentUpon>Sorting.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainControls\GeneralInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Library.xaml">
+    <Page Include="MainControls\Library.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,8 +128,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Logger\LogLevel.cs" />
-    <Compile Include="ConnectionToInternet\ConnectionInternet.cs" />
-    <Compile Include="GeneralInfo.xaml.cs">
+    <Compile Include="MainControls\ConnectionToInternet\ConnectionInternet.cs" />
+    <Compile Include="MainControls\GeneralInfo.xaml.cs">
       <DependentUpon>GeneralInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logger\ILogger.cs" />
@@ -135,13 +138,17 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ConnectionToInternet\NoConnection.xaml">
+    <Page Include="MainControls\ConnectionToInternet\NoConnection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainControls\Sorting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionToInternet\NoConnection.xaml.cs">
+    <Compile Include="MainControls\ConnectionToInternet\NoConnection.xaml.cs">
       <DependentUpon>NoConnection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -183,5 +190,25 @@
   <ItemGroup>
     <Resource Include="Images\star.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\film.png" />
+    <Resource Include="Images\tvShow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\empty.png" />
+    <Resource Include="Images\search.png" />
+    <Resource Include="Images\shuffle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\up.png" />
+    <Resource Include="Images\down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\fillDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\fillUp.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

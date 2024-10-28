@@ -148,7 +148,7 @@ namespace PrefMovieApi
             // Creating button as star
             Button favoriteButton = new Button()
             {
-                Content = CreatingImage.SettingImage(isInLibrary == true ? "Images/star.png" : "Images/emptyStar.png"),
+                Content = CreatingImage.SettingImage(isInLibrary == true ? "/PrefMovieApi;component/Images/star.png" : "/PrefMovieApi;component/Images/emptyStar.png"),
                 Name = idOfElement,
                 Width = 30,
                 Height = 30,
@@ -247,12 +247,12 @@ namespace PrefMovieApi
             if (Library.titles.Any(x => x == title))
             {
                 // Creating image as star
-                button.Content = CreatingImage.SettingImage("Images/emptyStar.png");
+                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
             }
             else
             {
                 // Creating image as star
-                button.Content = CreatingImage.SettingImage("Images/star.png");
+                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
             }
         }
 
@@ -269,12 +269,12 @@ namespace PrefMovieApi
             if(Library.titles.Any(x => x == title))
             {
                 // Creating image as star
-                button.Content = CreatingImage.SettingImage("Images/star.png");
+                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
             }
             else
             {
                 // Creating image as star
-                button.Content = CreatingImage.SettingImage("Images/emptyStar.png");
+                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
             }
         }
 
@@ -291,13 +291,13 @@ namespace PrefMovieApi
             if(Library.titles.Any(x => x == title))
             {
                 MainWindow.logger.Log(LogLevel.Info, "Deleting element");
-                button.Content = CreatingImage.SettingImage("Images/emptyStar.png");
+                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
                 MainWindow.library.DeletingNewElement(button.Name);
             }
             else
             {
                 MainWindow.logger.Log(LogLevel.Info, "Adding element");
-                button.Content = CreatingImage.SettingImage("Images/star.png");
+                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
                 MainWindow.library.AddingNewElement(button.Name);
             }
 

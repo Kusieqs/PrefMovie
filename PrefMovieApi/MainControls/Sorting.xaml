@@ -1,0 +1,243 @@
+﻿<UserControl x:Class="PrefMovieApi.Sorting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PrefMovieApi"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="200">
+    <Grid x:Name="SortingFeatures">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter" Click="RandomSelectorButton">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                CornerRadius="7">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/PrefMovieApi;component/Images/shuffle.png" Width="30"/>
+                </Button>
+            </Border>
+
+            <Border Grid.Column="1">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                CornerRadius="7">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/PrefMovieApi;component/Images/search.png" Width="30"/>
+                </Button>
+            </Border>
+
+            <Border Grid.Column="2">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter" Click="ClearSortingButton">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                CornerRadius="7">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/PrefMovieApi;component/Images/empty.png" Width="27"/>
+                </Button>
+            </Border>
+
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0">
+                <Button x:Name="FilmButton" Background="#FF484848" Margin="5" Tag="Film" Cursor="Hand" Click="FilmSelectorClick" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                CornerRadius="10">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/PrefMovieApi;component/Images/film.png" Width="50"/>
+                </Button>
+            </Border>
+
+            <Border Grid.Column="1">
+                <Button x:Name="TvShowButton" Background="#FF484848" Margin="5" Tag="TvShow" Cursor="Hand" Click="TvShowSelectorClick" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                CornerRadius="10">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/PrefMovieApi;component/Images/tvShow.png" Width="50"/>
+                </Button>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="3" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
+        <TextBlock Text="Genre" Grid.Row="4" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <ComboBox x:Name="Genre" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="30"/>
+        <Border Grid.Row="6" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
+        <TextBlock Text="Relase Date" Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <Border Grid.Row="8">
+            <Grid Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="RelaseDateUpButton" Grid.Column="0" Style="{StaticResource ButtonImage}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveUp" MouseEnter="MouseEnterUp" Click="RelaseDateClickUp">
+                    <Image Source="/PrefMovieApi;component/Images/up.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
+                </Button>
+
+                <Button x:Name="RelaseDateDownButton" Grid.Column="1" Style="{StaticResource ButtonImage}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveDown" MouseEnter="MouseEnterDown" Click="RelaseDateClickDown">
+                    <Image Source="/PrefMovieApi;component/Images/down.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
+                </Button>
+            </Grid>
+        </Border>
+        <Border Grid.Row="9" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
+        <TextBlock Text="Vote Average" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <Border Grid.Row="11">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="VoteAverageUpButton" Grid.Column="0" Style="{StaticResource ButtonImage}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveUp" MouseEnter="MouseEnterUp" Click="AverageVoteClickUp">
+                    <Image Source="/PrefMovieApi;component/Images/up.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
+                </Button>
+
+                <Button x:Name="VoteAverageDownButton" Grid.Column="1" Style="{StaticResource ButtonImage}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeave="MouseLeaveDown" MouseEnter="MouseEnterDown" Click="AverageVoteClickDown">
+                    <Image Source="/PrefMovieApi;component/Images/down.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" IsHitTestVisible="False"/>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="12" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
+        <TextBlock Text="Stars" Grid.Row="13" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <Grid Grid.Row="14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="Star1" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="0" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="1">
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
+            </Button>
+            <Button x:Name="Star2" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="1" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="2">
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
+            </Button>
+            <Button x:Name="Star3" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="2" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="3">
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
+            </Button>
+            <Button x:Name="Star4" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="3" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="4">
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
+            </Button>
+            <Button x:Name="Star5" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="4" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="5">
+                <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
+            </Button>
+
+        </Grid>
+        <Border Grid.Row="15" Background="#FF585757" Height="2" CornerRadius="1" Margin="10,0,10,0"/>
+        <TextBlock Text="Dates" Grid.Row="16" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="23" Foreground="White"/>
+        <Grid Grid.Row="17">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="From" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+            <TextBlock Text="To" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+
+            <DatePicker x:Name="DateFrom" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="130">
+                <DatePicker.Resources>
+                    <Style TargetType="DatePickerTextBox">
+                        <Setter Property="IsReadOnly" Value="True" />
+                    </Style>
+                </DatePicker.Resources>
+            </DatePicker>
+            <DatePicker x:Name="DateTo" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="130">
+                <DatePicker.Resources>
+                    <Style TargetType="DatePickerTextBox">
+                        <Setter Property="IsReadOnly" Value="True" />
+                    </Style>
+                </DatePicker.Resources>
+            </DatePicker>
+        </Grid>
+    </Grid>
+</UserControl>
