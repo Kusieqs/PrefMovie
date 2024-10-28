@@ -58,7 +58,7 @@
             </Border>
 
             <Border Grid.Column="1">
-                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter">
+                <Button VerticalAlignment="Center" Background="#FF484848" HorizontalAlignment="Center" Width="40" Height="40" Cursor="Hand" MouseLeave="MenuMouseLeave" MouseEnter="MenuMouseEnter" Click="SearchClick">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 

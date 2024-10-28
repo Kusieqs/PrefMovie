@@ -31,12 +31,23 @@ namespace PrefMovieApi
         private bool isFilmSorting = false; // Control for film sorting method
         private bool isTvShowsSorting = false; // Control for TvShow sorting method
         private int selectedStars = 0; // Count of selected stars
-
-        public Sorting()
+        private ContentControl mainContent; // content for searching
+        public Sorting(ContentControl content)
         {
             MainWindow.logger.Log(LogLevel.Info, "Sorting content was loaded");
             InitializeComponent();
             Genre.IsEnabled = false;
+            mainContent = content;
+        }
+
+        /// <summary>
+        /// Searching by sorting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchClick(object sender, RoutedEventArgs e)
+        {
+            mainContent.Content = new SortingOutput();
         }
 
         /// <summary>
