@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="PrefMovieApi.SortingOutput"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PrefMovieApi"
+             mc:Ignorable="d" >
+    <Border Background="#FF636262" CornerRadius="10,0,10,10" Panel.ZIndex ="1">
+        <Grid Width="1050">
+            <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Vertical">
+                    <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
+                        <Grid Height="60">
+                            <TextBlock Text="Proposed" Style="{StaticResource ThemeOfElements}"/>
+                            <Button Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}">
+                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Border CornerRadius="0,0,20,20" Background="Gray" Margin="0,0,0,10">
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" Margin="10,10,10,10">
+                            <StackPanel x:Name="TheNewOnceMovies" Height="900" Orientation="Horizontal"/>
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>
