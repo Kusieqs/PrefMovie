@@ -97,6 +97,59 @@ namespace PrefMovieApi
             Random random = new Random();
 
             var choosenTitles = movies.Query().Result.Results.OrderBy(x => random.Next()).Take(10);
+
+            SetStackPanel(choosenTitles.Count(), choosenTitles);
+        }
+        private void SetStackPanel<T>(int loopCount, IEnumerable<T> values)
+        {
+            /*
+            if(lista > 0)
+            {
+                 Textblock (brak filmow)
+            }
+            else
+            {
+            }
+            */
+
+            var list = values.ToList();
+            MainStackPanelForProposal.Height = 900;
+            loopCount /= 2;
+            for (int i = 0; i < loopCount; i++)
+            {
+                // Setting stack panel for poster and informations 
+                StackPanel itemStackPanel = new StackPanel()
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(20, 0, 10, 0),
+                    Width = 540
+                };
+
+                for (int j = 0; j < 2; j ++)
+                {
+
+                    // Grid for poster with average vote and button
+                    Grid posterGrid = new Grid();
+                    posterGrid.Children.Add(ElementInfo.PosterDiploy(list[i]));
+                    posterGrid.Children.Add(ElementInfo.AverageRateDiploy(list[i]));
+
+                    string idOfElement;
+                    posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(out idOfElement, false));
+
+                    itemStackPanel.Children.Add(posterGrid);
+
+                    StackPanel informationMovie = new StackPanel()
+                    {
+                        Orientation = Orientation.Vertical,
+                        Margin = new Thickness(20, 10, 0, 0)
+                    };
+
+                    // Adding infomration about element
+                    informationMovie = ElementInfo.SettingInformationAboutElement(list[i], values, informationMovie);
+                    itemStackPanel.Children.Add(informationMovie);
+                }
+                MainStackPanelForProposal.Children.Add(itemStackPanel);
+            }
         }
 
     }

@@ -19,6 +19,7 @@
                     </Border>
                     <Border CornerRadius="0,0,20,20" Background="Gray" Margin="0,0,0,10">
                         <ScrollViewer x:Name="ScrollOfProposal" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" Margin="10,10,10,10">
+                            <StackPanel x:Name="MainStackPanelForProposal" Height="0" Orientation="Vertical"/>
                         </ScrollViewer>
                     </Border>
                 </StackPanel>
