@@ -47,7 +47,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SearchClick(object sender, RoutedEventArgs e)
         {
-            mainContent.Content = new SortingOutput();
+            mainContent.Content = new SortingOutput(arrowsAsButtons, isFilmSorting, isTvShowsSorting, selectedStars, Genre.SelectedItem.ToString(), DateFrom.SelectedDate.Value, DateTo.SelectedDate.Value);
         }
 
         /// <summary>

@@ -18,8 +18,7 @@
                         </Grid>
                     </Border>
                     <Border CornerRadius="0,0,20,20" Background="Gray" Margin="0,0,0,10">
-                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" Margin="10,10,10,10">
-                            <StackPanel x:Name="TheNewOnceMovies" Height="900" Orientation="Horizontal"/>
+                        <ScrollViewer x:Name="ScrollOfProposal" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" Margin="10,10,10,10">
                         </ScrollViewer>
                     </Border>
                 </StackPanel>
