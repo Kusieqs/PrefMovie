@@ -102,53 +102,38 @@ namespace PrefMovieApi
         }
         private void SetStackPanel<T>(int loopCount, IEnumerable<T> values)
         {
-            /*
-            if(lista > 0)
+            var listOfElements = values.ToList();
+            MainStackPanelForProposal.Height += 320;
+
+            // Lack of titles in list
+            if (listOfElements.Count == 0)
             {
-                 Textblock (brak filmow)
+                MainWindow.logger.Log(LogLevel.Warn, "list of sorting is empty");
+
+                // Adding special textblock to stackpanel
+                TextBlock textBlock = new TextBlock()
+                {
+                    Text = "Lack of titles!",
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    FontSize = 35,
+                    Foreground = new SolidColorBrush(Colors.White),
+                    Margin = new Thickness(0, 140, 0, 0)
+                };
+                MainStackPanelForProposal.Children.Add(textBlock);
             }
             else
             {
-            }
-            */
+                /*
+                 * For na polowe (max 5)
+                 * 
+                 * Stack panel -> Horizontal
+                 * for na 2??? ( pprzemyslenie dodawanie 2 rzeczy jesli jest tylko jedna
+                 * utworzenie stack panele z infomracjami
+                 * dodanie do stack panela
+                 * dodanie do glownego
+                */
 
-            var list = values.ToList();
-            MainStackPanelForProposal.Height = 900;
-            loopCount /= 2;
-            for (int i = 0; i < loopCount; i++)
-            {
-                // Setting stack panel for poster and informations 
-                StackPanel itemStackPanel = new StackPanel()
-                {
-                    Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(20, 0, 10, 0),
-                    Width = 540
-                };
-
-                for (int j = 0; j < 2; j ++)
-                {
-
-                    // Grid for poster with average vote and button
-                    Grid posterGrid = new Grid();
-                    posterGrid.Children.Add(ElementInfo.PosterDiploy(list[i]));
-                    posterGrid.Children.Add(ElementInfo.AverageRateDiploy(list[i]));
-
-                    string idOfElement;
-                    posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(out idOfElement, false));
-
-                    itemStackPanel.Children.Add(posterGrid);
-
-                    StackPanel informationMovie = new StackPanel()
-                    {
-                        Orientation = Orientation.Vertical,
-                        Margin = new Thickness(20, 10, 0, 0)
-                    };
-
-                    // Adding infomration about element
-                    informationMovie = ElementInfo.SettingInformationAboutElement(list[i], values, informationMovie);
-                    itemStackPanel.Children.Add(informationMovie);
-                }
-                MainStackPanelForProposal.Children.Add(itemStackPanel);
             }
         }
 

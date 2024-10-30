@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PrefMovieApi"
              mc:Ignorable="d" >
-    <Border Background="#FF636262" CornerRadius="10,0,10,10" Panel.ZIndex ="1">
+    <Border Background="#FF636262" CornerRadius="10,0,10,10">
         <Grid Width="1050">
             <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Vertical">
@@ -17,10 +17,8 @@
                             </Button>
                         </Grid>
                     </Border>
-                    <Border CornerRadius="0,0,20,20" Background="Gray" Margin="0,0,0,10">
-                        <ScrollViewer x:Name="ScrollOfProposal" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" Margin="10,10,10,10">
-                            <StackPanel x:Name="MainStackPanelForProposal" Height="0" Orientation="Vertical"/>
-                        </ScrollViewer>
+                    <Border Background="Gray" CornerRadius="0,0,30,30">
+                        <StackPanel x:Name="MainStackPanelForProposal" Height="0" Orientation="Vertical"/>
                     </Border>
                 </StackPanel>
             </ScrollViewer>
