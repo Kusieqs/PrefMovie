@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -100,14 +101,21 @@ namespace PrefMovieApi
 
             SetStackPanel(choosenTitles.Count(), choosenTitles);
         }
+
+        /// <summary>
+        /// REFACTORING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="loopCount"></param>
+        /// <param name="values"></param>
         private void SetStackPanel<T>(int loopCount, IEnumerable<T> values)
         {
             var listOfElements = values.ToList();
-            MainStackPanelForProposal.Height += 320;
 
             // Lack of titles in list
             if (listOfElements.Count == 0)
             {
+                MainStackPanelForProposal.Height += 320;
                 MainWindow.logger.Log(LogLevel.Warn, "list of sorting is empty");
 
                 // Adding special textblock to stackpanel
@@ -124,18 +132,63 @@ namespace PrefMovieApi
             }
             else
             {
-                /*
-                 * For na polowe (max 5)
-                 * 
-                 * Stack panel -> Horizontal
-                 * for na 2??? ( pprzemyslenie dodawanie 2 rzeczy jesli jest tylko jedna
-                 * utworzenie stack panele z infomracjami
-                 * dodanie do stack panela
-                 * dodanie do glownego
-                */
+                int loop = (int)Math.Ceiling(loopCount / 2.0);
+                int indexOfFilm = 0;
+                MessageBox.Show(loop.ToString());
+                for(int i = 0;  i < loop; i++)
+                {
+                    MainStackPanelForProposal.Height += 320;
+                    Border elements = new Border()
+                    {
+                        Height = 300,
+                    };
 
+                    Grid gridFor2Films = new Grid();
+                    gridFor2Films.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1,GridUnitType.Star) });
+                    gridFor2Films.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                    for(int j = 0; j < 2; j++)
+                    {
+                        StackPanel itemStackPanel = new StackPanel()
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(20, 0, 10, 0),
+                            Width = 480,
+                            Height = 250
+                        };
+
+                        // Grid for poster with average vote and button
+                        Grid posterGrid = new Grid();
+                        posterGrid.Children.Add(ElementInfo.PosterDiploy(listOfElements[indexOfFilm]));
+                        posterGrid.Children.Add(ElementInfo.AverageRateDiploy(listOfElements[indexOfFilm]));
+
+                        // Add the bordered poster to the item stack panel
+                        itemStackPanel.Children.Add(posterGrid);
+
+                        // Setting stack panel for information of movie
+                        StackPanel informationMovie = new StackPanel()
+                        {
+                            Orientation = Orientation.Vertical,
+                            Margin = new Thickness(20, 10, 0, 0)
+                        };
+
+                        // Adding infomration about element
+                        informationMovie = ElementInfo.SettingInformationAboutElement(listOfElements[indexOfFilm], values, informationMovie);
+                        itemStackPanel.Children.Add(informationMovie);
+
+                        Grid.SetColumn(itemStackPanel, j);
+                        gridFor2Films.Children.Add(itemStackPanel);
+                        ++indexOfFilm;
+
+                        if (indexOfFilm == listOfElements.Count - 1)
+                        {
+                            break;
+                        }
+                    }
+                    elements.Child = gridFor2Films;
+                    MainStackPanelForProposal.Children.Add(elements);
+                }
             }
         }
-
     }
 }
