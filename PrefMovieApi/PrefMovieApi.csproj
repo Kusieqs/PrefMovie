@@ -114,6 +114,7 @@
     <Compile Include="SortingOutput.xaml.cs">
       <DependentUpon>SortingOutput.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SortingParameters.cs" />
     <Page Include="MainControls\GeneralInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

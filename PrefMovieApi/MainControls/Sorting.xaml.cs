@@ -47,7 +47,16 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SearchClick(object sender, RoutedEventArgs e)
         {
-            mainContent.Content = new SortingOutput(arrowsAsButtons, isFilmSorting, isTvShowsSorting, selectedStars, Genre.SelectedItem.ToString(), DateFrom.SelectedDate.Value, DateTo.SelectedDate.Value);
+            MainWindow.logger.Log(LogLevel.Info, "SearchClick activated");
+            try
+            {
+                SortingParameters sortingParameters = new SortingParameters(arrowsAsButtons, isFilmSorting, isTvShowsSorting, Genre.SelectedItem.ToString(), selectedStars, DateFrom.SelectedDate.Value, DateTo.SelectedDate.Value);
+                mainContent.Content = new SortingOutput(sortingParameters);
+            }
+            catch (Exception ex)
+            {
+                MainWindow.logger.Log(LogLevel.Error, $"SearchClick: {ex.Message}");
+            }        
         }
 
         /// <summary>
