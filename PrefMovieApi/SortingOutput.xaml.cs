@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TMDbLib.Objects.Discover;
+using TMDbLib.Objects.Movies;
+using TMDbLib.Objects.Search;
+using TMDbLib.Objects.TvShows;
 
 namespace PrefMovieApi
 {
@@ -23,75 +28,139 @@ namespace PrefMovieApi
         {
             InitializeComponent();
             SortingParameters = sortingParameters;
-            
-            if(sortingParameters.IsFilmSorting)
+            IEnumerable<SearchMovieTvBase> choosenTitles = null;
+            Random random = new Random();
+
+            if (sortingParameters.IsFilmSorting)
             {
-                SetListOfMovies();
+                DiscoverMovie discoverMovie = SetListOfMovies();
+                SetOrdering(discoverMovie);
+                SetGenre(discoverMovie);
+
+                if (SortingParameters.SelectedStars > 0)
+                {
+                    SetStars(discoverMovie);
+                }
+
+                SetDate(discoverMovie);
+                choosenTitles = discoverMovie.Query().Result.Results.OrderBy(x => random.Next()).Take(10);
             }
             else if(sortingParameters.IsTvShowsSorting)
             {
+                DiscoverTv discoverTv = SetListOfTvShows();
+                SetOrdering(discoverTv);
+                SetGenre(discoverTv);
 
+                if (SortingParameters.SelectedStars > 0)
+                {
+                    SetStars(discoverTv);
+                }
+
+                SetDate(discoverTv);
+                choosenTitles = discoverTv.Query().Result.Results.OrderBy(x => random.Next()).Take(10);
             }
             else
             {
-
+                // Branie po 5 filmow i seriali
             }
-        }
-
-        private void SetListOfMovies()
-        {
-            var movies = GeneralInfo.client.DiscoverMoviesAsync();
-
-            if(SortingParameters.ArrowsAsButtons.Any(x => x.Value == true))
-            {
-                foreach(var arrow in SortingParameters.ArrowsAsButtons)
-                {
-                    if(arrow.Value == true)
-                    {
-                        switch(arrow.Key)
-                        {
-                            case "RelaseDateUpButton":
-                                movies = movies.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.ReleaseDate);
-                                break;
-                            case "RelaseDateDownButton":
-                                movies = movies.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.ReleaseDateDesc);
-                                break;
-                            case "VoteAverageUpButton":
-                                movies = movies.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.VoteAverage);
-                                break;
-                            case "VoteAverageDownButton":
-                                movies = movies.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.VoteAverageDesc);
-                                break;
-                        }
-                    }
-                }
-            }
-
-            List<int> listOfGenre = new List<int>() { (int)(MoviesGenre)Enum.Parse(typeof(MoviesGenre), SortingParameters.ConvertGenre(typeof(MoviesGenre)))};
-            movies = movies.IncludeWithAllOfGenre(listOfGenre);
-
-            if(SortingParameters.SelectedStars > 0)
-            {
-                double stars = SortingParameters.SelectedStars * 2;
-                movies = movies.WhereVoteAverageIsAtMost(stars);
-            }
-
-            if(SortingParameters.DateFrom != null)
-            {
-                movies = movies.WhereReleaseDateIsAfter(SortingParameters.DateFrom);
-            }
-
-            if(SortingParameters.DateTo != null)
-            {
-                movies = movies.WhereReleaseDateIsBefore(SortingParameters.DateTo);
-            }
-
-            Random random = new Random();
-
-            var choosenTitles = movies.Query().Result.Results.OrderBy(x => random.Next()).Take(10);
 
             SetStackPanel(choosenTitles.Count(), choosenTitles);
         }
+
+        private void SetOrdering(DiscoverTv discoverTv)
+        {
+            foreach (var arrow in SortingParameters.ArrowsAsButtons)
+            {
+                if (arrow.Value == true)
+                {
+                    switch (arrow.Key)
+                    {
+                        case "RelaseDateUpButton":
+                            discoverTv = discoverTv.OrderBy(DiscoverTvShowSortBy.PrimaryReleaseDate);
+                            break;
+                        case "RelaseDateDownButton":
+                            discoverTv = discoverTv.OrderBy(DiscoverTvShowSortBy.PrimaryReleaseDateDesc);
+                            break;
+                        case "VoteAverageUpButton":
+                            discoverTv = discoverTv.OrderBy(DiscoverTvShowSortBy.VoteAverage);
+                            break;
+                        case "VoteAverageDownButton":
+                            discoverTv = discoverTv.OrderBy(DiscoverTvShowSortBy.VoteAverageDesc);
+                            break;
+                    }
+                }
+            }
+        }
+        private void SetOrdering(DiscoverMovie discoverMovie)
+        {
+            foreach (var arrow in SortingParameters.ArrowsAsButtons)
+            {
+                if (arrow.Value == true)
+                {
+                    switch (arrow.Key)
+                    {
+                        case "RelaseDateUpButton":
+                            discoverMovie = discoverMovie.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.ReleaseDate);
+                            break;
+                        case "RelaseDateDownButton":
+                            discoverMovie = discoverMovie.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.ReleaseDateDesc);
+                            break;
+                        case "VoteAverageUpButton":
+                            discoverMovie = discoverMovie.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.VoteAverage);
+                            break;
+                        case "VoteAverageDownButton":
+                            discoverMovie = discoverMovie.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.VoteAverageDesc);
+                            break;
+                    }
+                }
+            }
+        }
+        private void SetGenre(DiscoverTv discoverTv)
+        {
+            List<int> listOfGenre = new List<int>() { (int)(TvShowsGenre)Enum.Parse(typeof(TvShowsGenre), SortingParameters.ConvertGenre(typeof(TvShowsGenre))) };
+            discoverTv = discoverTv.WhereGenresInclude(listOfGenre);
+        }
+        private void SetGenre(DiscoverMovie discoverMovie)
+        {
+            List<int> listOfGenre = new List<int>() { (int)(MoviesGenre)Enum.Parse(typeof(MoviesGenre), SortingParameters.ConvertGenre(typeof(MoviesGenre))) };
+            discoverMovie = discoverMovie.IncludeWithAllOfGenre(listOfGenre);
+        }
+        private void SetStars(DiscoverTv discoverTv)
+        {
+            double stars = SortingParameters.SelectedStars * 2;
+            discoverTv = discoverTv.WhereVoteAverageIsAtMost(stars);
+        }
+        private void SetStars(DiscoverMovie discoverMovie)
+        {
+            double stars = SortingParameters.SelectedStars * 2;
+            discoverMovie = discoverMovie.WhereVoteAverageIsAtMost(stars);
+        }
+        private void SetDate(DiscoverTv discoverTv)
+        {
+            if (SortingParameters.DateFrom != null)
+            {
+                discoverTv = discoverTv.WhereFirstAirDateIsAfter(SortingParameters.DateFrom);
+            }
+
+            if (SortingParameters.DateTo != null)
+            {
+                discoverTv = discoverTv.WhereFirstAirDateIsBefore(SortingParameters.DateTo);
+            }
+        }
+        private void SetDate(DiscoverMovie discoverMovie)
+        {
+            if (SortingParameters.DateFrom != null)
+            {
+                discoverMovie = discoverMovie.WhereReleaseDateIsAfter(SortingParameters.DateFrom);
+            }
+
+            if (SortingParameters.DateTo != null)
+            {
+                discoverMovie = discoverMovie.WhereReleaseDateIsBefore(SortingParameters.DateTo);
+            }
+        }
+
+
 
         /// <summary>
         /// REFACTORING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -187,5 +256,7 @@ namespace PrefMovieApi
                 MainWindow.logger.Log(LogLevel.Error, $"Sorting: {ex.Message}");
             }
         }
+        private DiscoverMovie SetListOfMovies() => GeneralInfo.client.DiscoverMoviesAsync();
+        private DiscoverTv SetListOfTvShows() => GeneralInfo.client.DiscoverTvShowsAsync();
     }
 }
