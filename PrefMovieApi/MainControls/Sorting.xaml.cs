@@ -50,7 +50,15 @@ namespace PrefMovieApi
             MainWindow.logger.Log(LogLevel.Info, "SearchClick activated");
             try
             {
-                SortingParameters sortingParameters = new SortingParameters(arrowsAsButtons, isFilmSorting, isTvShowsSorting, Genre.SelectedItem.ToString(), selectedStars, DateFrom.SelectedDate.Value, DateTo.SelectedDate.Value);
+                SortingParameters sortingParameters = new SortingParameters
+                    (arrowsAsButtons, 
+                    isFilmSorting, 
+                    isTvShowsSorting, 
+                    Genre?.SelectedItem, 
+                    selectedStars, 
+                    DateFrom?.SelectedDate,
+                    DateTo?.SelectedDate);
+
                 mainContent.Content = new SortingOutput(sortingParameters);
             }
             catch (Exception ex)
