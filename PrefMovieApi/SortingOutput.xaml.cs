@@ -40,15 +40,15 @@ namespace PrefMovieApi
             }
             else
             {
-                choosenTitles = SettingTvShows(5);
-                choosenTitles = choosenTitles.Concat(SettingMovies(5));
+                choosenTitles = SettingTvShows(6);
+                choosenTitles = choosenTitles.Concat(SettingMovies(6));
             }
             SetStackPanel(choosenTitles.Count(), choosenTitles);
         }
 
 
 
-        private IEnumerable<SearchMovieTvBase> SettingMovies(int countOfElements = 10)
+        private IEnumerable<SearchMovieTvBase> SettingMovies(int countOfElements = 14)
         {
             DiscoverMovie discoverMovie = SetListOfMovies();
             SetOrdering(discoverMovie);
@@ -63,7 +63,7 @@ namespace PrefMovieApi
             SetDate(discoverMovie);
             return discoverMovie.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
         }
-        private IEnumerable<SearchMovieTvBase> SettingTvShows(int countOfElements = 10)
+        private IEnumerable<SearchMovieTvBase> SettingTvShows(int countOfElements = 14)
         {
             DiscoverTv discoverTv = SetListOfTvShows();
             SetOrdering(discoverTv);
@@ -95,6 +95,8 @@ namespace PrefMovieApi
                 discoverMovie = discoverMovie.IncludeWithAllOfGenre(listOfGenre);
             }
         }
+
+
         private void SetStars(DiscoverTv discoverTv)
         {
             double stars = SortingParameters.SelectedStars * 2;
@@ -105,6 +107,7 @@ namespace PrefMovieApi
             double stars = SortingParameters.SelectedStars * 2;
             discoverMovie = discoverMovie.WhereVoteAverageIsAtMost(stars);
         }
+
         private void SetDate(DiscoverTv discoverTv)
         {
             if (SortingParameters.DateFrom.HasValue)
@@ -129,6 +132,7 @@ namespace PrefMovieApi
                 discoverMovie = discoverMovie.WhereReleaseDateIsBefore(SortingParameters.DateTo.Value);
             }
         }
+
         private void SetOrdering(DiscoverTv discoverTv)
         {
             foreach (var arrow in SortingParameters.ArrowsAsButtons)
@@ -212,13 +216,13 @@ namespace PrefMovieApi
                 {
                     int loop = (int)Math.Ceiling(loopCount / 2.0);
                     int indexOfFilm = 0;
-                    MessageBox.Show(loop.ToString()); // 5
+                    MessageBox.Show(loop.ToString()); 
                     for (int i = 0; i < loop; i++)
                     {
-                        MainStackPanelForProposal.Height += 320;
+                        MainStackPanelForProposal.Height += 340;
                         Border elements = new Border()
                         {
-                            Height = 300,
+                            Height = 330,
                         };
 
                         Grid gridFor2Films = new Grid();
@@ -232,7 +236,7 @@ namespace PrefMovieApi
                                 Orientation = Orientation.Horizontal,
                                 Margin = new Thickness(20, 0, 10, 0),
                                 Width = 480,
-                                Height = 250
+                                Height = 300
                             };
 
                             // Grid for poster with average vote and button

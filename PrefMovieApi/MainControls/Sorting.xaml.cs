@@ -31,6 +31,7 @@ namespace PrefMovieApi
         private bool isFilmSorting = false; // Control for film sorting method
         private bool isTvShowsSorting = false; // Control for TvShow sorting method
         private int selectedStars = 0; // Count of selected stars
+        private bool starClick = false;
         private ContentControl mainContent; // content for searching
         public Sorting(ContentControl content)
         {
@@ -403,13 +404,7 @@ namespace PrefMovieApi
         }
         private void StarMouseLeave(object sender, MouseEventArgs e)
         {
-            if (selectedStars == 0)
-            {
-            }
-            else
-            {
-                HighlightStars(selectedStars);
-            }
+            HighlightStars(selectedStars != 0 ? selectedStars : 0);
         }
         private void StarClick(object sender, RoutedEventArgs e)
         {
@@ -438,10 +433,10 @@ namespace PrefMovieApi
             }
             else
             {
-                for (int i = 5; i >= 1; i--)
+                for (int i = 1; i <= 5; i++)
                 {
                     var starButton = FindName($"Star{i}") as Button;
-                    if (i >= count)
+                    if (i <= count)
                     {
                         starButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
                         starButton.Width = 30;

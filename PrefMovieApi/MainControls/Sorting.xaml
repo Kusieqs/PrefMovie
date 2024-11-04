@@ -192,19 +192,19 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Star1" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="0" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="1">
+            <Button x:Name="Star5" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="0" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="5">
                 <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
-            <Button x:Name="Star2" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="1" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="2">
+            <Button x:Name="Star4" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="1" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="4">
                 <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
             <Button x:Name="Star3" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="2" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="3">
                 <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
-            <Button x:Name="Star4" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="3" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="4">
+            <Button x:Name="Star2" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="3" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="2">
                 <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
-            <Button x:Name="Star5" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="4" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="5">
+            <Button x:Name="Star1" Style="{StaticResource ButtonImage}" VerticalAlignment="Center" Grid.Column="4" Click="StarClick" MouseEnter="StarMouseEnter" MouseLeave="StarMouseLeave" Background="Transparent" Tag="1">
                 <Image Source="/PrefMovieApi;component/Images/emptyStar.png" Width="30"/>
             </Button>
 
