@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy Sorting.xaml
-    /// </summary>
     public partial class Sorting : UserControl
     {
         private Dictionary<string, bool> arrowsAsButtons = new Dictionary<string, bool>()

@@ -99,6 +99,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config\Config.cs" />
+    <Compile Include="GenreEnums\MediaType.cs" />
     <Compile Include="SettingContent\CreatingImage.cs" />
     <Compile Include="SettingContent\ElementInfo.cs" />
     <Compile Include="GenreEnums\MovieGenre.cs" />

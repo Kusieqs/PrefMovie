@@ -26,59 +26,65 @@ namespace PrefMovieApi
         public SortingParameters SortingParameters { get; set; }
         public SortingOutput(SortingParameters sortingParameters)
         {
+            MainWindow.logger.Log(LogLevel.Info, $"Sorting of proposed films activated");
             InitializeComponent();
             SortingParameters = sortingParameters;
-            IEnumerable<SearchMovieTvBase> choosenTitles = null;
 
-            if (sortingParameters.IsFilmSorting)
-            {
-                choosenTitles = SettingMovies();
-            }
-            else if(sortingParameters.IsTvShowsSorting)
-            {
-                choosenTitles = SettingTvShows();
-            }
-            else
-            {
-                choosenTitles = SettingTvShows(6);
-                choosenTitles = choosenTitles.Concat(SettingMovies(6));
-            }
+            // Setting list of elements
+            IEnumerable<SearchMovieTvBase> choosenTitles = GetChosenTitles();
+
+            // Setting elements to stack panel
             SetStackPanel(choosenTitles.Count(), choosenTitles);
         }
 
-
-
-        private IEnumerable<SearchMovieTvBase> SettingMovies(int countOfElements = 14)
+        /// <summary>
+        /// Choosing which option user choose
+        /// </summary>
+        /// <returns>IEnumerable list of proposed elements</returns>
+        private IEnumerable<SearchMovieTvBase> GetChosenTitles()
         {
-            DiscoverMovie discoverMovie = SetListOfMovies();
-            SetOrdering(discoverMovie);
-            SetGenre(discoverMovie);
+            if (SortingParameters.IsFilmSorting)
+            {
+                return GetMedia(MediaType.Movie);
+            }
+            else if (SortingParameters.IsTvShowsSorting)
+            {
+                return GetMedia(MediaType.TvShow);
+            }
+            else
+            {
+                return GetMedia(MediaType.TvShow, 6).Concat(GetMedia(MediaType.Movie, 6));
+            }
+        }
+
+        /// <summary>
+        /// Setting sorting parameters to main list of elements
+        /// </summary>
+        /// <param name="mediaType">Type of sorting</param>
+        /// <param name="countOfElements">Count of elements to display</param>
+        /// <returns>IEnumerable list of proposed elements</returns>
+        private IEnumerable<SearchMovieTvBase> GetMedia(MediaType mediaType, int countOfElements = 12)
+        {
+            Random random = new Random();
+            dynamic discover = mediaType == MediaType.Movie ? (dynamic)SetListOfMovies() : SetListOfTvShows();
+            SetGenre(discover);
+            SetOrdering(discover);
 
             if (SortingParameters.SelectedStars > 0)
             {
-                SetStars(discoverMovie);
+                SetStars(discover);
             }
 
-            Random random = new Random();
-            SetDate(discoverMovie);
-            return discoverMovie.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
-        }
-        private IEnumerable<SearchMovieTvBase> SettingTvShows(int countOfElements = 14)
-        {
-            DiscoverTv discoverTv = SetListOfTvShows();
-            SetOrdering(discoverTv);
-            SetGenre(discoverTv);
-
-            if (SortingParameters.SelectedStars > 0)
-            {
-                SetStars(discoverTv);
-            }
-
-            Random random = new Random();
-            SetDate(discoverTv);
-            return discoverTv.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
+            SetDate(discover);
+            return ConvertToObject(discover, countOfElements);
         }
 
+        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverTv discoverTv, int countOfElements)
+            => discoverTv.Query().Result.Results.OrderBy(x => new Random().Next()).Take(countOfElements);
+        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverMovie discoverMovie, int countOfElements)
+            => discoverMovie.Query().Result.Results.OrderBy(x => new Random().Next()).Take(countOfElements);
+
+        #region Sorting features
         private void SetGenre(DiscoverTv discoverTv)
         {
             if(SortingParameters.Genre != null)
@@ -95,7 +101,6 @@ namespace PrefMovieApi
                 discoverMovie = discoverMovie.IncludeWithAllOfGenre(listOfGenre);
             }
         }
-
 
         private void SetStars(DiscoverTv discoverTv)
         {
@@ -137,7 +142,7 @@ namespace PrefMovieApi
         {
             foreach (var arrow in SortingParameters.ArrowsAsButtons)
             {
-                if (arrow.Value == true)
+                if (arrow.Value)
                 {
                     switch (arrow.Key)
                     {
@@ -161,7 +166,7 @@ namespace PrefMovieApi
         {
             foreach (var arrow in SortingParameters.ArrowsAsButtons)
             {
-                if (arrow.Value == true)
+                if (arrow.Value)
                 {
                     switch (arrow.Key)
                     {
@@ -182,16 +187,17 @@ namespace PrefMovieApi
             }
         }
 
-
+        #endregion
 
         /// <summary>
-        /// REFACTORING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        /// REFACTORING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (very common metod in elementInfo.cs)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="loopCount"></param>
         /// <param name="values"></param>
         private void SetStackPanel<T>(int loopCount, IEnumerable<T> values)
         {
+            MainWindow.logger.Log(LogLevel.Info, "Setting elements to window");
             var listOfElements = values.ToList();
             try
             {
@@ -219,10 +225,10 @@ namespace PrefMovieApi
                     MessageBox.Show(loop.ToString()); 
                     for (int i = 0; i < loop; i++)
                     {
-                        MainStackPanelForProposal.Height += 340;
+                        MainStackPanelForProposal.Height += 300;
                         Border elements = new Border()
                         {
-                            Height = 330,
+                            Margin = new Thickness(20, 20, 10, 10)
                         };
 
                         Grid gridFor2Films = new Grid();
@@ -235,8 +241,9 @@ namespace PrefMovieApi
                             {
                                 Orientation = Orientation.Horizontal,
                                 Margin = new Thickness(20, 0, 10, 0),
-                                Width = 480,
-                                Height = 300
+                                Width = 440,
+                                Height = 270,
+                                HorizontalAlignment = 0 == j ? HorizontalAlignment.Left : HorizontalAlignment.Right,
                             };
 
                             // Grid for poster with average vote and button
@@ -251,7 +258,7 @@ namespace PrefMovieApi
                             StackPanel informationMovie = new StackPanel()
                             {
                                 Orientation = Orientation.Vertical,
-                                Margin = new Thickness(20, 10, 0, 0)
+                                Margin = new Thickness(20, 10, 0, 0),
                             };
 
                             // Adding infomration about element
