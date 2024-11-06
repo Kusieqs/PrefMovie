@@ -55,7 +55,7 @@ namespace PrefMovieApi
         /// </summary>
         public void DeployMainContent()
         {
-            Sorting.Content = new Sorting();
+            Sorting.Content = new Sorting(MainContent);
             Library.Content = library;
 
             // Checking netowrk connection

@@ -10,7 +10,7 @@ namespace PrefMovieApi
     public static class Config
     {
         // Api Key
-        public const string API_KEY_TO_TMDB = "decf79472a955c7ad50abf83302e8ff8";
+        public const string API_KEY_TO_TMDB = "";
 
         // base url to posters
         public const string BASE_URL = "https://image.tmdb.org/t/p/w500";

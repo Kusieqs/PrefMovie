@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy Sorting.xaml
-    /// </summary>
     public partial class Sorting : UserControl
     {
         private Dictionary<string, bool> arrowsAsButtons = new Dictionary<string, bool>()
@@ -31,12 +28,41 @@ namespace PrefMovieApi
         private bool isFilmSorting = false; // Control for film sorting method
         private bool isTvShowsSorting = false; // Control for TvShow sorting method
         private int selectedStars = 0; // Count of selected stars
-
-        public Sorting()
+        private bool starClick = false;
+        private ContentControl mainContent; // content for searching
+        public Sorting(ContentControl content)
         {
             MainWindow.logger.Log(LogLevel.Info, "Sorting content was loaded");
             InitializeComponent();
             Genre.IsEnabled = false;
+            mainContent = content;
+        }
+
+        /// <summary>
+        /// Searching by sorting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchClick(object sender, RoutedEventArgs e)
+        {
+            MainWindow.logger.Log(LogLevel.Info, "SearchClick activated");
+            try
+            {
+                SortingParameters sortingParameters = new SortingParameters
+                    (arrowsAsButtons, 
+                    isFilmSorting, 
+                    isTvShowsSorting, 
+                    Genre?.SelectedItem, 
+                    selectedStars, 
+                    DateFrom?.SelectedDate,
+                    DateTo?.SelectedDate);
+
+                mainContent.Content = new SortingOutput(sortingParameters);
+            }
+            catch (Exception ex)
+            {
+                MainWindow.logger.Log(LogLevel.Error, $"SearchClick: {ex.Message}");
+            }        
         }
 
         /// <summary>
@@ -375,13 +401,7 @@ namespace PrefMovieApi
         }
         private void StarMouseLeave(object sender, MouseEventArgs e)
         {
-            if (selectedStars == 0)
-            {
-            }
-            else
-            {
-                HighlightStars(selectedStars);
-            }
+            HighlightStars(selectedStars != 0 ? selectedStars : 0);
         }
         private void StarClick(object sender, RoutedEventArgs e)
         {
@@ -410,10 +430,10 @@ namespace PrefMovieApi
             }
             else
             {
-                for (int i = 5; i >= 1; i--)
+                for (int i = 1; i <= 5; i++)
                 {
                     var starButton = FindName($"Star{i}") as Button;
-                    if (i >= count)
+                    if (i <= count)
                     {
                         starButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
                         starButton.Width = 30;

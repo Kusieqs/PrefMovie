@@ -80,7 +80,7 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="movieOrTvShow"></param>
         /// <returns>Poster</returns>
-        private static Rectangle PosterDiploy(dynamic movieOrTvShow)
+        public static Rectangle PosterDiploy(dynamic movieOrTvShow)
         {
             // Setting poster to posterBrush
             ImageBrush posterBrush = new ImageBrush
@@ -106,7 +106,7 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="movieOrTvShow"></param>
         /// <returns>Rate</returns>
-        private static Border AverageRateDiploy(dynamic movieOrTvShow)
+        public static Border AverageRateDiploy(dynamic movieOrTvShow)
         {
             // Average rate
             TextBlock averageRate = new TextBlock()
@@ -140,7 +140,7 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="idOfElement">name of id of element</param>
         /// <returns>Favorite button star</returns>
-        private static Button FavortieElementDiploy(out string idOfElement, bool isInLibrary)
+        public static Button FavortieElementDiploy(out string idOfElement, bool isInLibrary)
         {
             // Creating id of button
             idOfElement = $"Id{++id}";
@@ -174,7 +174,7 @@ namespace PrefMovieApi
         /// <param name="movieOrTvShow"></param>
         /// <param name="randomMoviesOrTvShows"></param>
         /// <returns>Infomration about element</returns>
-        private static StackPanel SettingInformationAboutElement(dynamic movieOrTvShow, dynamic randomMoviesOrTvShows, StackPanel information)
+        public static StackPanel SettingInformationAboutElement(dynamic movieOrTvShow, dynamic randomMoviesOrTvShows, StackPanel information)
         {
             // Setting information of movie
             for (int i = 0; i < 3; i++)
