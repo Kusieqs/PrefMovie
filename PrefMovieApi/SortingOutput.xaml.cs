@@ -29,6 +29,14 @@ namespace PrefMovieApi
             MainWindow.logger.Log(LogLevel.Info, $"Sorting of proposed films activated");
             InitializeComponent();
             SortingParameters = sortingParameters;
+            CreatingInstantOfList();
+        }
+
+        private void CreatingInstantOfList()
+        {
+            // Clearing panel
+            MainStackPanelForProposal.Children.Clear();
+            MainStackPanelForProposal.Height = 0;
 
             // Setting list of elements
             IEnumerable<SearchMovieTvBase> choosenTitles = GetChosenTitles();
@@ -76,13 +84,13 @@ namespace PrefMovieApi
             }
 
             SetDate(discover);
-            return ConvertToObject(discover, countOfElements);
+            return ConvertToObject(discover, countOfElements, random);
         }
 
-        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverTv discoverTv, int countOfElements)
-            => discoverTv.Query().Result.Results.OrderBy(x => new Random().Next()).Take(countOfElements);
-        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverMovie discoverMovie, int countOfElements)
-            => discoverMovie.Query().Result.Results.OrderBy(x => new Random().Next()).Take(countOfElements);
+        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverTv discoverTv, int countOfElements, Random random)
+            => discoverTv.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
+        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverMovie discoverMovie, int countOfElements, Random random)
+            => discoverMovie.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
 
         #region Sorting features
         private void SetGenre(DiscoverTv discoverTv)
@@ -222,7 +230,6 @@ namespace PrefMovieApi
                 {
                     int loop = (int)Math.Ceiling(loopCount / 2.0);
                     int indexOfFilm = 0;
-                    MessageBox.Show(loop.ToString()); 
                     for (int i = 0; i < loop; i++)
                     {
                         MainStackPanelForProposal.Height += 300;
@@ -251,6 +258,14 @@ namespace PrefMovieApi
                             posterGrid.Children.Add(ElementInfo.PosterDiploy(listOfElements[indexOfFilm]));
                             posterGrid.Children.Add(ElementInfo.AverageRateDiploy(listOfElements[indexOfFilm]));
 
+                            dynamic movieOrTV = listOfElements[indexOfFilm];
+
+                            bool isInLibrary = Library.titles.Any(x => x == (listOfElements[indexOfFilm] is SearchMovie 
+                            ? movieOrTV.Title : movieOrTV.Name));
+
+                            string idOfElement;
+                            posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(out idOfElement, isInLibrary));
+
                             // Add the bordered poster to the item stack panel
                             itemStackPanel.Children.Add(posterGrid);
 
@@ -268,6 +283,7 @@ namespace PrefMovieApi
                             Grid.SetColumn(itemStackPanel, j);
                             gridFor2Films.Children.Add(itemStackPanel);
 
+                            Config.IdForMovie.Add(idOfElement, movieOrTV is SearchMovie ? movieOrTV.Title : movieOrTV.Name);
                             ++indexOfFilm;
                             if (indexOfFilm == listOfElements.Count)
                             {
@@ -287,5 +303,10 @@ namespace PrefMovieApi
         }
         private DiscoverMovie SetListOfMovies() => GeneralInfo.client.DiscoverMoviesAsync();
         private DiscoverTv SetListOfTvShows() => GeneralInfo.client.DiscoverTvShowsAsync();
+
+        private void RefreshClick(object sender, RoutedEventArgs e)
+        {
+            CreatingInstantOfList();
+        }
     }
 }
