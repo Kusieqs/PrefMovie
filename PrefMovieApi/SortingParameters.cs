@@ -9,13 +9,13 @@ namespace PrefMovieApi
 {
     public class SortingParameters
     {
-        public Dictionary<string, bool> ArrowsAsButtons { get; } // Dicitonary of button which is true
-        public bool IsFilmSorting { get; }
-        public bool IsTvShowsSorting { get; }
-        public string Genre { get; }
-        public int SelectedStars { get; }
-        public DateTime? DateFrom { get; }
-        public DateTime? DateTo { get; }
+        public readonly Dictionary<string, bool> ArrowsAsButtons;// Dicitonary of button which is true
+        public readonly bool IsFilmSorting;
+        public readonly bool IsTvShowsSorting;
+        public readonly string Genre;
+        public readonly int SelectedStars;
+        public readonly DateTime? DateFrom;
+        public readonly DateTime? DateTo;
         public SortingParameters(Dictionary<string,bool> arrowsAsButtons, bool isFilmSorting, bool isTvShowsSorting,
             object genre, int selectedStars, DateTime? dateFrom, DateTime? dateTo)
         {

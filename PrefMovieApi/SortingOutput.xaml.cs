@@ -23,15 +23,21 @@ namespace PrefMovieApi
 {
     public partial class SortingOutput : UserControl
     {
-        public SortingParameters SortingParameters { get; set; }
+
+        public readonly SortingParameters SortingParameters; // Object of soritng parameters
         public SortingOutput(SortingParameters sortingParameters)
         {
             MainWindow.logger.Log(LogLevel.Info, $"Sorting of proposed films activated");
             InitializeComponent();
             SortingParameters = sortingParameters;
+
+            // Creating main panel with proposal elements
             CreatingInstantOfList();
         }
 
+        /// <summary>
+        /// Creating IEnumerable<SearchMovieTvBase> with proposal elements
+        /// </summary>
         private void CreatingInstantOfList()
         {
             // Clearing panel
@@ -73,24 +79,28 @@ namespace PrefMovieApi
         /// <returns>IEnumerable list of proposed elements</returns>
         private IEnumerable<SearchMovieTvBase> GetMedia(MediaType mediaType, int countOfElements = 12)
         {
-            Random random = new Random();
-            dynamic discover = mediaType == MediaType.Movie ? (dynamic)SetListOfMovies() : SetListOfTvShows();
-            SetGenre(discover);
-            SetOrdering(discover);
-
-            if (SortingParameters.SelectedStars > 0)
+            MainWindow.logger.Log(LogLevel.Info, "Getting media of movie or TvShow");
+            try
             {
-                SetStars(discover);
+                Random random = new Random();
+                dynamic discover = mediaType == MediaType.Movie ? (dynamic)SetListOfMovies() : SetListOfTvShows();
+                SetGenre(discover);
+                SetOrdering(discover);
+
+                if (SortingParameters.SelectedStars > 0)
+                {
+                    SetStars(discover);
+                }
+
+                SetDate(discover);
+                return ConvertToObject(discover, countOfElements, random);
             }
-
-            SetDate(discover);
-            return ConvertToObject(discover, countOfElements, random);
+            catch (Exception ex)
+            {
+                MainWindow.logger.Log(LogLevel.Error, $"Message: {ex.Message}");
+                return null;
+            }
         }
-
-        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverTv discoverTv, int countOfElements, Random random)
-            => discoverTv.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
-        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverMovie discoverMovie, int countOfElements, Random random)
-            => discoverMovie.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
 
         #region Sorting features
         private void SetGenre(DiscoverTv discoverTv)
@@ -301,9 +311,44 @@ namespace PrefMovieApi
                 MainWindow.logger.Log(LogLevel.Error, $"Sorting: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Getting movies as object
+        /// </summary>
+        /// <returns>Object of movies</returns>
         private DiscoverMovie SetListOfMovies() => GeneralInfo.client.DiscoverMoviesAsync();
+
+        /// <summary>
+        /// Getting tvshows as object
+        /// </summary>
+        /// <returns>Object of tvshows</returns>
         private DiscoverTv SetListOfTvShows() => GeneralInfo.client.DiscoverTvShowsAsync();
 
+        /// <summary>
+        /// Taking random elements from object as DiscoverTv and converting into query
+        /// </summary>
+        /// <param name="discoverTv">Instant of elements</param>
+        /// <param name="countOfElements">Number of elements to choose</param>
+        /// <param name="random">Random object</param>
+        /// <returns></returns>
+        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverTv discoverTv, int countOfElements, Random random)
+                => discoverTv.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
+
+        /// <summary>
+        /// Taking random elements from object as DiscoverMovie and converting into query
+        /// </summary>
+        /// <param name="discoverMovie">Instant of elements</param>
+        /// <param name="countOfElements">Number of elements to choose</param>
+        /// <param name="random">Random object</param>
+        /// <returns></returns>
+        public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverMovie discoverMovie, int countOfElements, Random random)
+                => discoverMovie.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
+
+        /// <summary>
+        /// Refresh click of button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RefreshClick(object sender, RoutedEventArgs e)
         {
             CreatingInstantOfList();
