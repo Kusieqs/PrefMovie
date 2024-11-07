@@ -22,7 +22,16 @@
             </Grid>
             
             <Border Background="gray" Grid.Row="1" CornerRadius="15,0,10,10">
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid x:Name="PosterGrid" Grid.Row="0">
+                        
+                    </Grid>
+                    
+                </Grid>
             </Border>
         </Grid>
     </Border>

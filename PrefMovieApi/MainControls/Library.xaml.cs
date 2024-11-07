@@ -100,7 +100,7 @@ namespace PrefMovieApi
         public void OpenElement(object sender,  RoutedEventArgs e)
         {
             MainWindow.logger.Log(LogLevel.Info, "Opening new element as window");
-            string title = (sender as Button).Name;
+            string title = (string)(sender as Button).Content;
             
             if(!existingWindows.Any(x => x == title))
             {
