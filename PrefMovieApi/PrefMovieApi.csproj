@@ -99,6 +99,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config\Config.cs" />
+    <Compile Include="DetailInformation.xaml.cs">
+      <DependentUpon>DetailInformation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GenreEnums\MediaType.cs" />
     <Compile Include="SettingContent\CreatingImage.cs" />
     <Compile Include="SettingContent\ElementInfo.cs" />
@@ -116,6 +119,10 @@
       <DependentUpon>SortingOutput.xaml</DependentUpon>
     </Compile>
     <Compile Include="SortingParameters.cs" />
+    <Page Include="DetailInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainControls\GeneralInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

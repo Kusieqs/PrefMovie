@@ -23,6 +23,7 @@ namespace PrefMovieApi
     public partial class Library : UserControl
     {
         public static List<string> titles = new List<string>();
+        public static List<string> existingWindows = new List<string>();
         public static JsonFile jsonFile = new JsonFile();
         public Library()
         {
@@ -99,7 +100,17 @@ namespace PrefMovieApi
         public void OpenElement(object sender,  RoutedEventArgs e)
         {
             MainWindow.logger.Log(LogLevel.Info, "Opening new element as window");
-            //TODO: Opening new window
+            string title = (sender as Button).Name;
+            
+            if(!existingWindows.Any(x => x == title))
+            {
+                var informationAboutElement = new DetailInformation(title);
+                informationAboutElement.Show();
+            }
+            else
+            {
+                MainWindow.logger.Log(LogLevel.Warn, "Window is existing");
+            }
         }
     }
 }
