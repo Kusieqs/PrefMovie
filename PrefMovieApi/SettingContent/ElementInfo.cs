@@ -48,7 +48,7 @@ namespace PrefMovieApi
                 posterGrid.Children.Add(PosterDiploy(movieOrTvShow));
                 posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
 
-                bool isInLibrary = Library.titles.Any(x => x == (movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name));
+                bool isInLibrary = Library.titles.Any(x => x.Item1 == (movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name));
 
                 string idOfElement;
                 posterGrid.Children.Add(FavortieElementDiploy(out idOfElement, isInLibrary));
@@ -69,7 +69,10 @@ namespace PrefMovieApi
                 itemStackPanel.Children.Add(informationMovie);
                 mainStackPanel.Children.Add(itemStackPanel);
 
-                Config.IdForMovie.Add(idOfElement, movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name);
+
+                string title = movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name;
+                DateTime relaseDate = movieOrTvShow is SearchMovie ? movieOrTvShow.ReleaseDate : movieOrTvShow.FirstAirDate;
+                Config.IdForMovie.Add((title, relaseDate ,idOfElement));
             }
 
             return mainStackPanel;
@@ -242,9 +245,10 @@ namespace PrefMovieApi
         private static void FavoriteButtonMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
-            string title = Config.IdForMovie[button.Name];
 
-            if (Library.titles.Any(x => x == title))
+            string title = Config.IdForMovie.Where(x => x.Item3 == button.Name).Select(x => x.Item1).FirstOrDefault();
+
+            if (Library.titles.Any(x => x.Item1 == title))
             {
                 // Creating image as star
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
@@ -264,9 +268,8 @@ namespace PrefMovieApi
         private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
-            string title = Config.IdForMovie[button.Name];
-
-            if(Library.titles.Any(x => x == title))
+            string title = Config.IdForMovie.Where(x => x.Item3 == button.Name).Select(x => x.Item1).FirstOrDefault();
+            if(Library.titles.Any(x => x.Item1 == title))
             {
                 // Creating image as star
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
@@ -286,9 +289,9 @@ namespace PrefMovieApi
         private static void AddingElementToLibraryOrDeleting(object sender, RoutedEventArgs e) 
         {
             Button button = sender as Button;
-            string title = Config.IdForMovie[button.Name];
+            string title = Config.IdForMovie.Where(x => x.Item3 == button.Name).Select(x => x.Item1).FirstOrDefault();
 
-            if(Library.titles.Any(x => x == title))
+            if(Library.titles.Any(x => x.Item1 == title))
             {
                 MainWindow.logger.Log(LogLevel.Info, "Deleting element");
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");

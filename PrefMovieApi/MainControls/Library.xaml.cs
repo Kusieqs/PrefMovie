@@ -22,7 +22,7 @@ namespace PrefMovieApi
     /// </summary>
     public partial class Library : UserControl
     {
-        public static List<string> titles = new List<string>();
+        public static List<(string,DateTime)> titles = new List<(string,DateTime)>();
         public static List<string> existingWindows = new List<string>();
         public static JsonFile jsonFile = new JsonFile();
         public Library()
@@ -43,10 +43,14 @@ namespace PrefMovieApi
         /// <param name="id">id of button</param>
         public void AddingNewElement(string id)
         {
-            string title = Config.IdForMovie[id];
-            titles.Add(title);
+            (string, DateTime) elementToList = Config.IdForMovie
+                .Where(x => x.Item3 == id)
+                .Select(x => (x.Item1, x.Item2))
+                .FirstOrDefault();
 
-            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {title}");
+            titles.Add(elementToList);
+
+            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {elementToList.Item1} {elementToList.Item2}");
             LoadFavoriteMovies();
         }
 
@@ -56,10 +60,13 @@ namespace PrefMovieApi
         /// <param name="id">id of button</param>
         public void DeletingNewElement(string id)
         {
-            string title = Config.IdForMovie[id];
-            titles.Remove(title);
+            (string, DateTime) elementToList = Config.IdForMovie
+                .Where(x => x.Item3 == id)
+                .Select(x => (x.Item1, x.Item2))
+                .FirstOrDefault();
+            titles.Remove(elementToList);
 
-            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {title}");
+            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {elementToList.Item1} {elementToList.Item2}");
             LoadFavoriteMovies();
         }
 
@@ -75,7 +82,7 @@ namespace PrefMovieApi
                 // Creating button as title in library
                 Button titleButton = new Button()
                 {
-                    Content = item,
+                    Content = item.Item1,
                     Style = FindResource("TitleButton") as Style,
                 };
                 titleButton.Click += OpenElement;
@@ -83,11 +90,11 @@ namespace PrefMovieApi
 
                 // If item is longer than 25 characters than we will add Tooltip
                 ToolTip longTitle = null;
-                if (item.Length > 25)
+                if (item.Item1.Length > 25)
                 {
                     longTitle = new ToolTip()
                     {
-                        Content = item,
+                        Content = item.Item1,
                     };
                 }
                 titleButton.ToolTip = longTitle;

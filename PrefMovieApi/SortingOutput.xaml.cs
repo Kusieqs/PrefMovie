@@ -1,23 +1,11 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TMDbLib.Objects.Discover;
-using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
-using TMDbLib.Objects.TvShows;
 
 namespace PrefMovieApi
 {
@@ -270,7 +258,7 @@ namespace PrefMovieApi
 
                             dynamic movieOrTV = listOfElements[indexOfFilm];
 
-                            bool isInLibrary = Library.titles.Any(x => x == (listOfElements[indexOfFilm] is SearchMovie 
+                            bool isInLibrary = Library.titles.Any(x => x.Item1 == (listOfElements[indexOfFilm] is SearchMovie 
                             ? movieOrTV.Title : movieOrTV.Name));
 
                             string idOfElement;
@@ -293,7 +281,10 @@ namespace PrefMovieApi
                             Grid.SetColumn(itemStackPanel, j);
                             gridFor2Films.Children.Add(itemStackPanel);
 
-                            Config.IdForMovie.Add(idOfElement, movieOrTV is SearchMovie ? movieOrTV.Title : movieOrTV.Name);
+                            string title = movieOrTV is SearchMovie ? movieOrTV.Title : movieOrTV.Name;
+                            DateTime date = movieOrTV is SearchMovie ? movieOrTV.RelaseDate : movieOrTV.FirstAirDate;
+
+                            Config.IdForMovie.Add((title, date, idOfElement));
                             ++indexOfFilm;
                             if (indexOfFilm == listOfElements.Count)
                             {
