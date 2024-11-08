@@ -28,6 +28,6 @@ namespace PrefMovieApi
         public static Style styleForButton;
 
         // Special List to read movies
-        public static List<(string, DateTime, string)> IdForMovie = new List<(string, DateTime, string)>();
+        public static List<ElementParameters> IdForMovie = new List<ElementParameters>();
     }
 }

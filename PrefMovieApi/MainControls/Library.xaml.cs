@@ -22,7 +22,7 @@ namespace PrefMovieApi
     /// </summary>
     public partial class Library : UserControl
     {
-        public static List<(string,DateTime)> titles = new List<(string,DateTime)>();
+        public static List<ElementParameters> titles = new List<ElementParameters>();
         public static List<string> existingWindows = new List<string>();
         public static JsonFile jsonFile = new JsonFile();
         public Library()
@@ -32,42 +32,9 @@ namespace PrefMovieApi
             titles = jsonFile.DeserializeLibrary();
             if(titles.Count > 0 )
             {
-                MainWindow.logger.Log(LogLevel.Info, "In file is more than 0 titles");
+                MainWindow.logger.Log(LogLevel.Warn, "In file is more than 0 titles");
                 LoadFavoriteMovies();
             }
-        }
-
-        /// <summary>
-        /// Adding element from list and library
-        /// </summary>
-        /// <param name="id">id of button</param>
-        public void AddingNewElement(string id)
-        {
-            (string, DateTime) elementToList = Config.IdForMovie
-                .Where(x => x.Item3 == id)
-                .Select(x => (x.Item1, x.Item2))
-                .FirstOrDefault();
-
-            titles.Add(elementToList);
-
-            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {elementToList.Item1} {elementToList.Item2}");
-            LoadFavoriteMovies();
-        }
-
-        /// <summary>
-        /// Deleting element from list and library
-        /// </summary>
-        /// <param name="id">id of button</param>
-        public void DeletingNewElement(string id)
-        {
-            (string, DateTime) elementToList = Config.IdForMovie
-                .Where(x => x.Item3 == id)
-                .Select(x => (x.Item1, x.Item2))
-                .FirstOrDefault();
-            titles.Remove(elementToList);
-
-            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {elementToList.Item1} {elementToList.Item2}");
-            LoadFavoriteMovies();
         }
 
         /// <summary>
@@ -77,24 +44,23 @@ namespace PrefMovieApi
         {
             FavoriteMovies.Children.Clear();
 
-            foreach(var item in titles)
+            foreach (var item in titles)
             {
                 // Creating button as title in library
                 Button titleButton = new Button()
                 {
-                    Content = item.Item1,
+                    Content = item.Title,
                     Style = FindResource("TitleButton") as Style,
                 };
                 titleButton.Click += OpenElement;
 
-
                 // If item is longer than 25 characters than we will add Tooltip
                 ToolTip longTitle = null;
-                if (item.Item1.Length > 25)
+                if (item.Title.Length > 25)
                 {
                     longTitle = new ToolTip()
                     {
-                        Content = item.Item1,
+                        Content = item.Title,
                     };
                 }
                 titleButton.ToolTip = longTitle;
@@ -102,6 +68,33 @@ namespace PrefMovieApi
                 FavoriteMovies.Children.Add(titleButton);
             }
             jsonFile.SerializeLibrary();
+        }
+
+        /// <summary>
+        /// Adding element from list and library
+        /// </summary>
+        /// <param name="id">id of button</param>
+        public void AddingNewElement(string id)
+        {
+
+            ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
+            titles.Add(element);
+
+            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {element.Title} {element.Date}");
+            LoadFavoriteMovies();
+        }
+
+        /// <summary>
+        /// Deleting element from list and library
+        /// </summary>
+        /// <param name="id">id of button</param>
+        public void DeletingNewElement(string id)
+        {
+            ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
+            titles.Remove(element);
+
+            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Title} {element.Date}");
+            LoadFavoriteMovies();
         }
 
         public void OpenElement(object sender,  RoutedEventArgs e)

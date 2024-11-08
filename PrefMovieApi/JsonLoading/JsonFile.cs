@@ -33,19 +33,19 @@ namespace PrefMovieApi
         /// Deserialize file into list
         /// </summary>
         /// <returns>List of strings</returns>
-        public List<(string,DateTime)> DeserializeLibrary()
+        public List<ElementParameters> DeserializeLibrary()
         {
             MainWindow.logger.Log(LogLevel.Info, "DeserializeLibrary Activated");
             if (File.Exists(Config.PATH_TO_JSON))
             {
                 MainWindow.logger.Log(LogLevel.Info, "Reading file");
                 string readerFile = File.ReadAllText(Config.PATH_TO_JSON);
-                return JsonConvert.DeserializeObject<List<(string,DateTime)>>(readerFile);
+                return JsonConvert.DeserializeObject<List<ElementParameters>>(readerFile);
             }
             else
             {
                 MainWindow.logger.Log(LogLevel.Warn,"File doesn't exist");
-                return new List<(string,DateTime)>();
+                return new List<ElementParameters>();
             }
         }
     }

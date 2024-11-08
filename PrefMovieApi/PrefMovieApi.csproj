@@ -102,6 +102,7 @@
     <Compile Include="DetailInformation.xaml.cs">
       <DependentUpon>DetailInformation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ElementParameters.cs" />
     <Compile Include="GenreEnums\MediaType.cs" />
     <Compile Include="SettingContent\CreatingImage.cs" />
     <Compile Include="SettingContent\ElementInfo.cs" />

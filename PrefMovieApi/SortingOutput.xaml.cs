@@ -258,7 +258,7 @@ namespace PrefMovieApi
 
                             dynamic movieOrTV = listOfElements[indexOfFilm];
 
-                            bool isInLibrary = Library.titles.Any(x => x.Item1 == (listOfElements[indexOfFilm] is SearchMovie 
+                            bool isInLibrary = Library.titles.Any(x => x.Title == (listOfElements[indexOfFilm] is SearchMovie 
                             ? movieOrTV.Title : movieOrTV.Name));
 
                             string idOfElement;
@@ -282,9 +282,10 @@ namespace PrefMovieApi
                             gridFor2Films.Children.Add(itemStackPanel);
 
                             string title = movieOrTV is SearchMovie ? movieOrTV.Title : movieOrTV.Name;
+                            MediaType media = movieOrTV is SearchMovie ? MediaType.Movie : MediaType.TvShow;
                             DateTime date = movieOrTV is SearchMovie ? movieOrTV.RelaseDate : movieOrTV.FirstAirDate;
+                            Config.IdForMovie.Add(new ElementParameters(title,media,date,idOfElement));
 
-                            Config.IdForMovie.Add((title, date, idOfElement));
                             ++indexOfFilm;
                             if (indexOfFilm == listOfElements.Count)
                             {

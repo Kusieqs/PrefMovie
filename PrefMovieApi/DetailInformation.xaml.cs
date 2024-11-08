@@ -25,7 +25,6 @@ namespace PrefMovieApi
         private readonly string _title;
         public DetailInformation(string title)
         {
-            // TITLE jest pusty
             MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {title}"); 
             InitializeComponent();
             _title = title;
@@ -37,18 +36,12 @@ namespace PrefMovieApi
         {
             // Pobranie listy filmów
             List<SearchMovie> movies = await GetMovieByTitle();
-            if (movies.Count > 0)
-            {
-                MessageBox.Show("Znalezione filmy:");
-                foreach (var movie in movies)
-                {
-                    MessageBox.Show($"Tytuł: {movie.Title}, Data wydania: {movie.ReleaseDate}");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Nie znaleziono filmów o podanym tytule.");
-            }
+
+            SearchMovie movie = movies
+                .Where(x => x.ReleaseDate == Config.IdForMovie.Where(y => y.Title == _title).FirstOrDefault().Date)
+                .FirstOrDefault();
+
+            MessageBox.Show($"{movie.Title}, {movie.ReleaseDate}");
         }
 
         public async Task<List<SearchMovie>> GetMovieByTitle()
