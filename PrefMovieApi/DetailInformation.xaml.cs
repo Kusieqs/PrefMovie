@@ -22,12 +22,12 @@ namespace PrefMovieApi
     /// </summary>
     public partial class DetailInformation : Window
     {
-        private readonly string _title;
-        public DetailInformation(string title)
+        private readonly ElementParameters element;
+        public DetailInformation(ElementParameters element)
         {
-            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {title}"); 
+            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Title}");
             InitializeComponent();
-            _title = title;
+            this.element = element;
             _ = LoadDetails();
         }
 
@@ -38,22 +38,20 @@ namespace PrefMovieApi
             List<SearchMovie> movies = await GetMovieByTitle();
 
             SearchMovie movie = movies
-                .Where(x => x.ReleaseDate == Config.IdForMovie.Where(y => y.Title == _title).FirstOrDefault().Date)
+                .Where(x => x.ReleaseDate == Config.IdForMovie.Where(y => y.Title == element.Title).FirstOrDefault().Date)
                 .FirstOrDefault();
-
-            MessageBox.Show($"{movie.Title}, {movie.ReleaseDate}");
         }
 
         public async Task<List<SearchMovie>> GetMovieByTitle()
         {
-            var searchResults = await GeneralInfo.client.SearchMovieAsync(_title);
+            var searchResults = await GeneralInfo.client.SearchMovieAsync(element.Title);
             List<SearchMovie> movies = new List<SearchMovie>();
 
             if (searchResults.Results.Count > 0)
             {
                 foreach (var movie in searchResults.Results)
                 {
-                    if (string.Equals(movie.Title, _title, StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(movie.Title, element.Title, StringComparison.OrdinalIgnoreCase))
                     {
                         movies.Add(movie);  
                     }
@@ -69,7 +67,7 @@ namespace PrefMovieApi
             {
                 foreach (var tvShow in searchResults.Results)
                 {
-                    if (string.Equals(tvShow.Name, _title, StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(tvShow.Name, element.Title, StringComparison.OrdinalIgnoreCase))
                     {
                         return tvShow;
                     }

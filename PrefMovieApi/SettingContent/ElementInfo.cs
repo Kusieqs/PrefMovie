@@ -85,25 +85,24 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="movieOrTvShow"></param>
         /// <returns>Poster</returns>
-        public static Rectangle PosterDiploy(dynamic movieOrTvShow)
+        public static Button PosterDiploy(dynamic movieOrTvShow)
         {
-            // Setting poster to posterBrush
+            // Tworzenie ImageBrush dla plakatu
             ImageBrush posterBrush = new ImageBrush
             {
                 ImageSource = CreatingImage.SetPoster(movieOrTvShow),
                 Stretch = Stretch.UniformToFill
             };
 
-            // Create a Rectangle to display the image with rounded corners
-            Rectangle posterRectangle = new Rectangle
+            // Tworzenie przycisku
+            Button button = new Button
             {
-                RadiusX = 10,
-                RadiusY = 10,
-                Width = 200,
-                Fill = posterBrush
+                Style = Config.styleForPosterButton,
+                Background = posterBrush,
             };
+            button.Click += ClickPosterButton;
 
-            return posterRectangle;
+            return button;
         }
 
         /// <summary>
@@ -306,6 +305,17 @@ namespace PrefMovieApi
                 MainWindow.library.AddingNewElement(button.Name);
             }
 
+        }
+
+        private static void ClickPosterButton(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            MessageBox.Show($"{button.Content} {button.Tag}");
+
+            ElementParameters element = Config.IdForMovie.Where(x => x.Id == button.Name).FirstOrDefault();
+            MessageBox.Show($"{element.Title} {element.Date}");
+            DetailInformation detailInformation = new DetailInformation(element);
+            detailInformation.Show();
         }
 
     }

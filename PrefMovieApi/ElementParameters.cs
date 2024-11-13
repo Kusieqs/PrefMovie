@@ -9,10 +9,10 @@ namespace PrefMovieApi
 {
     public class ElementParameters
     {
-        public readonly string Title;
-        public readonly MediaType MediaType;
-        public readonly DateTime Date;
-        public readonly string Id;
+        public string Title { get; set; }
+        public MediaType MediaType { get; set; }
+        public DateTime Date { get; set; }
+        public string Id { get; set; }
         public ElementParameters(string title, MediaType mediaType, DateTime date, string id)
         {
             this.Title = title;

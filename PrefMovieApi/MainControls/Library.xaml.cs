@@ -22,7 +22,7 @@ namespace PrefMovieApi
     /// </summary>
     public partial class Library : UserControl
     {
-        public static List<ElementParameters> titles = new List<ElementParameters>();
+        public static List<ElementParameters> titles;
         public static List<string> existingWindows = new List<string>();
         public static JsonFile jsonFile = new JsonFile();
         public Library()
@@ -32,7 +32,7 @@ namespace PrefMovieApi
             titles = jsonFile.DeserializeLibrary();
             if(titles.Count > 0 )
             {
-                MainWindow.logger.Log(LogLevel.Warn, "In file is more than 0 titles");
+                MainWindow.logger.Log(LogLevel.Info, "In file is more than 0 titles");
                 LoadFavoriteMovies();
             }
         }
@@ -76,7 +76,6 @@ namespace PrefMovieApi
         /// <param name="id">id of button</param>
         public void AddingNewElement(string id)
         {
-
             ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
             titles.Add(element);
 
@@ -100,11 +99,13 @@ namespace PrefMovieApi
         public void OpenElement(object sender,  RoutedEventArgs e)
         {
             MainWindow.logger.Log(LogLevel.Info, "Opening new element as window");
-            string title = (string)(sender as Button).Content;
-            
-            if(!existingWindows.Any(x => x == title))
+            Button button = sender as Button;
+            MessageBox.Show($"{button.Content}");
+
+            ElementParameters element = titles.Where(x => x.Id == button.Tag).FirstOrDefault();
+            if(!existingWindows.Any(x => x == element.Title))
             {
-                var informationAboutElement = new DetailInformation(title);
+                var informationAboutElement = new DetailInformation(element);
                 informationAboutElement.Show();
             }
             else

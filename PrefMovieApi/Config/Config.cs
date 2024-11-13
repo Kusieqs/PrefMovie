@@ -24,8 +24,11 @@ namespace PrefMovieApi
         // Style for infomration about element
         public static Style styleThemeOfElement;
 
-        //Style for buttom
+        // Style for button
         public static Style styleForButton;
+
+        // Style for poster button
+        public static Style styleForPosterButton;
 
         // Special List to read movies
         public static List<ElementParameters> IdForMovie = new List<ElementParameters>();

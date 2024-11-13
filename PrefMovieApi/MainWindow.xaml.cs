@@ -30,6 +30,7 @@ namespace PrefMovieApi
 
             Config.styleForButton = FindResource("ButtonImage") as Style;
             Config.styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
+            Config.styleForPosterButton = FindResource("PosterButton") as Style;
 
             // Logger checking
             if (logger is FileLogger && !File.Exists(Config.PATH_TO_LOG))
