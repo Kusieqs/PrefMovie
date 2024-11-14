@@ -44,14 +44,14 @@ namespace PrefMovieApi
                 };
 
                 // Grid for poster with average vote and button
+                string idOfElement;
                 Grid posterGrid = new Grid();
-                posterGrid.Children.Add(PosterDiploy(movieOrTvShow));
+                posterGrid.Children.Add(PosterDiploy(out idOfElement,movieOrTvShow));
                 posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
 
                 bool isInLibrary = Library.titles.Any(x => x.Title == (movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name));
 
-                string idOfElement;
-                posterGrid.Children.Add(FavortieElementDiploy(out idOfElement, isInLibrary));
+                posterGrid.Children.Add(FavortieElementDiploy(idOfElement, isInLibrary));
 
                 // Add the bordered poster to the item stack panel
                 itemStackPanel.Children.Add(posterGrid);
@@ -85,8 +85,9 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="movieOrTvShow"></param>
         /// <returns>Poster</returns>
-        public static Button PosterDiploy(dynamic movieOrTvShow)
+        public static Button PosterDiploy(out string idOfElement,dynamic movieOrTvShow)
         {
+            idOfElement = $"Id{++id}";
             // Tworzenie ImageBrush dla plakatu
             ImageBrush posterBrush = new ImageBrush
             {
@@ -97,6 +98,7 @@ namespace PrefMovieApi
             // Tworzenie przycisku
             Button button = new Button
             {
+                Tag = idOfElement,
                 Style = Config.styleForPosterButton,
                 Background = posterBrush,
             };
@@ -144,10 +146,8 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="idOfElement">name of id of element</param>
         /// <returns>Favorite button star</returns>
-        public static Button FavortieElementDiploy(out string idOfElement, bool isInLibrary)
+        public static Button FavortieElementDiploy(string idOfElement, bool isInLibrary)
         {
-            // Creating id of button
-            idOfElement = $"Id{++id}";
 
             // Creating button as star
             Button favoriteButton = new Button()
@@ -312,7 +312,7 @@ namespace PrefMovieApi
             Button button = sender as Button;
             MessageBox.Show($"{button.Content} {button.Tag}");
 
-            ElementParameters element = Config.IdForMovie.Where(x => x.Id == button.Name).FirstOrDefault();
+            ElementParameters element = Config.IdForMovie.Where(x => x.Id == button.Tag.ToString()).FirstOrDefault();
             MessageBox.Show($"{element.Title} {element.Date}");
             DetailInformation detailInformation = new DetailInformation(element);
             detailInformation.Show();

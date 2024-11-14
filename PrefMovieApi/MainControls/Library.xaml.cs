@@ -50,6 +50,7 @@ namespace PrefMovieApi
                 Button titleButton = new Button()
                 {
                     Content = item.Title,
+                    Tag = item.Id,
                     Style = FindResource("TitleButton") as Style,
                 };
                 titleButton.Click += OpenElement;
@@ -100,9 +101,9 @@ namespace PrefMovieApi
         {
             MainWindow.logger.Log(LogLevel.Info, "Opening new element as window");
             Button button = sender as Button;
-            MessageBox.Show($"{button.Content}");
 
-            ElementParameters element = titles.Where(x => x.Id == button.Tag).FirstOrDefault();
+            ElementParameters element = titles.Where(x => x.Id == button.Tag.ToString()).FirstOrDefault();
+
             if(!existingWindows.Any(x => x == element.Title))
             {
                 var informationAboutElement = new DetailInformation(element);

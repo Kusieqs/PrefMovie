@@ -253,7 +253,8 @@ namespace PrefMovieApi
 
                             // Grid for poster with average vote and button
                             Grid posterGrid = new Grid();
-                            posterGrid.Children.Add(ElementInfo.PosterDiploy(listOfElements[indexOfFilm]));
+                            string idOfElement;
+                            posterGrid.Children.Add(ElementInfo.PosterDiploy(out idOfElement,listOfElements[indexOfFilm]));
                             posterGrid.Children.Add(ElementInfo.AverageRateDiploy(listOfElements[indexOfFilm]));
 
                             dynamic movieOrTV = listOfElements[indexOfFilm];
@@ -261,8 +262,7 @@ namespace PrefMovieApi
                             bool isInLibrary = Library.titles.Any(x => x.Title == (listOfElements[indexOfFilm] is SearchMovie 
                             ? movieOrTV.Title : movieOrTV.Name));
 
-                            string idOfElement;
-                            posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(out idOfElement, isInLibrary));
+                            posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(idOfElement, isInLibrary));
 
                             // Add the bordered poster to the item stack panel
                             itemStackPanel.Children.Add(posterGrid);

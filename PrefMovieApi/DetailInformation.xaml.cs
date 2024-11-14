@@ -28,54 +28,7 @@ namespace PrefMovieApi
             MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Title}");
             InitializeComponent();
             this.element = element;
-            _ = LoadDetails();
-        }
-
-
-        private async Task LoadDetails()
-        {
-            // Pobranie listy filmów
-            List<SearchMovie> movies = await GetMovieByTitle();
-
-            SearchMovie movie = movies
-                .Where(x => x.ReleaseDate == Config.IdForMovie.Where(y => y.Title == element.Title).FirstOrDefault().Date)
-                .FirstOrDefault();
-        }
-
-        public async Task<List<SearchMovie>> GetMovieByTitle()
-        {
-            var searchResults = await GeneralInfo.client.SearchMovieAsync(element.Title);
-            List<SearchMovie> movies = new List<SearchMovie>();
-
-            if (searchResults.Results.Count > 0)
-            {
-                foreach (var movie in searchResults.Results)
-                {
-                    if (string.Equals(movie.Title, element.Title, StringComparison.OrdinalIgnoreCase))
-                    {
-                        movies.Add(movie);  
-                    }
-                }
-            }
-            return movies; 
-        }
-        public SearchTv GetTvShowByTitle()
-        {
-            var searchResults = GeneralInfo.client.DiscoverTvShowsAsync().Query().Result;
-
-            if (searchResults.Results.Count > 0)
-            {
-                foreach (var tvShow in searchResults.Results)
-                {
-                    if (string.Equals(tvShow.Name, element.Title, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return tvShow;
-                    }
-                }
-            }
-            return null; 
         }
     }
-
 }
 
