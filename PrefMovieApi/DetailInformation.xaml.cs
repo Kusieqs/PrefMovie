@@ -28,6 +28,12 @@ namespace PrefMovieApi
             MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Title}");
             InitializeComponent();
             this.element = element;
+            MessageBox.Show($"{element.MainId}");
+            /*
+             * Trzeba sprawdzic jak wyszukac dany film/serial po ID (MainId)
+             * Rozdzielic to co to jest
+             * Usadowic elementy oraz ogarnac opis filmu
+             */
         }
     }
 }

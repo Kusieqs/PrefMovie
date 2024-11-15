@@ -74,7 +74,7 @@ namespace PrefMovieApi
                 MediaType media = movieOrTvShow is SearchMovie ? MediaType.Movie : MediaType.TvShow;
                 DateTime relaseDate = movieOrTvShow is SearchMovie ? movieOrTvShow.ReleaseDate : movieOrTvShow.FirstAirDate;
 
-                Config.IdForMovie.Add(new ElementParameters(title,media,relaseDate, idOfElement));
+                Config.IdForMovie.Add(new ElementParameters(title, media, relaseDate, idOfElement, movieOrTvShow.Id));
             }
 
             return mainStackPanel;

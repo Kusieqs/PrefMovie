@@ -13,12 +13,14 @@ namespace PrefMovieApi
         public MediaType MediaType { get; set; }
         public DateTime Date { get; set; }
         public string Id { get; set; }
-        public ElementParameters(string title, MediaType mediaType, DateTime date, string id)
+        public int MainId { get; set; }
+        public ElementParameters(string title, MediaType mediaType, DateTime date, string id, int mainId)
         {
             this.Title = title;
             this.MediaType = mediaType;
             this.Date = date;
             this.Id = id;
+            this.MainId = mainId;
         }
         public ElementParameters(ElementParameters e1)
         {
@@ -26,6 +28,7 @@ namespace PrefMovieApi
             this.MediaType = e1.MediaType;
             this.Date = e1.Date;
             this.Id = e1.Id;
+            this.MainId = e1.MainId;
         }
         public ElementParameters() { }
     }

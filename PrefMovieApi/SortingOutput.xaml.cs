@@ -284,7 +284,7 @@ namespace PrefMovieApi
                             string title = movieOrTV is SearchMovie ? movieOrTV.Title : movieOrTV.Name;
                             MediaType media = movieOrTV is SearchMovie ? MediaType.Movie : MediaType.TvShow;
                             DateTime date = movieOrTV is SearchMovie ? movieOrTV.RelaseDate : movieOrTV.FirstAirDate;
-                            Config.IdForMovie.Add(new ElementParameters(title,media,date,idOfElement));
+                            Config.IdForMovie.Add(new ElementParameters(title, media, date, idOfElement, movieOrTV.Id));
 
                             ++indexOfFilm;
                             if (indexOfFilm == listOfElements.Count)
