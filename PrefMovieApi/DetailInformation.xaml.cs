@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,18 +23,78 @@ namespace PrefMovieApi
     /// </summary>
     public partial class DetailInformation : Window
     {
-        private readonly ElementParameters element;
+        private readonly ElementParameters element; // Czy to bedzie potrzebne?
         public DetailInformation(ElementParameters element)
         {
             MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Title}");
-            InitializeComponent();
             this.element = element;
-            MessageBox.Show($"{element.MainId}");
-            /*
-             * Trzeba sprawdzic jak wyszukac dany film/serial po ID (MainId)
-             * Rozdzielic to co to jest
-             * Usadowic elementy oraz ogarnac opis filmu
-             */
+            InitializeComponent();
+            LoadButton();
+
+            if(element.MediaType == MediaType.Movie)
+            {
+                var movie = GeneralInfo.client.GetMovieAsync(element.MainId).Result;
+                SettingContent(movie);
+                
+            }
+            else
+            {
+                var tvShow = GeneralInfo.client.GetTvShowAsync(element.MainId).Result;
+                SettingContent(tvShow);
+            }
+        }
+
+
+        private void SettingContent(dynamic elementInfo)
+        {
+            // Setting title on the top of window
+            Title.Text = elementInfo is TvShow ? elementInfo.Name : elementInfo.Title;
+
+            // Setting rate on the top of widnow
+            Rate.Text = elementInfo.VoteAverage == 10 ? elementInfo.VoteAverage.ToString("N0") : elementInfo.VoteAverage.ToString("N1");
+
+        }
+
+        private void LoadButton()
+        {
+            if(Library.titles.Any(x => x.MainId == element.MainId))
+            {
+                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+            }
+            else
+            {
+                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+            }
+        }
+
+        private void ExitWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+        private void FavoritClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Feature to allows us to move our app throw the screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BorderClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (e.ChangedButton == MouseButton.Left)
+                {
+                    MainWindow.logger.Log(LogLevel.Info, "Window of element is changing place on screen");
+                    this.DragMove();
+                }
+            }
+            catch (Exception ex)
+            {
+                MainWindow.logger.Log(LogLevel.Error, ex.ToString());
+            }
         }
     }
 }

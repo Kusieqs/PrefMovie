@@ -310,10 +310,7 @@ namespace PrefMovieApi
         private static void ClickPosterButton(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            MessageBox.Show($"{button.Content} {button.Tag}");
-
             ElementParameters element = Config.IdForMovie.Where(x => x.Id == button.Tag.ToString()).FirstOrDefault();
-            MessageBox.Show($"{element.Title} {element.Date}");
             DetailInformation detailInformation = new DetailInformation(element);
             detailInformation.Show();
         }
