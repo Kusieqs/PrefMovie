@@ -49,7 +49,7 @@ namespace PrefMovieApi
                 posterGrid.Children.Add(PosterDiploy(out idOfElement,movieOrTvShow));
                 posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
 
-                bool isInLibrary = Library.titles.Any(x => x.Title == (movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name));
+                bool isInLibrary = Library.titles.Any(x => x.Id == movieOrTvShow.Id);
 
                 posterGrid.Children.Add(FavortieElementDiploy(idOfElement, isInLibrary));
 
@@ -70,11 +70,9 @@ namespace PrefMovieApi
                 mainStackPanel.Children.Add(itemStackPanel);
 
 
-                string title = movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name;
                 MediaType media = movieOrTvShow is SearchMovie ? MediaType.Movie : MediaType.TvShow;
-                DateTime relaseDate = movieOrTvShow is SearchMovie ? movieOrTvShow.ReleaseDate : movieOrTvShow.FirstAirDate;
 
-                Config.IdForMovie.Add(new ElementParameters(title, media, relaseDate, idOfElement, movieOrTvShow.Id));
+                Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id));
             }
 
             return mainStackPanel;
@@ -87,7 +85,7 @@ namespace PrefMovieApi
         /// <returns>Poster</returns>
         public static Button PosterDiploy(out string idOfElement,dynamic movieOrTvShow)
         {
-            idOfElement = $"Id{++id}";
+            idOfElement = $"{movieOrTvShow.Id}";
             // Tworzenie ImageBrush dla plakatu
             ImageBrush posterBrush = new ImageBrush
             {
@@ -246,10 +244,7 @@ namespace PrefMovieApi
         private static void FavoriteButtonMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
-
-            string title = Config.IdForMovie.Where(x => x.Id == button.Name).Select(x => x.Title).FirstOrDefault();
-
-            if (Library.titles.Any(x => x.Title == title))
+            if (Library.titles.Any(x => x.Id == (int)button.Tag))
             {
                 // Creating image as star
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
@@ -269,8 +264,7 @@ namespace PrefMovieApi
         private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
-            string title = Config.IdForMovie.Where(x => x.Id == button.Name).Select(x => x.Title).FirstOrDefault();
-            if(Library.titles.Any(x => x.Title == title))
+            if(Library.titles.Any(x => x.Id == (int)button.Tag))
             {
                 // Creating image as star
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
@@ -290,19 +284,17 @@ namespace PrefMovieApi
         private static void AddingElementToLibraryOrDeleting(object sender, RoutedEventArgs e) 
         {
             Button button = sender as Button;
-            string title = Config.IdForMovie.Where(x => x.Id == button.Name).Select(x => x.Title).FirstOrDefault();
-
-            if(Library.titles.Any(x => x.Title == title))
+            if(Library.titles.Any(x => x.Id == (int)button.Tag))
             {
                 MainWindow.logger.Log(LogLevel.Info, "Deleting element");
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
-                MainWindow.library.DeletingNewElement(button.Name);
+                MainWindow.library.DeletingNewElement((int)button.Tag);
             }
             else
             {
                 MainWindow.logger.Log(LogLevel.Info, "Adding element");
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
-                MainWindow.library.AddingNewElement(button.Name);
+                MainWindow.library.AddingNewElement((int)button.Tag);
             }
 
         }
@@ -310,7 +302,7 @@ namespace PrefMovieApi
         private static void ClickPosterButton(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            ElementParameters element = Config.IdForMovie.Where(x => x.Id == button.Tag.ToString()).FirstOrDefault();
+            ElementParameters element = Config.IdForMovie.Where(x => x.Id == (int)button.Tag).FirstOrDefault();
             DetailInformation detailInformation = new DetailInformation(element);
             detailInformation.Show();
         }

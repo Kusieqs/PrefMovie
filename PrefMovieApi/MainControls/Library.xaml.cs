@@ -23,7 +23,7 @@ namespace PrefMovieApi
     public partial class Library : UserControl
     {
         public static List<ElementParameters> titles;
-        public static List<string> existingWindows = new List<string>();
+        public static List<string> existingWindows = new List<string>(); // !!!!!!!!!!!!!!!!
         public static JsonFile jsonFile = new JsonFile();
         public Library()
         {
@@ -43,6 +43,8 @@ namespace PrefMovieApi
         public void LoadFavoriteMovies()
         {
             FavoriteMovies.Children.Clear();
+
+
 
             foreach (var item in titles)
             {
@@ -75,12 +77,12 @@ namespace PrefMovieApi
         /// Adding element from list and library
         /// </summary>
         /// <param name="id">id of button</param>
-        public void AddingNewElement(string id)
+        public void AddingNewElement(int id)
         {
             ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
             titles.Add(element);
 
-            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {element.Title} {element.Date}");
+            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {element.Id}");
             LoadFavoriteMovies();
         }
 
@@ -88,12 +90,12 @@ namespace PrefMovieApi
         /// Deleting element from list and library
         /// </summary>
         /// <param name="id">id of button</param>
-        public void DeletingNewElement(string id)
+        public void DeletingNewElement(int id)
         {
             ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
             titles.Remove(element);
 
-            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Title} {element.Date}");
+            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Id}");
             LoadFavoriteMovies();
         }
 
@@ -102,9 +104,9 @@ namespace PrefMovieApi
             MainWindow.logger.Log(LogLevel.Info, "Opening new element as window");
             Button button = sender as Button;
 
-            ElementParameters element = titles.Where(x => x.Id == button.Tag.ToString()).FirstOrDefault();
+            ElementParameters element = titles.Where(x => x.Id == (int)button.Tag).FirstOrDefault();
 
-            if(!existingWindows.Any(x => x == element.Title))
+            if(!existingWindows.Any())
             {
                 var informationAboutElement = new DetailInformation(element);
                 informationAboutElement.Show();

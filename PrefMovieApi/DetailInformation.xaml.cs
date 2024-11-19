@@ -27,20 +27,20 @@ namespace PrefMovieApi
         private bool IsButtonEnter;
         public DetailInformation(ElementParameters element)
         {
-            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Title}");
+            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
             this.element = element;
             InitializeComponent();
             LoadButton();
 
             if(element.MediaType == MediaType.Movie)
             {
-                var movie = GeneralInfo.client.GetMovieAsync(element.MainId).Result;
+                var movie = GeneralInfo.client.GetMovieAsync(element.Id).Result;
                 SettingContent(movie);
                 
             }
             else
             {
-                var tvShow = GeneralInfo.client.GetTvShowAsync(element.MainId).Result;
+                var tvShow = GeneralInfo.client.GetTvShowAsync(element.Id).Result;
                 SettingContent(tvShow);
             }
         }
@@ -58,7 +58,7 @@ namespace PrefMovieApi
 
         private void LoadButton()
         {
-            if(Library.titles.Any(x => x.MainId == element.MainId))
+            if(Library.titles.Any(x => x.Id == element.Id))
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
                 IsButtonEnter = true;
