@@ -24,6 +24,7 @@ namespace PrefMovieApi
     public partial class DetailInformation : Window
     {
         private readonly ElementParameters element; // Czy to bedzie potrzebne?
+        private bool IsButtonEnter;
         public DetailInformation(ElementParameters element)
         {
             MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Title}");
@@ -60,10 +61,12 @@ namespace PrefMovieApi
             if(Library.titles.Any(x => x.MainId == element.MainId))
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                IsButtonEnter = true;
             }
             else
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                IsButtonEnter = false;
             }
         }
 
@@ -71,9 +74,46 @@ namespace PrefMovieApi
         {
             Close();
         }
+
         private void FavoritClick(object sender, RoutedEventArgs e)
         {
+            if(IsButtonEnter)
+            {
+                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                IsButtonEnter = false;
+                MainWindow.library.DeletingNewElement(element.Id);
+            }
+            else
+            {
+                MessageBox.Show("XS");
+                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                IsButtonEnter = true;
+                MainWindow.library.AddingNewElement(element.Id);
+            }
 
+        }
+
+        private void FavoritMouseEnter(object sender, MouseEventArgs e)
+        {
+            if(IsButtonEnter)
+            {
+                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+            }
+            else
+            {
+                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+            }
+        }
+        private void FavoritMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (IsButtonEnter)
+            {
+                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+            }
+            else
+            {
+                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+            }
         }
 
         /// <summary>
