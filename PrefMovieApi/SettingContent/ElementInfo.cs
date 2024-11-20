@@ -50,7 +50,6 @@ namespace PrefMovieApi
                 posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
 
                 bool isInLibrary = Library.titles.Any(x => x.Id == movieOrTvShow.Id);
-
                 posterGrid.Children.Add(FavortieElementDiploy(idOfElement, isInLibrary));
 
                 // Add the bordered poster to the item stack panel
@@ -69,10 +68,10 @@ namespace PrefMovieApi
                 itemStackPanel.Children.Add(informationMovie);
                 mainStackPanel.Children.Add(itemStackPanel);
 
-
                 MediaType media = movieOrTvShow is SearchMovie ? MediaType.Movie : MediaType.TvShow;
+                string title = movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name;
 
-                Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id));
+                Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title));
             }
 
             return mainStackPanel;
@@ -151,7 +150,7 @@ namespace PrefMovieApi
             Button favoriteButton = new Button()
             {
                 Content = CreatingImage.SettingImage(isInLibrary == true ? "/PrefMovieApi;component/Images/star.png" : "/PrefMovieApi;component/Images/emptyStar.png"),
-                Name = idOfElement,
+                Tag = idOfElement.ToString(),
                 Width = 30,
                 Height = 30,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -244,7 +243,7 @@ namespace PrefMovieApi
         private static void FavoriteButtonMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
-            if (Library.titles.Any(x => x.Id == (int)button.Tag))
+            if (Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
                 // Creating image as star
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
@@ -264,7 +263,7 @@ namespace PrefMovieApi
         private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
-            if(Library.titles.Any(x => x.Id == (int)button.Tag))
+            if(Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
                 // Creating image as star
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
@@ -283,18 +282,19 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private static void AddingElementToLibraryOrDeleting(object sender, RoutedEventArgs e) 
         {
+
             Button button = sender as Button;
-            if(Library.titles.Any(x => x.Id == (int)button.Tag))
+            if(Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
                 MainWindow.logger.Log(LogLevel.Info, "Deleting element");
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
-                MainWindow.library.DeletingNewElement((int)button.Tag);
+                MainWindow.library.DeletingNewElement(int.Parse(button.Tag.ToString()));
             }
             else
             {
                 MainWindow.logger.Log(LogLevel.Info, "Adding element");
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
-                MainWindow.library.AddingNewElement((int)button.Tag);
+                MainWindow.library.AddingNewElement(int.Parse(button.Tag.ToString()));
             }
 
         }
@@ -302,7 +302,7 @@ namespace PrefMovieApi
         private static void ClickPosterButton(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            ElementParameters element = Config.IdForMovie.Where(x => x.Id == (int)button.Tag).FirstOrDefault();
+            ElementParameters element = Config.IdForMovie.Where(x => x.Id == int.Parse(button.Tag.ToString())).FirstOrDefault();
             DetailInformation detailInformation = new DetailInformation(element);
             detailInformation.Show();
         }

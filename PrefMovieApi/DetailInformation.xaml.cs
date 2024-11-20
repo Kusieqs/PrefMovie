@@ -85,7 +85,6 @@ namespace PrefMovieApi
             }
             else
             {
-                MessageBox.Show("XS");
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
                 IsButtonEnter = true;
                 MainWindow.library.AddingNewElement(element.Id);

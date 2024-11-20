@@ -283,7 +283,8 @@ namespace PrefMovieApi
 
 
                             MediaType media = movieOrTV is SearchMovie ? MediaType.Movie : MediaType.TvShow;
-                            Config.IdForMovie.Add(new ElementParameters(media, movieOrTV.Id));
+                            string title = movieOrTV is SearchMovie ? movieOrTV.Title : movieOrTV.Name;
+                            Config.IdForMovie.Add(new ElementParameters(media, movieOrTV.Id, title));
 
                             ++indexOfFilm;
                             if (indexOfFilm == listOfElements.Count)

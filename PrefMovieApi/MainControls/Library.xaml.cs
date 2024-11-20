@@ -22,7 +22,7 @@ namespace PrefMovieApi
     /// </summary>
     public partial class Library : UserControl
     {
-        public static List<ElementParameters> titles;
+        public static List<ElementParameters> titles = new List<ElementParameters>();
         public static List<string> existingWindows = new List<string>(); // !!!!!!!!!!!!!!!!
         public static JsonFile jsonFile = new JsonFile();
         public Library()
@@ -43,8 +43,6 @@ namespace PrefMovieApi
         public void LoadFavoriteMovies()
         {
             FavoriteMovies.Children.Clear();
-
-
 
             foreach (var item in titles)
             {
@@ -92,8 +90,11 @@ namespace PrefMovieApi
         /// <param name="id">id of button</param>
         public void DeletingNewElement(int id)
         {
+            /// TODO: Problem z usunieciem danego elementu z listy? nie porównuje mi dobrego elemntu
             ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
-            titles.Remove(element);
+            List<ElementParameters> newList = titles.Where(x => x.Id != id).ToList();
+
+            titles = newList.Intersect(titles).ToList();
 
             MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Id}");
             LoadFavoriteMovies();
