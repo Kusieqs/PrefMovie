@@ -54,6 +54,9 @@ namespace PrefMovieApi
             // Setting rate on the top of widnow
             Rate.Text = elementInfo.VoteAverage == 10 ? elementInfo.VoteAverage.ToString("N0") : elementInfo.VoteAverage.ToString("N1");
 
+            // Setting poster to border
+            Poster.ImageSource = CreatingImage.SetPoster(elementInfo);
+
         }
 
         private void LoadButton()

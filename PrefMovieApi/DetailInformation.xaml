@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PrefMovieApi"
         mc:Ignorable="d" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Title="DetailInformation" Height="500" Width="750"
+        Title="DetailInformation" Height="550" Width="750"
         FontFamily="pack://application:,,,/Font/#Varela Round">
     <Border CornerRadius="20" Background="White">
         <Grid>
@@ -43,12 +43,20 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid x:Name="PosterGrid" Grid.Row="0">
+                    <Grid x:Name="PosterGrid" Grid.Column="0">
+                        <Border Margin="10,10,10,90" CornerRadius="10">
+                            <Rectangle RadiusX="10" RadiusY="10">
+                                <Rectangle.Fill>
+                                    <ImageBrush x:Name="Poster" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Border>
+                    </Grid>
+                    <Grid x:Name="DescriptionGrid" Grid.Column="1">
                         
                     </Grid>
-                    
                 </Grid>
             </Border>
         </Grid>
