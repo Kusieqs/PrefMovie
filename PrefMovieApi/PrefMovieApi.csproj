@@ -99,7 +99,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config\Config.cs" />
-    <Compile Include="DetailInformation.xaml.cs">
+    <Compile Include="DetailInformationWindow\DetailInformation.xaml.cs">
       <DependentUpon>DetailInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="ElementParameters.cs" />
@@ -113,14 +113,14 @@
     </Compile>
     <Compile Include="SettingContent\SettingElements.cs" />
     <Compile Include="GenreEnums\TvShowGenre.cs" />
-    <Compile Include="MainControls\Sorting.xaml.cs">
+    <Compile Include="MainControls\Sorting\Sorting.xaml.cs">
       <DependentUpon>Sorting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SortingOutput.xaml.cs">
+    <Compile Include="MainControls\Sorting\SortingOutput.xaml.cs">
       <DependentUpon>SortingOutput.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SortingParameters.cs" />
-    <Page Include="DetailInformation.xaml">
+    <Compile Include="MainControls\Sorting\SortingParameters.cs" />
+    <Page Include="DetailInformationWindow\DetailInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,11 +155,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainControls\Sorting.xaml">
+    <Page Include="MainControls\Sorting\Sorting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SortingOutput.xaml">
+    <Page Include="MainControls\Sorting\SortingOutput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

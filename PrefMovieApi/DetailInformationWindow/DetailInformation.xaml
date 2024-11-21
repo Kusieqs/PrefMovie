@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PrefMovieApi"
         mc:Ignorable="d" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Title="DetailInformation" Height="550" Width="750"
+        Title="DetailInformation" Height="450" Width="750"
         FontFamily="pack://application:,,,/Font/#Varela Round">
     <Border CornerRadius="20" Background="White">
         <Grid>
@@ -46,7 +46,7 @@
                         <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
                     <Grid x:Name="PosterGrid" Grid.Column="0">
-                        <Border Margin="10,10,10,90" CornerRadius="10">
+                        <Border Margin="10,10,10,10" CornerRadius="10">
                             <Rectangle RadiusX="10" RadiusY="10">
                                 <Rectangle.Fill>
                                     <ImageBrush x:Name="Poster" />
@@ -54,8 +54,48 @@
                             </Rectangle>
                         </Border>
                     </Grid>
-                    <Grid x:Name="DescriptionGrid" Grid.Column="1">
-                        
+                    <Grid x:Name="DescriptionGrid" Grid.Column="1" Margin="10,10,10,10" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="230"/>
+                            <RowDefinition Height="140"/>
+                        </Grid.RowDefinitions>
+
+                        <ScrollViewer Grid.Row="0">
+                            <TextBox x:Name="Overview" Background="Transparent"/>
+                        </ScrollViewer>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Text="Vote average" Grid.Row="0"/>
+                            <TextBlock x:Name="AverageVote" Text="" Grid.Row="1"/>
+
+                            <TextBlock Text="Relase date" Grid.Column="1" Grid.Row="0"/>
+                            <TextBlock x:Name="RelaseDate" Text="" Grid.Column="1" Grid.Row="1"/>
+
+                            <TextBlock Text="Popularity" Grid.Row="2"/>
+                            <TextBlock x:Name="Popularity" Text="" Grid.Row="3"/>
+
+                            <TextBlock Text="Adult" Grid.Column="1" Grid.Row="2"/>
+                            <TextBlock x:Name="Adult" Text="" Grid.Column="1" Grid.Row="3"/>
+
+                            <TextBlock Text="Genres" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"/>
+                            <TextBlock x:Name="Genres" Text="" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Border>
