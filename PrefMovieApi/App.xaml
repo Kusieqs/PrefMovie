@@ -128,5 +128,13 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Width" Value="180"/>
         </Style>
+
+        <Style x:Key="DescriptionTheme" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
     </Application.Resources>
 </Application>

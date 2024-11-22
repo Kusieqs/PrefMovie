@@ -32,11 +32,10 @@ namespace PrefMovieApi
             InitializeComponent();
             LoadButton();
 
-            if(element.MediaType == MediaType.Movie)
+            if (element.MediaType == MediaType.Movie)
             {
                 var movie = GeneralInfo.client.GetMovieAsync(element.Id).Result;
                 SettingContent(movie);
-                
             }
             else
             {
@@ -57,11 +56,33 @@ namespace PrefMovieApi
             // Setting poster to border
             Poster.ImageSource = CreatingImage.SetPoster(elementInfo);
 
+            // Setting overview
+            Overview.Text = elementInfo.Overview;
+
+            //Setting average vote
+            AverageVote.Text = elementInfo.VoteAverage == 10 ? elementInfo.VoteAverage.ToString("N0") : elementInfo.VoteAverage.ToString("N1");
+
+            // Setting popularity
+            Popularity.Text = elementInfo.Popularity.ToString();
+
+            // Setting date
+            ReleaseDate.Text = elementInfo is TvShow ? elementInfo.FirstAirDate.ToString() : elementInfo.ReleaseDate.ToString();
+
+            // Setting adult
+            Adult.Text = elementInfo.Adult.ToString();
+
+            // Genres
+            List<Genre> genres = elementInfo.Genres;
+            string[] description = genres.Select(x => x.Name).ToArray();
+            Genres.Text = string.Join(",", description);
+
         }
 
         private void LoadButton()
         {
-            if(Library.titles.Any(x => x.Id == element.Id))
+            Close.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/closeIcon.png", UriKind.Relative));
+
+            if (Library.titles.Any(x => x.Id == element.Id))
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
                 IsButtonEnter = true;
@@ -80,7 +101,7 @@ namespace PrefMovieApi
 
         private void FavoritClick(object sender, RoutedEventArgs e)
         {
-            if(IsButtonEnter)
+            if (IsButtonEnter)
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
                 IsButtonEnter = false;
@@ -97,7 +118,7 @@ namespace PrefMovieApi
 
         private void FavoritMouseEnter(object sender, MouseEventArgs e)
         {
-            if(IsButtonEnter)
+            if (IsButtonEnter)
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
             }
@@ -129,7 +150,7 @@ namespace PrefMovieApi
             {
                 if (e.ChangedButton == MouseButton.Left)
                 {
-                    MainWindow.logger.Log(LogLevel.Info, "Window of element is changing place on screen");
+                    MainWindow.logger.Log(LogLevel.Info, "Window is changing place on screen");
                     this.DragMove();
                 }
             }
