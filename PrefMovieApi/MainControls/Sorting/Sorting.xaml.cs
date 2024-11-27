@@ -48,6 +48,7 @@ namespace PrefMovieApi
             MainWindow.logger.Log(LogLevel.Info, "SearchClick activated");
             try
             {
+                Config.buttons.Clear();
                 SortingParameters sortingParameters = new SortingParameters
                     (arrowsAsButtons, 
                     isFilmSorting, 

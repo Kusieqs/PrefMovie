@@ -145,7 +145,6 @@ namespace PrefMovieApi
         /// <returns>Favorite button star</returns>
         public static Button FavortieElementDiploy(string idOfElement, bool isInLibrary)
         {
-
             // Creating button as star
             Button favoriteButton = new Button()
             {
@@ -161,6 +160,7 @@ namespace PrefMovieApi
                 Style = Config.styleForButton,
             };
 
+            Config.buttons.Add(idOfElement.ToString(), favoriteButton);
 
             favoriteButton.MouseLeave += FavoriteButtonMouseLeave;
             favoriteButton.MouseEnter += FavoriteButtonMouseEnter;

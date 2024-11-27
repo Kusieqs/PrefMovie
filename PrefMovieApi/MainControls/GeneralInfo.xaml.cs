@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -78,6 +79,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetLatestMovie(object sender, RoutedEventArgs e)
         {
+            RemoveFromDictionary(sender);
             TheNewOnceMovies.Children.Clear();
             TheNewOnceMovies = SettingElements.TheLatestMovies(TheNewOnceMovies);
         }
@@ -89,6 +91,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetTheBestMovie(object sender, RoutedEventArgs e)
         {
+            RemoveFromDictionary(sender);
             TheBestMovies.Children.Clear();
             TheBestMovies = SettingElements.TheBestMovies(TheBestMovies);
         }
@@ -100,6 +103,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetLatestTvShow(object sender, RoutedEventArgs e)
         {
+            RemoveFromDictionary(sender);
             TheNewOnceSeries.Children.Clear();
             TheNewOnceSeries = SettingElements.TheLatestSeries(TheNewOnceSeries);
         }
@@ -111,10 +115,25 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SetTheBestTvShow(object sender, RoutedEventArgs e)
         {
+            RemoveFromDictionary(sender);
             TheBestSeries.Children.Clear();
             TheBestSeries = SettingElements.TheBestSeries(TheBestSeries);
         }
 
+        private void RemoveFromDictionary(object sender)
+        {
+            MessageBox.Show($"{sender != null} {Config.buttons.Count}");
+
+            if (sender != null && int.TryParse((sender as Button).Tag.ToString(), out int result) && Config.buttons.Count > 0)
+            {
+                var keys = Config.buttons.Keys.Skip(result * 8).Take(8).ToList();
+                foreach (var key in keys)
+                {
+                    Config.buttons.Remove(key);
+                }
+                MessageBox.Show($"Remove {Config.buttons.Count}");
+            }
+        }
         #region Scroll viewer logic
         /// <summary>
         /// Methods to Scroll Viewer to scroll by button on mouse
@@ -135,13 +154,13 @@ namespace PrefMovieApi
             scrollViewer = sender as ScrollViewer;
 
             // Override Position of mouse
-            mouseStartPosition = e.GetPosition(null); 
+            mouseStartPosition = e.GetPosition(null);
 
             // Downwrite start position
             scrollViewerStartOffset = scrollViewer.HorizontalOffset;
 
             // Block mouse
-            scrollViewer.CaptureMouse(); 
+            scrollViewer.CaptureMouse();
         }
 
         /// <summary>
@@ -161,7 +180,7 @@ namespace PrefMovieApi
                 double delta = currentMousePosition.X - mouseStartPosition.X;
 
                 // Scroll to new position
-                scrollViewer.ScrollToHorizontalOffset(scrollViewerStartOffset - delta); 
+                scrollViewer.ScrollToHorizontalOffset(scrollViewerStartOffset - delta);
             }
         }
 

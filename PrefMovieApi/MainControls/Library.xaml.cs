@@ -109,7 +109,7 @@ namespace PrefMovieApi
 
             if(!existingWindows.Any())
             {
-                var informationAboutElement = new DetailInformation(element);
+                var informationAboutElement = new DetailInformation(element, Config.buttons[button.Tag.ToString()]);
                 informationAboutElement.Show();
             }
             else

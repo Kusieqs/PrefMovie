@@ -25,10 +25,12 @@ namespace PrefMovieApi
     {
         private readonly ElementParameters element; // Czy to bedzie potrzebne?
         private bool IsButtonEnter;
-        public DetailInformation(ElementParameters element)
+        private Button mainWindowButton;
+        public DetailInformation(ElementParameters element, Button button)
         {
             MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
             this.element = element;
+            this.mainWindowButton = button;
             InitializeComponent();
             LoadButton();
 
@@ -43,6 +45,7 @@ namespace PrefMovieApi
                 SettingContent(tvShow);
             }
         }
+
 
 
         private void SettingContent(dynamic elementInfo)
@@ -105,12 +108,14 @@ namespace PrefMovieApi
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
                 IsButtonEnter = false;
+                mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
                 MainWindow.library.DeletingNewElement(element.Id);
             }
             else
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
                 IsButtonEnter = true;
+                mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
                 MainWindow.library.AddingNewElement(element.Id);
             }
 

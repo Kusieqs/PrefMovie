@@ -96,6 +96,7 @@ namespace PrefMovieApi
         private void RefreshWindow(object sender, EventArgs e)
         {
             logger.Log(LogLevel.Info, "Refreshing window");
+            Config.buttons.Clear();
             DeployMainContent();
         }
 

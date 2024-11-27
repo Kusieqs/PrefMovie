@@ -343,6 +343,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void RefreshClick(object sender, RoutedEventArgs e)
         {
+            Config.buttons.Clear();
             CreatingInstantOfList();
         }
     }

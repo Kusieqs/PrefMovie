@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PrefMovieApi
 {
@@ -32,5 +33,8 @@ namespace PrefMovieApi
 
         // Special List to read movies
         public static List<ElementParameters> IdForMovie = new List<ElementParameters>();
+
+        // Special dicitionary to setting buttons
+        public static Dictionary<string, Button> buttons = new Dictionary<string, Button>();
     }
 }
