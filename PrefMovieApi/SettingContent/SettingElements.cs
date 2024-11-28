@@ -13,6 +13,7 @@ using TMDbLib.Objects.TvShows;
 using System.Windows.Shapes;
 using Rectangle = System.Windows.Shapes.Rectangle;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using TMDbLib.Objects.General;
 
 namespace PrefMovieApi
 {
@@ -42,7 +43,7 @@ namespace PrefMovieApi
                 .Query().Result;
 
             // Taking 8 random films 
-            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(8);
+            var randomMovies = CheckSameId(movies);
 
             // setting main panel to application
             return mainStackPanel = ElementInfo.SetInformationToStackPanel(mainStackPanel, randomMovies);
@@ -63,7 +64,7 @@ namespace PrefMovieApi
                 .Query().Result;
 
             // Taking 8 random films 
-            var randomMovies = movies.Results.OrderBy(x => random.Next()).Take(8);
+            var randomMovies = CheckSameId(movies);
 
             // setting main panel to application
             return mainStackPanel = ElementInfo.SetInformationToStackPanel(mainStackPanel, randomMovies);
@@ -89,7 +90,7 @@ namespace PrefMovieApi
                 .Query().Result;
 
             // Taking 8 random tvShows 
-            var randomTvShows = tvShows.Results.OrderBy(x => random.Next()).Take(8);
+            var randomTvShows = CheckSameId(tvShows);
 
             return mainStackPanel = ElementInfo.SetInformationToStackPanel(mainStackPanel, randomTvShows);
         }
@@ -109,9 +110,26 @@ namespace PrefMovieApi
                 .Query().Result;
 
             // Taking 8 random tvShows
-            var randomTvShows = tvShows.Results.OrderBy(x => random.Next()).Take(8);
+            var randomTvShows = CheckSameId(tvShows);
 
             return mainStackPanel = ElementInfo.SetInformationToStackPanel(mainStackPanel, randomTvShows);
+        }
+
+        private static IEnumerable<dynamic> CheckSameId<T>(SearchContainer<T> elements) where T : class
+        {
+            List<T> list = new List<T>();
+            do
+            {
+                dynamic element = elements.Results.OrderBy(x => random.Next()).First();
+
+                if (!Config.buttons.Any(x => x.Key.ToString() == element.Id.ToString()))
+                {
+                    list.Add(element);
+                    Config.buttons.Add(element.Id.ToString(), null);
+                }
+            } while (list.Count < 8);
+
+            return list.AsEnumerable<T>();
         }
     }
 }

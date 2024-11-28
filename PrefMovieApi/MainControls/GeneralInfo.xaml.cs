@@ -120,6 +120,10 @@ namespace PrefMovieApi
             TheBestSeries = SettingElements.TheBestSeries(TheBestSeries);
         }
 
+        /// <summary>
+        /// Reseting dicitonary 
+        /// </summary>
+        /// <param name="sender">Object as button</param>
         private void RemoveFromDictionary(object sender)
         {
             MessageBox.Show($"{sender != null} {Config.buttons.Count}");
@@ -134,6 +138,7 @@ namespace PrefMovieApi
                 MessageBox.Show($"Remove {Config.buttons.Count}");
             }
         }
+
         #region Scroll viewer logic
         /// <summary>
         /// Methods to Scroll Viewer to scroll by button on mouse

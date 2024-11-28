@@ -160,7 +160,7 @@ namespace PrefMovieApi
                 Style = Config.styleForButton,
             };
 
-            Config.buttons.Add(idOfElement.ToString(), favoriteButton);
+            Config.buttons[idOfElement] = favoriteButton;
 
             favoriteButton.MouseLeave += FavoriteButtonMouseLeave;
             favoriteButton.MouseEnter += FavoriteButtonMouseEnter;
@@ -303,7 +303,7 @@ namespace PrefMovieApi
         {
             Button button = sender as Button;
             ElementParameters element = Config.IdForMovie.Where(x => x.Id == int.Parse(button.Tag.ToString())).FirstOrDefault();
-            DetailInformation detailInformation = new DetailInformation(element);
+            DetailInformation detailInformation = new DetailInformation(element, Config.buttons[button.Tag.ToString()]);
             detailInformation.Show();
         }
 
