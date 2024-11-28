@@ -45,8 +45,24 @@ namespace PrefMovieApi
                 SettingContent(tvShow);
             }
         }
+        public DetailInformation(ElementParameters element)
+        {
+            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
+            this.element = element;
+            InitializeComponent();
+            LoadButton();
 
-
+            if (element.MediaType == MediaType.Movie)
+            {
+                var movie = GeneralInfo.client.GetMovieAsync(element.Id).Result;
+                SettingContent(movie);
+            }
+            else
+            {
+                var tvShow = GeneralInfo.client.GetTvShowAsync(element.Id).Result;
+                SettingContent(tvShow);
+            }
+        }
 
         private void SettingContent(dynamic elementInfo)
         {
