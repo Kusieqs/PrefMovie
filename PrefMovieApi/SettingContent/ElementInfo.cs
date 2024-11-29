@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
-using TMDbLib.Objects.TvShows;
-using System.Windows.Shapes;
-using Rectangle = System.Windows.Shapes.Rectangle;
-using static System.Net.Mime.MediaTypeNames;
-using Image = System.Windows.Controls.Image;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace PrefMovieApi
 {
@@ -46,7 +36,7 @@ namespace PrefMovieApi
                 // Grid for poster with average vote and button
                 string idOfElement;
                 Grid posterGrid = new Grid();
-                posterGrid.Children.Add(PosterDiploy(out idOfElement,movieOrTvShow));
+                posterGrid.Children.Add(PosterDiploy(out idOfElement, movieOrTvShow));
                 posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
 
                 bool isInLibrary = Library.titles.Any(x => x.Id == movieOrTvShow.Id);
@@ -64,7 +54,7 @@ namespace PrefMovieApi
                 };
 
                 // Adding infomration about element
-                informationMovie = SettingInformationAboutElement(movieOrTvShow,randomMoviesOrTvShows,informationMovie);
+                informationMovie = SettingInformationAboutElement(movieOrTvShow, randomMoviesOrTvShows, informationMovie);
                 itemStackPanel.Children.Add(informationMovie);
                 mainStackPanel.Children.Add(itemStackPanel);
 
@@ -82,7 +72,7 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="movieOrTvShow"></param>
         /// <returns>Poster</returns>
-        public static Button PosterDiploy(out string idOfElement,dynamic movieOrTvShow)
+        public static Button PosterDiploy(out string idOfElement, dynamic movieOrTvShow)
         {
             idOfElement = $"{movieOrTvShow.Id}";
             // Tworzenie ImageBrush dla plakatu
@@ -263,7 +253,7 @@ namespace PrefMovieApi
         private static void FavoriteButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Button button = sender as Button;
-            if(Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
+            if (Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
                 // Creating image as star
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
@@ -280,11 +270,11 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private static void AddingElementToLibraryOrDeleting(object sender, RoutedEventArgs e) 
+        private static void AddingElementToLibraryOrDeleting(object sender, RoutedEventArgs e)
         {
 
             Button button = sender as Button;
-            if(Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
+            if (Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
                 MainWindow.logger.Log(LogLevel.Info, "Deleting element");
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
@@ -299,12 +289,26 @@ namespace PrefMovieApi
 
         }
 
+        /// <summary>
+        /// Clicking posters to open window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void ClickPosterButton(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            ElementParameters element = Config.IdForMovie.Where(x => x.Id == int.Parse(button.Tag.ToString())).FirstOrDefault();
-            DetailInformation detailInformation = new DetailInformation(element, Config.buttons[button.Tag.ToString()]);
-            detailInformation.Show();
+            MainWindow.logger.Log(LogLevel.Info, "Opening new window when poster was clicked");
+            try
+            {
+                Button button = sender as Button;
+                ElementParameters element = Config.IdForMovie.Where(x => x.Id == int.Parse(button.Tag.ToString())).FirstOrDefault();
+                DetailInformation detailInformation = new DetailInformation(element, Config.buttons[button.Tag.ToString()]);
+                detailInformation.Show();
+
+            }
+            catch (Exception ex)
+            {
+                MainWindow.logger.Log(LogLevel.Error, ex.Message);
+            }
         }
 
     }

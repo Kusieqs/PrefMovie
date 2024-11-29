@@ -100,29 +100,41 @@ namespace PrefMovieApi
             LoadFavoriteMovies();
         }
 
+        /// <summary>
+        /// Opening new window with choosen element
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OpenElement(object sender,  RoutedEventArgs e)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Opening new element as window");
-            Button button = sender as Button;
-
-            ElementParameters element = titles.Where(x => x.Id == (int)button.Tag).FirstOrDefault();
-
-            if(!existingWindows.Any())
+            try
             {
-                DetailInformation detailInformation;
-                if (Config.buttons.TryGetValue(button.Tag.ToString(), out Button value))
+                Button button = sender as Button;
+                ElementParameters element = titles.Where(x => x.Id == (int)button.Tag).FirstOrDefault();
+
+                if (!existingWindows.Any())
                 {
-                    detailInformation = new DetailInformation(element,value);
+                    DetailInformation detailInformation;
+                    if (Config.buttons.TryGetValue(button.Tag.ToString(), out Button value))
+                    {
+                        MainWindow.logger.Log(LogLevel.Info, "Opening new element as window with element info and button");
+                        detailInformation = new DetailInformation(element, value);
+                    }
+                    else
+                    {
+                        MainWindow.logger.Log(LogLevel.Info, "Opening new element as window with element info");
+                        detailInformation = new DetailInformation(element);
+                    }
+                    detailInformation.Show();
                 }
                 else
                 {
-                    detailInformation = new DetailInformation(element);
+                    MainWindow.logger.Log(LogLevel.Warn, "Window is existing");
                 }
-                detailInformation.Show();
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Warn, "Window is existing");
+                MainWindow.logger.Log(LogLevel.Error, ex.Message);
             }
         }
     }

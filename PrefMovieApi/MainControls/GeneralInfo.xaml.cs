@@ -126,8 +126,6 @@ namespace PrefMovieApi
         /// <param name="sender">Object as button</param>
         private void RemoveFromDictionary(object sender)
         {
-            MessageBox.Show($"{sender != null} {Config.buttons.Count}");
-
             if (sender != null && int.TryParse((sender as Button).Tag.ToString(), out int result) && Config.buttons.Count > 0)
             {
                 var keys = Config.buttons.Keys.Skip(result * 8).Take(8).ToList();
@@ -135,7 +133,6 @@ namespace PrefMovieApi
                 {
                     Config.buttons.Remove(key);
                 }
-                MessageBox.Show($"Remove {Config.buttons.Count}");
             }
         }
 

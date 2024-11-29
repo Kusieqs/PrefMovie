@@ -115,8 +115,15 @@ namespace PrefMovieApi
             return mainStackPanel = ElementInfo.SetInformationToStackPanel(mainStackPanel, randomTvShows);
         }
 
+        /// <summary>
+        /// Checking same id of elements.
+        /// </summary>
+        /// <typeparam name="T">Type of class</typeparam>
+        /// <param name="elements">Collection of elements</param>
+        /// <returns>list of elements</returns>
         private static IEnumerable<dynamic> CheckSameId<T>(SearchContainer<T> elements) where T : class
         {
+            MainWindow.logger.Log(LogLevel.Info, "Checking elements with same id");
             List<T> list = new List<T>();
             do
             {

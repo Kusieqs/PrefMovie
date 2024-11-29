@@ -23,7 +23,7 @@ namespace PrefMovieApi
     /// </summary>
     public partial class DetailInformation : Window
     {
-        private readonly ElementParameters element; // Czy to bedzie potrzebne?
+        private readonly ElementParameters element; 
         private bool IsButtonEnter;
         private Button mainWindowButton;
         public DetailInformation(ElementParameters element, Button button)
@@ -64,8 +64,14 @@ namespace PrefMovieApi
             }
         }
 
+        /// <summary>
+        /// Setting content into window
+        /// </summary>
+        /// <param name="elementInfo">element with informations</param>
         private void SettingContent(dynamic elementInfo)
         {
+            MainWindow.logger.Log(LogLevel.Info, "Setting content into new page");
+
             // Setting title on the top of window
             Title.Text = elementInfo is TvShow ? elementInfo.Name : elementInfo.Title;
 
@@ -97,8 +103,12 @@ namespace PrefMovieApi
 
         }
 
+        /// <summary>
+        /// Loading buttons 
+        /// </summary>
         private void LoadButton()
         {
+            MainWindow.logger.Log(LogLevel.Info, "Loading buttons");
             Close.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/closeIcon.png", UriKind.Relative));
 
             if (Library.titles.Any(x => x.Id == element.Id))
@@ -113,30 +123,53 @@ namespace PrefMovieApi
             }
         }
 
+        /// <summary>
+        /// Closing window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExitWindow(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Adding or deleting element into library
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoritClick(object sender, RoutedEventArgs e)
         {
             if (IsButtonEnter)
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
                 IsButtonEnter = false;
-                mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+
+                if(Config.buttons.Any(x => x.Key == element.Id.ToString()))
+                {
+                    mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                }
                 MainWindow.library.DeletingNewElement(element.Id);
             }
             else
             {
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
                 IsButtonEnter = true;
-                mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
+
+                if(Config.buttons.Any(x => x.Key == element.Id.ToString()))
+                {
+                    mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
+                }
                 MainWindow.library.AddingNewElement(element.Id);
             }
 
         }
 
+        /// <summary>
+        /// Logic to enter mouse into button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoritMouseEnter(object sender, MouseEventArgs e)
         {
             if (IsButtonEnter)
@@ -148,6 +181,12 @@ namespace PrefMovieApi
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
             }
         }
+
+        /// <summary>
+        /// Logic to leave mouse into button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoritMouseLeave(object sender, MouseEventArgs e)
         {
             if (IsButtonEnter)
