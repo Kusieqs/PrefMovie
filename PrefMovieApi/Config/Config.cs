@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PrefMovieApi
 {
@@ -24,10 +25,16 @@ namespace PrefMovieApi
         // Style for infomration about element
         public static Style styleThemeOfElement;
 
-        //Style for buttom
+        // Style for button
         public static Style styleForButton;
 
-        // Special dicitoniary to read movies
-        public static Dictionary<string, string> IdForMovie = new Dictionary<string, string>();
+        // Style for poster button
+        public static Style styleForPosterButton;
+
+        // Special List to read movies
+        public static List<ElementParameters> IdForMovie = new List<ElementParameters>();
+
+        // Special dicitionary to setting buttons
+        public static Dictionary<string, Button> buttons = new Dictionary<string, Button>();
     }
 }

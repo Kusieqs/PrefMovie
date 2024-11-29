@@ -1,23 +1,11 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TMDbLib.Objects.Discover;
-using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
-using TMDbLib.Objects.TvShows;
 
 namespace PrefMovieApi
 {
@@ -265,16 +253,16 @@ namespace PrefMovieApi
 
                             // Grid for poster with average vote and button
                             Grid posterGrid = new Grid();
-                            posterGrid.Children.Add(ElementInfo.PosterDiploy(listOfElements[indexOfFilm]));
+                            string idOfElement;
+                            posterGrid.Children.Add(ElementInfo.PosterDiploy(out idOfElement,listOfElements[indexOfFilm]));
                             posterGrid.Children.Add(ElementInfo.AverageRateDiploy(listOfElements[indexOfFilm]));
 
                             dynamic movieOrTV = listOfElements[indexOfFilm];
 
-                            bool isInLibrary = Library.titles.Any(x => x == (listOfElements[indexOfFilm] is SearchMovie 
-                            ? movieOrTV.Title : movieOrTV.Name));
+                            bool isInLibrary = Library.titles.Any(x => x.Id == (listOfElements[indexOfFilm] is SearchMovie 
+                            ? movieOrTV.Id : movieOrTV.Id));
 
-                            string idOfElement;
-                            posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(out idOfElement, isInLibrary));
+                            posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(idOfElement, isInLibrary));
 
                             // Add the bordered poster to the item stack panel
                             itemStackPanel.Children.Add(posterGrid);
@@ -293,7 +281,11 @@ namespace PrefMovieApi
                             Grid.SetColumn(itemStackPanel, j);
                             gridFor2Films.Children.Add(itemStackPanel);
 
-                            Config.IdForMovie.Add(idOfElement, movieOrTV is SearchMovie ? movieOrTV.Title : movieOrTV.Name);
+
+                            MediaType media = movieOrTV is SearchMovie ? MediaType.Movie : MediaType.TvShow;
+                            string title = movieOrTV is SearchMovie ? movieOrTV.Title : movieOrTV.Name;
+                            Config.IdForMovie.Add(new ElementParameters(media, movieOrTV.Id, title));
+
                             ++indexOfFilm;
                             if (indexOfFilm == listOfElements.Count)
                             {
@@ -351,6 +343,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void RefreshClick(object sender, RoutedEventArgs e)
         {
+            Config.buttons.Clear();
             CreatingInstantOfList();
         }
     }

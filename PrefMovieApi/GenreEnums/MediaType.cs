@@ -1,4 +1,4 @@
-﻿enum MediaType
+﻿public enum MediaType
 {
     Movie,
     TvShow

@@ -22,7 +22,8 @@ namespace PrefMovieApi
     /// </summary>
     public partial class Library : UserControl
     {
-        public static List<string> titles = new List<string>();
+        public static List<ElementParameters> titles = new List<ElementParameters>();
+        public static List<string> existingWindows = new List<string>(); // !!!!!!!!!!!!!!!!
         public static JsonFile jsonFile = new JsonFile();
         public Library()
         {
@@ -37,56 +38,30 @@ namespace PrefMovieApi
         }
 
         /// <summary>
-        /// Adding element from list and library
-        /// </summary>
-        /// <param name="id">id of button</param>
-        public void AddingNewElement(string id)
-        {
-            string title = Config.IdForMovie[id];
-            titles.Add(title);
-
-            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {title}");
-            LoadFavoriteMovies();
-        }
-
-        /// <summary>
-        /// Deleting element from list and library
-        /// </summary>
-        /// <param name="id">id of button</param>
-        public void DeletingNewElement(string id)
-        {
-            string title = Config.IdForMovie[id];
-            titles.Remove(title);
-
-            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {title}");
-            LoadFavoriteMovies();
-        }
-
-        /// <summary>
         /// Loading library on the right side of window
         /// </summary>
         public void LoadFavoriteMovies()
         {
             FavoriteMovies.Children.Clear();
 
-            foreach(var item in titles)
+            foreach (var item in titles)
             {
                 // Creating button as title in library
                 Button titleButton = new Button()
                 {
-                    Content = item,
+                    Content = item.Title,
+                    Tag = item.Id,
                     Style = FindResource("TitleButton") as Style,
                 };
                 titleButton.Click += OpenElement;
 
-
                 // If item is longer than 25 characters than we will add Tooltip
                 ToolTip longTitle = null;
-                if (item.Length > 25)
+                if (item.Title.Length > 25)
                 {
                     longTitle = new ToolTip()
                     {
-                        Content = item,
+                        Content = item.Title,
                     };
                 }
                 titleButton.ToolTip = longTitle;
@@ -96,10 +71,71 @@ namespace PrefMovieApi
             jsonFile.SerializeLibrary();
         }
 
+        /// <summary>
+        /// Adding element from list and library
+        /// </summary>
+        /// <param name="id">id of button</param>
+        public void AddingNewElement(int id)
+        {
+            ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
+            titles.Add(element);
+
+            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {element.Id}");
+            LoadFavoriteMovies();
+        }
+
+        /// <summary>
+        /// Deleting element from list and library
+        /// </summary>
+        /// <param name="id">id of button</param>
+        public void DeletingNewElement(int id)
+        {
+            /// TODO: Problem z usunieciem danego elementu z listy? nie porównuje mi dobrego elemntu
+            ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
+            List<ElementParameters> newList = titles.Where(x => x.Id != id).ToList();
+
+            titles = newList.Intersect(titles).ToList();
+
+            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Id}");
+            LoadFavoriteMovies();
+        }
+
+        /// <summary>
+        /// Opening new window with choosen element
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OpenElement(object sender,  RoutedEventArgs e)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Opening new element as window");
-            //TODO: Opening new window
+            try
+            {
+                Button button = sender as Button;
+                ElementParameters element = titles.Where(x => x.Id == (int)button.Tag).FirstOrDefault();
+
+                if (!existingWindows.Any())
+                {
+                    DetailInformation detailInformation;
+                    if (Config.buttons.TryGetValue(button.Tag.ToString(), out Button value))
+                    {
+                        MainWindow.logger.Log(LogLevel.Info, "Opening new element as window with element info and button");
+                        detailInformation = new DetailInformation(element, value);
+                    }
+                    else
+                    {
+                        MainWindow.logger.Log(LogLevel.Info, "Opening new element as window with element info");
+                        detailInformation = new DetailInformation(element);
+                    }
+                    detailInformation.Show();
+                }
+                else
+                {
+                    MainWindow.logger.Log(LogLevel.Warn, "Window is existing");
+                }
+            }
+            catch (Exception ex)
+            {
+                MainWindow.logger.Log(LogLevel.Error, ex.Message);
+            }
         }
     }
 }
