@@ -23,12 +23,12 @@ namespace PrefMovieApi
     /// </summary>
     public partial class DetailInformation : Window
     {
-        private readonly ElementParameters element; 
+        private readonly ElementParameters element;
         private bool IsButtonEnter;
         private Button mainWindowButton;
         public DetailInformation(ElementParameters element, Button button)
         {
-            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
+            Config.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
             this.element = element;
             this.mainWindowButton = button;
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace PrefMovieApi
         }
         public DetailInformation(ElementParameters element)
         {
-            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
+            Config.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
             this.element = element;
             InitializeComponent();
             LoadButton();
@@ -70,7 +70,7 @@ namespace PrefMovieApi
         /// <param name="elementInfo">element with informations</param>
         private void SettingContent(dynamic elementInfo)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Setting content into new page");
+            Config.logger.Log(LogLevel.Info, "Setting content into new page");
 
             // Setting title on the top of window
             Title.Text = elementInfo is TvShow ? elementInfo.Name : elementInfo.Title;
@@ -108,7 +108,7 @@ namespace PrefMovieApi
         /// </summary>
         private void LoadButton()
         {
-            MainWindow.logger.Log(LogLevel.Info, "Loading buttons");
+            Config.logger.Log(LogLevel.Info, "Loading buttons");
             Close.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/closeIcon.png", UriKind.Relative));
 
             if (Library.titles.Any(x => x.Id == element.Id))
@@ -145,7 +145,7 @@ namespace PrefMovieApi
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
                 IsButtonEnter = false;
 
-                if(Config.buttons.Any(x => x.Key == element.Id.ToString()))
+                if (Config.buttons.Any(x => x.Key == element.Id.ToString()))
                 {
                     mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
                 }
@@ -156,7 +156,7 @@ namespace PrefMovieApi
                 StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
                 IsButtonEnter = true;
 
-                if(Config.buttons.Any(x => x.Key == element.Id.ToString()))
+                if (Config.buttons.Any(x => x.Key == element.Id.ToString()))
                 {
                     mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
                 }
@@ -210,15 +210,16 @@ namespace PrefMovieApi
             {
                 if (e.ChangedButton == MouseButton.Left)
                 {
-                    MainWindow.logger.Log(LogLevel.Info, "Window is changing place on screen");
-                    this.DragMove();
+                    Config.logger.Log(LogLevel.Info, "Window is changing place on screen");
+                    DragMove();
                 }
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, ex.ToString());
+                Config.logger.Log(LogLevel.Error, ex.ToString());
             }
         }
     }
 }
+
 

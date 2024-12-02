@@ -17,16 +17,16 @@ namespace PrefMovieApi
         /// <param name="listOfMoviesAndTvShows"> List of movies and tv shows</param>
         public void SerializeLibrary()
         {
-            MainWindow.logger.Log(LogLevel.Info, "SerializeLibrary Activated");
-            if(!(Library.titles.Count == 0 || Library.titles is null))
+            Config.logger.Log(LogLevel.Info, "SerializeLibrary Activated");
+            if (!(Library.titles.Count == 0 || Library.titles is null))
             {
-                MainWindow.logger.Log(LogLevel.Info, "Library is NOT empty");
+                Config.logger.Log(LogLevel.Info, "Library is NOT empty");
                 string jsonSerialize = JsonConvert.SerializeObject(Library.titles);
                 File.WriteAllText(Config.PATH_TO_JSON, jsonSerialize);
             }
             else
             {
-                MainWindow.logger.Log(LogLevel.Warn, "Library is empty");
+                Config.logger.Log(LogLevel.Warn, "Library is empty");
             }
         }
 
@@ -36,16 +36,16 @@ namespace PrefMovieApi
         /// <returns>List of strings</returns>
         public List<ElementParameters> DeserializeLibrary()
         {
-            MainWindow.logger.Log(LogLevel.Info, "DeserializeLibrary Activated");
+            Config.logger.Log(LogLevel.Info, "DeserializeLibrary Activated");
             if (File.Exists(Config.PATH_TO_JSON))
             {
-                MainWindow.logger.Log(LogLevel.Info, "Reading file");
+                Config.logger.Log(LogLevel.Info, "Reading file");
                 string readerFile = File.ReadAllText(Config.PATH_TO_JSON);
                 return JsonConvert.DeserializeObject<List<ElementParameters>>(readerFile);
             }
             else
             {
-                MainWindow.logger.Log(LogLevel.Warn,"File doesn't exist");
+                Config.logger.Log(LogLevel.Warn, "File doesn't exist");
                 return new List<ElementParameters>();
             }
         }

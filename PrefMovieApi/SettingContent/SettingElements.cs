@@ -30,7 +30,7 @@ namespace PrefMovieApi
         /// <returns>Stack panel with proposal movies</returns>
         public static StackPanel TheLatestMovies(StackPanel mainStackPanel)
         {
-            MainWindow.logger.Log(LogLevel.Info, "TheNewOnceMovies method activated");
+            Config.logger.Log(LogLevel.Info, "TheNewOnceMovies method activated");
 
             // Setting date for -3 months ago
             DateTime today = DateTime.Today;
@@ -38,8 +38,8 @@ namespace PrefMovieApi
 
             // The new once movies from last 3 months
             var movies = GeneralInfo.client.DiscoverMoviesAsync()
-                .WhereReleaseDateIsAfter(threeMonthsAgo)  
-                .WhereReleaseDateIsBefore(today) 
+                .WhereReleaseDateIsAfter(threeMonthsAgo)
+                .WhereReleaseDateIsBefore(today)
                 .Query().Result;
 
             // Taking 8 random films 
@@ -56,7 +56,7 @@ namespace PrefMovieApi
         /// <returns>Stack panel with proposal movies</returns>
         public static StackPanel TheBestMovies(StackPanel mainStackPanel)
         {
-            MainWindow.logger.Log(LogLevel.Info, "TheBestMovies method activated");
+            Config.logger.Log(LogLevel.Info, "TheBestMovies method activated");
 
             // setting movies with the best average vote
             var movies = GeneralInfo.client.DiscoverMoviesAsync()
@@ -77,7 +77,7 @@ namespace PrefMovieApi
         /// <returns>Stack panel with proposal tvShows</returns>
         public static StackPanel TheLatestSeries(StackPanel mainStackPanel)
         {
-            MainWindow.logger.Log(LogLevel.Info, "TheLatestSeries method activated");
+            Config.logger.Log(LogLevel.Info, "TheLatestSeries method activated");
 
             // Setting date for -3 months ago
             DateTime today = DateTime.Today;
@@ -102,7 +102,7 @@ namespace PrefMovieApi
         /// <returns>Stack panel with proposal tvShows</returns>
         public static StackPanel TheBestSeries(StackPanel mainStackPanel)
         {
-            MainWindow.logger.Log(LogLevel.Info, "TheBestSeries method activated");
+            Config.logger.Log(LogLevel.Info, "TheBestSeries method activated");
 
             // setting tvShows with the best average vote
             var tvShows = GeneralInfo.client.DiscoverTvShowsAsync()
@@ -123,7 +123,7 @@ namespace PrefMovieApi
         /// <returns>list of elements</returns>
         private static IEnumerable<dynamic> CheckSameId<T>(SearchContainer<T> elements) where T : class
         {
-            MainWindow.logger.Log(LogLevel.Info, "Checking elements with same id");
+            Config.logger.Log(LogLevel.Info, "Checking elements with same id");
             List<T> list = new List<T>();
             do
             {

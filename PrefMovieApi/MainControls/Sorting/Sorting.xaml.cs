@@ -32,7 +32,7 @@ namespace PrefMovieApi
         private ContentControl mainContent; // content for searching
         public Sorting(ContentControl content)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Sorting content was loaded");
+            Config.logger.Log(LogLevel.Info, "Sorting content was loaded");
             InitializeComponent();
             Genre.IsEnabled = false;
             mainContent = content;
@@ -45,16 +45,16 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void SearchClick(object sender, RoutedEventArgs e)
         {
-            MainWindow.logger.Log(LogLevel.Info, "SearchClick activated");
+            Config.logger.Log(LogLevel.Info, "SearchClick activated");
             try
             {
                 Config.buttons.Clear();
                 SortingParameters sortingParameters = new SortingParameters
-                    (arrowsAsButtons, 
-                    isFilmSorting, 
-                    isTvShowsSorting, 
-                    Genre?.SelectedItem, 
-                    selectedStars, 
+                    (arrowsAsButtons,
+                    isFilmSorting,
+                    isTvShowsSorting,
+                    Genre?.SelectedItem,
+                    selectedStars,
                     DateFrom?.SelectedDate,
                     DateTo?.SelectedDate);
 
@@ -62,8 +62,8 @@ namespace PrefMovieApi
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, $"SearchClick: {ex.Message}");
-            }        
+                Config.logger.Log(LogLevel.Error, $"SearchClick: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void ClearSortingButton(object sender = null, RoutedEventArgs e = null)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Clearing all sorting information");
+            Config.logger.Log(LogLevel.Info, "Clearing all sorting information");
             isFilmSorting = false;
             isTvShowsSorting = false;
             FilmButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
@@ -82,7 +82,7 @@ namespace PrefMovieApi
             Genre.IsEnabled = false;
             Genre.SelectedItem = null;
 
-            foreach(var keys in arrowsAsButtons.Keys.ToList())
+            foreach (var keys in arrowsAsButtons.Keys.ToList())
             {
                 arrowsAsButtons[keys] = false;
             }
@@ -114,7 +114,7 @@ namespace PrefMovieApi
             Random random = new Random();
 
             int number = random.Next(0, 3);
-            if(number == 1)
+            if (number == 1)
             {
                 // Choosing film for random main sector
                 isFilmSorting = true;
@@ -124,7 +124,7 @@ namespace PrefMovieApi
                 LoadingComboBox(true);
                 int enumCount = Enum.GetNames(typeof(MoviesGenre)).Length;
                 int selectorGenre = random.Next(-1, enumCount);
-                if(selectorGenre == -1)
+                if (selectorGenre == -1)
                 {
                     Genre.SelectedItem = null;
                 }
@@ -133,7 +133,7 @@ namespace PrefMovieApi
                     Genre.SelectedItem = Genre.Items[selectorGenre];
                 }
             }
-            else if(number == 2)
+            else if (number == 2)
             {
                 // Choosing TvShows for random main sector
                 isTvShowsSorting = true;
@@ -154,14 +154,14 @@ namespace PrefMovieApi
             }
 
             // Choosing random sorting of relase date 
-            number = random.Next(0,3);
-            if(number == 1)
+            number = random.Next(0, 3);
+            if (number == 1)
             {
                 // Random sorting for ascending date
                 arrowsAsButtons["RelaseDateUpButton"] = true;
                 RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillUp.png");
             }
-            else if(number == 2)
+            else if (number == 2)
             {
                 // Random sorting for descending date
                 arrowsAsButtons["RelaseDateDownButton"] = true;
@@ -191,12 +191,12 @@ namespace PrefMovieApi
             bool isFromRelase = random.Next(0, 2) == 1;
             int fromYear = 0;
             int fromMonth = 0;
-            if(isFromRelase)
+            if (isFromRelase)
             {
                 fromYear = random.Next(1980, DateTime.Now.Year + 1);
-                if(fromYear == DateTime.Now.Year)
+                if (fromYear == DateTime.Now.Year)
                 {
-                    fromMonth = random.Next(1,DateTime.Now.Month+1);
+                    fromMonth = random.Next(1, DateTime.Now.Month + 1);
                 }
                 else
                 {
@@ -229,7 +229,7 @@ namespace PrefMovieApi
                 DateTo.SelectedDate = new DateTime(toYear, toMonth, 1);
             }
 
-            MainWindow.logger.Log(LogLevel.Info, $"Random Sorting parameters:" +
+            Config.logger.Log(LogLevel.Info, $"Random Sorting parameters:" +
                 $"\n{nameof(isFilmSorting)} {isFilmSorting}, {nameof(isTvShowsSorting)} {isTvShowsSorting}" +
                 $"\n{nameof(Genre)} {Genre.SelectedItem}" +
                 $"\nRelaseDateUpButton {arrowsAsButtons["RelaseDateUpButton"]}, RelaseDateDownButton {arrowsAsButtons["RelaseDateDownButton"]}" +
@@ -274,16 +274,16 @@ namespace PrefMovieApi
         /// <param name="isItFilm"></param>
         private void LoadingComboBox(bool isItFilm = false)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Loading combobox with items");
+            Config.logger.Log(LogLevel.Info, "Loading combobox with items");
 
             // TODO: Optymalizacja metody
-            Genre.Items.Clear(); 
+            Genre.Items.Clear();
             Genre.IsEnabled = true;
 
             if (isItFilm)
             {
                 List<string> genres = Enum.GetNames(typeof(MoviesGenre)).ToList();
-                foreach(string genre in genres)
+                foreach (string genre in genres)
                 {
                     Genre.Items.Add(genre.Replace('_', ' '));
                 }
@@ -293,13 +293,13 @@ namespace PrefMovieApi
                 List<string> genres = Enum.GetNames(typeof(TvShowsGenre)).ToList();
                 foreach (string genre in genres)
                 {
-                    Genre.Items.Add(genre.Replace('_', ' ').Replace("AND","and"));
+                    Genre.Items.Add(genre.Replace('_', ' ').Replace("AND", "and"));
                 }
             }
 
-            if(Genre.Items.Count == 0)
+            if (Genre.Items.Count == 0)
             {
-                MainWindow.logger.Log(LogLevel.Warn, "Empty Combobox");
+                Config.logger.Log(LogLevel.Warn, "Empty Combobox");
             }
         }
 
@@ -418,12 +418,12 @@ namespace PrefMovieApi
         /// <param name="count">number of star</param>
         private void HighlightStars(int count)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Filling stars as buttons");
+            Config.logger.Log(LogLevel.Info, "Filling stars as buttons");
 
-            if(count == 0)
+            if (count == 0)
             {
-                MainWindow.logger.Log(LogLevel.Warn, "Number of stars is 0");
-                for(int i = 1; i <= 5; i++)
+                Config.logger.Log(LogLevel.Warn, "Number of stars is 0");
+                for (int i = 1; i <= 5; i++)
                 {
                     var starButton = FindName($"Star{i}") as Button;
                     starButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");

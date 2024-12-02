@@ -21,9 +21,9 @@ namespace PrefMovieApi
 {
     public partial class MainWindow : Window
     {
-        public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
-        public static ILogger logger = new FileLogger();
+        // Library as control user
         public static Library library = new Library();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,18 +33,18 @@ namespace PrefMovieApi
             Config.styleForPosterButton = FindResource("PosterButton") as Style;
 
             // Logger checking
-            if (logger is FileLogger && !File.Exists(Config.PATH_TO_LOG))
+            if (Config.logger is FileLogger && !File.Exists(Config.PATH_TO_LOG))
             {
                 File.WriteAllText(Config.PATH_TO_LOG, "");
             }
-            else if(logger is FileLogger)
+            else if (Config.logger is FileLogger)
             {
                 File.AppendAllText(Config.PATH_TO_LOG, "\n\n");
-                logger.Log(LogLevel.Info, "New log");
+                Config.logger.Log(LogLevel.Info, "New log");
             }
             else
             {
-                logger.Log(LogLevel.Info, "New log");
+                Config.logger.Log(LogLevel.Info, "New log");
             }
 
             // Deploying content
@@ -56,26 +56,34 @@ namespace PrefMovieApi
         /// </summary>
         public void DeployMainContent()
         {
-            Sorting.Content = new Sorting(MainContent);
-            Library.Content = library;
-
-            // Checking netowrk connection
-            if (ConnectionInternet.NetworkCheck())
+            try
             {
-                logger.Log(LogLevel.Info, "Opening GeneralInfo control");
-                Sorting.IsEnabled = true;
+                Sorting.Content = new Sorting(MainContent);
+                Library.Content = library;
 
-                logger.Log(LogLevel.Warn, "General info is creating");
-                MainContent.Content = new GeneralInfo(this);
+                // Checking netowrk connection
+                if (ConnectionInternet.NetworkCheck())
+                {
+                    Config.logger.Log(LogLevel.Info, "Opening GeneralInfo control");
+                    Sorting.IsEnabled = true;
+
+                    Config.logger.Log(LogLevel.Warn, "General info is creating");
+                    MainContent.Content = new GeneralInfo(this);
+                }
+                else
+                {
+                    Config.logger.Log(LogLevel.Info, "Opening NoConnection control");
+                    MainContent.Content = new NoConnection();
+                    Sorting.IsEnabled = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                logger.Log(LogLevel.Info, "Opening NoConnection control");
-                MainContent.Content = new NoConnection();
-                Sorting.IsEnabled = false;
+                // Error Log
+                Config.logger.Log(LogLevel.Error, ex.Message);
+                Close();
             }
         }
-
 
         /// <summary>
         /// Exit from app by button
@@ -84,7 +92,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void ExitWindow(object sender, EventArgs e)
         {
-            logger.Log(LogLevel.Info, "Closing window");
+            Config.logger.Log(LogLevel.Info, "Closing window");
             Close();
         }
 
@@ -95,7 +103,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void RefreshWindow(object sender, EventArgs e)
         {
-            logger.Log(LogLevel.Info, "Refreshing window");
+            Config.logger.Log(LogLevel.Info, "Refreshing window");
             Config.buttons.Clear();
             DeployMainContent();
         }
@@ -107,18 +115,12 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void BorderClick(object sender, MouseButtonEventArgs e)
         {
-            try
+            if (e.ChangedButton == MouseButton.Left)
             {
-                if (e.ChangedButton == MouseButton.Left)
-                {
-                    logger.Log(LogLevel.Info, "Window is changing place on screen");
-                    this.DragMove();
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Log(LogLevel.Error, ex.ToString());
+                Config.logger.Log(LogLevel.Info, "Window is changing place on screen");
+                DragMove();
             }
         }
     }
+
 }

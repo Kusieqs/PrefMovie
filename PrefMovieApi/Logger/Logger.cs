@@ -13,16 +13,16 @@ namespace PrefMovieApi
         public void Log(LogLevel level, string message)
         {
             Debug.WriteLine($"[{DateTime.Now}] {level}: {message}");
-            MainWindow.loggerMessages.Add((level, $"[{DateTime.Now}] {level}: {message}"));
+            Config.loggerMessages.Add((level, $"[{DateTime.Now}] {level}: {message}"));
         }
 
         public void ShowErrors()
         {
 
-            if (MainWindow.loggerMessages.Where(x => x.Item1 == LogLevel.Error).Any())
+            if (Config.loggerMessages.Where(x => x.Item1 == LogLevel.Error).Any())
             {
                 Debug.WriteLine("Errors:");
-                foreach (var item in MainWindow.loggerMessages)
+                foreach (var item in Config.loggerMessages)
                 {
                     if (item.Item1 == LogLevel.Error)
                     {
@@ -43,15 +43,15 @@ namespace PrefMovieApi
         {
             string textToFile = $"[{DateTime.Now}] {level}: {message}\n";
             File.AppendAllText("log.txt", textToFile);
-            MainWindow.loggerMessages.Add((level, $"[{DateTime.Now}] {level}: {message}"));
+            Config.loggerMessages.Add((level, $"[{DateTime.Now}] {level}: {message}"));
         }
 
         public void ShowErrors()
         {
-            if (MainWindow.loggerMessages.Where(x => x.Item1 == LogLevel.Error).Any())
+            if (Config.loggerMessages.Where(x => x.Item1 == LogLevel.Error).Any())
             {
                 string listOfErrors = "\n\nERRORS:";
-                foreach (var item in MainWindow.loggerMessages)
+                foreach (var item in Config.loggerMessages)
                 {
                     if (item.Item1 == LogLevel.Error)
                     {
@@ -66,4 +66,5 @@ namespace PrefMovieApi
             }
         }
     }
+
 }

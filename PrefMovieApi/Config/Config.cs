@@ -22,6 +22,12 @@ namespace PrefMovieApi
         // Path to json
         public const string PATH_TO_JSON = "LibraryFile.txt";
 
+        // Interface as logger
+        public static ILogger logger = new FileLogger();
+
+        // List of every logs messages
+        public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
+
         // Style for infomration about element
         public static Style styleThemeOfElement;
 

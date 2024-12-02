@@ -15,7 +15,7 @@ namespace PrefMovieApi
         public readonly SortingParameters SortingParameters; // Object of soritng parameters
         public SortingOutput(SortingParameters sortingParameters)
         {
-            MainWindow.logger.Log(LogLevel.Info, $"Sorting of proposed films activated");
+            Config.logger.Log(LogLevel.Info, $"Sorting of proposed films activated");
             InitializeComponent();
             SortingParameters = sortingParameters;
 
@@ -67,7 +67,7 @@ namespace PrefMovieApi
         /// <returns>IEnumerable list of proposed elements</returns>
         private IEnumerable<SearchMovieTvBase> GetMedia(MediaType mediaType, int countOfElements = 12)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Getting media of movie or TvShow");
+            Config.logger.Log(LogLevel.Info, "Getting media of movie or TvShow");
             try
             {
                 Random random = new Random();
@@ -85,7 +85,7 @@ namespace PrefMovieApi
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, $"Message: {ex.Message}");
+                Config.logger.Log(LogLevel.Error, $"Message: {ex.Message}");
                 return null;
             }
         }
@@ -93,7 +93,7 @@ namespace PrefMovieApi
         #region Sorting features
         private void SetGenre(DiscoverTv discoverTv)
         {
-            if(SortingParameters.Genre != null)
+            if (SortingParameters.Genre != null)
             {
                 List<int> listOfGenre = new List<int>() { (int)(TvShowsGenre)Enum.Parse(typeof(TvShowsGenre), SortingParameters.ConvertGenre(typeof(TvShowsGenre))) };
                 discoverTv = discoverTv.WhereGenresInclude(listOfGenre);
@@ -101,7 +101,7 @@ namespace PrefMovieApi
         }
         private void SetGenre(DiscoverMovie discoverMovie)
         {
-            if(SortingParameters.Genre != null)
+            if (SortingParameters.Genre != null)
             {
                 List<int> listOfGenre = new List<int>() { (int)(MoviesGenre)Enum.Parse(typeof(MoviesGenre), SortingParameters.ConvertGenre(typeof(MoviesGenre))) };
                 discoverMovie = discoverMovie.IncludeWithAllOfGenre(listOfGenre);
@@ -203,14 +203,14 @@ namespace PrefMovieApi
         /// <param name="values"></param>
         private void SetStackPanel<T>(int loopCount, IEnumerable<T> values)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Setting elements to window");
+            Config.logger.Log(LogLevel.Info, "Setting elements to window");
             var listOfElements = values.ToList();
             try
             {
                 if (listOfElements.Count == 0)
                 {
                     MainStackPanelForProposal.Height += 320;
-                    MainWindow.logger.Log(LogLevel.Warn, "list of sorting is empty");
+                    Config.logger.Log(LogLevel.Warn, "list of sorting is empty");
 
                     // Adding special textblock to stackpanel
                     TextBlock textBlock = new TextBlock()
@@ -254,12 +254,12 @@ namespace PrefMovieApi
                             // Grid for poster with average vote and button
                             Grid posterGrid = new Grid();
                             string idOfElement;
-                            posterGrid.Children.Add(ElementInfo.PosterDiploy(out idOfElement,listOfElements[indexOfFilm]));
+                            posterGrid.Children.Add(ElementInfo.PosterDiploy(out idOfElement, listOfElements[indexOfFilm]));
                             posterGrid.Children.Add(ElementInfo.AverageRateDiploy(listOfElements[indexOfFilm]));
 
                             dynamic movieOrTV = listOfElements[indexOfFilm];
 
-                            bool isInLibrary = Library.titles.Any(x => x.Id == (listOfElements[indexOfFilm] is SearchMovie 
+                            bool isInLibrary = Library.titles.Any(x => x.Id == (listOfElements[indexOfFilm] is SearchMovie
                             ? movieOrTV.Id : movieOrTV.Id));
 
                             posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(idOfElement, isInLibrary));
@@ -296,11 +296,11 @@ namespace PrefMovieApi
                         MainStackPanelForProposal.Children.Add(elements);
                     }
                 }
-            
+
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, $"Sorting: {ex.Message}");
+                Config.logger.Log(LogLevel.Error, $"Sorting: {ex.Message}");
             }
         }
 

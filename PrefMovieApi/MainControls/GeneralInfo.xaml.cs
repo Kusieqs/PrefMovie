@@ -12,10 +12,6 @@ using TMDbLib.Objects.Movies;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy GeneralInfo.xaml
-    /// </summary>
-
     public partial class GeneralInfo : UserControl
     {
         // Client object
@@ -52,13 +48,13 @@ namespace PrefMovieApi
                 var testRequest = client.GetMovieAsync(550).Result;
                 if (testRequest == null)
                 {
-                    MainWindow.logger.Log(LogLevel.Error, "Test request is null");
+                    Config.logger.Log(LogLevel.Error, "Test request is null");
                     throw new FormatException();
                 }
-                MainWindow.logger.Log(LogLevel.Info, "API is correct");
+                Config.logger.Log(LogLevel.Info, "API is correct");
 
                 // Setting new style for infomration
-                MainWindow.logger.Log(LogLevel.Info, "Style for infomrations about elemnts was loaded");
+                Config.logger.Log(LogLevel.Info, "Style for infomrations about elemnts was loaded");
 
                 // Setting movies
                 loadContent(null, null);
@@ -66,7 +62,7 @@ namespace PrefMovieApi
             catch (Exception ex)
             {
                 MessageBox.Show("Crticial Error!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                MainWindow.logger.Log(LogLevel.Error, ex.Message);
+                Config.logger.Log(LogLevel.Error, ex.Message);
                 mainWindow.Close();
             }
 

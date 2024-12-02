@@ -20,6 +20,9 @@ namespace PrefMovieApi
     /// <summary>
     /// Logika interakcji dla klasy Library.xaml
     /// </summary>
+    /// <summary>
+    /// Logika interakcji dla klasy Library.xaml
+    /// </summary>
     public partial class Library : UserControl
     {
         public static List<ElementParameters> titles = new List<ElementParameters>();
@@ -30,9 +33,9 @@ namespace PrefMovieApi
             InitializeComponent();
 
             titles = jsonFile.DeserializeLibrary();
-            if(titles.Count > 0 )
+            if (titles.Count > 0)
             {
-                MainWindow.logger.Log(LogLevel.Info, "In file is more than 0 titles");
+                Config.logger.Log(LogLevel.Info, "In file is more than 0 titles");
                 LoadFavoriteMovies();
             }
         }
@@ -80,7 +83,7 @@ namespace PrefMovieApi
             ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
             titles.Add(element);
 
-            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {element.Id}");
+            Config.logger.Log(LogLevel.Info, $"Adding new element to library: {element.Id}");
             LoadFavoriteMovies();
         }
 
@@ -96,7 +99,7 @@ namespace PrefMovieApi
 
             titles = newList.Intersect(titles).ToList();
 
-            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Id}");
+            Config.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Id}");
             LoadFavoriteMovies();
         }
 
@@ -105,7 +108,7 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void OpenElement(object sender,  RoutedEventArgs e)
+        public void OpenElement(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -117,24 +120,24 @@ namespace PrefMovieApi
                     DetailInformation detailInformation;
                     if (Config.buttons.TryGetValue(button.Tag.ToString(), out Button value))
                     {
-                        MainWindow.logger.Log(LogLevel.Info, "Opening new element as window with element info and button");
+                        Config.logger.Log(LogLevel.Info, "Opening new element as window with element info and button");
                         detailInformation = new DetailInformation(element, value);
                     }
                     else
                     {
-                        MainWindow.logger.Log(LogLevel.Info, "Opening new element as window with element info");
+                        Config.logger.Log(LogLevel.Info, "Opening new element as window with element info");
                         detailInformation = new DetailInformation(element);
                     }
                     detailInformation.Show();
                 }
                 else
                 {
-                    MainWindow.logger.Log(LogLevel.Warn, "Window is existing");
+                    Config.logger.Log(LogLevel.Warn, "Window is existing");
                 }
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, ex.Message);
+                Config.logger.Log(LogLevel.Error, ex.Message);
             }
         }
     }

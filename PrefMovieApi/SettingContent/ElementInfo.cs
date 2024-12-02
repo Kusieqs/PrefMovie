@@ -21,7 +21,7 @@ namespace PrefMovieApi
         /// <returns>Stack panel with inputed information about movies</returns>
         public static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<dynamic> randomMoviesOrTvShows)
         {
-            MainWindow.logger.Log(LogLevel.Info, "SetInformationToStackPanel activated");
+            Config.logger.Log(LogLevel.Info, "SetInformationToStackPanel activated");
 
             foreach (var movieOrTvShow in randomMoviesOrTvShows)
             {
@@ -216,7 +216,7 @@ namespace PrefMovieApi
                 if (string.IsNullOrEmpty(text.Text))
                 {
                     string nameOfTheme = i == 0 ? "Title" : i == 1 ? "Date Relase" : "Genre";
-                    MainWindow.logger.Log(LogLevel.Warn, $"Text is empty for: {nameOfTheme} {nameof(randomMoviesOrTvShows)}");
+                    Config.logger.Log(LogLevel.Warn, $"Text is empty for: {nameOfTheme} {nameof(randomMoviesOrTvShows)}");
                 }
 
                 information.Children.Add(text);
@@ -276,13 +276,13 @@ namespace PrefMovieApi
             Button button = sender as Button;
             if (Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
-                MainWindow.logger.Log(LogLevel.Info, "Deleting element");
+                Config.logger.Log(LogLevel.Info, "Deleting element");
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
                 MainWindow.library.DeletingNewElement(int.Parse(button.Tag.ToString()));
             }
             else
             {
-                MainWindow.logger.Log(LogLevel.Info, "Adding element");
+                Config.logger.Log(LogLevel.Info, "Adding element");
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
                 MainWindow.library.AddingNewElement(int.Parse(button.Tag.ToString()));
             }
@@ -296,7 +296,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private static void ClickPosterButton(object sender, RoutedEventArgs e)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Opening new window when poster was clicked");
+            Config.logger.Log(LogLevel.Info, "Opening new window when poster was clicked");
             try
             {
                 Button button = sender as Button;
@@ -307,7 +307,7 @@ namespace PrefMovieApi
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, ex.Message);
+                Config.logger.Log(LogLevel.Error, ex.Message);
             }
         }
 
