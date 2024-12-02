@@ -27,8 +27,9 @@ namespace PrefMovieApi
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Config.logger.Log(LogLevel.Warn, ex.Message);
                 return false;
             }
         }

@@ -58,23 +58,18 @@ namespace PrefMovieApi
         {
             try
             {
-                Sorting.Content = new Sorting(MainContent);
-                Library.Content = library;
-
                 // Checking netowrk connection
                 if (ConnectionInternet.NetworkCheck())
                 {
-                    Config.logger.Log(LogLevel.Info, "Opening GeneralInfo control");
-                    Sorting.IsEnabled = true;
-
-                    Config.logger.Log(LogLevel.Warn, "General info is creating");
+                    Config.logger.Log(LogLevel.Info, "Connection to internet is correct");
                     MainContent.Content = new GeneralInfo(this);
+                    Sorting.Content = new Sorting(MainContent);
+                    Library.Content = library;
                 }
                 else
                 {
-                    Config.logger.Log(LogLevel.Info, "Opening NoConnection control");
+                    Config.logger.Log(LogLevel.Info, "Connection to internet is not correct");
                     MainContent.Content = new NoConnection();
-                    Sorting.IsEnabled = false;
                 }
             }
             catch (Exception ex)
@@ -122,5 +117,4 @@ namespace PrefMovieApi
             }
         }
     }
-
 }
