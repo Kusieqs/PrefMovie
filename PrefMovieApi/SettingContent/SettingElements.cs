@@ -37,7 +37,7 @@ namespace PrefMovieApi
             DateTime threeMonthsAgo = today.AddMonths(-3);
 
             // The new once movies from last 3 months
-            var movies = GeneralInfo.client.DiscoverMoviesAsync()
+            var movies = Config.client.DiscoverMoviesAsync()
                 .WhereReleaseDateIsAfter(threeMonthsAgo)
                 .WhereReleaseDateIsBefore(today)
                 .Query().Result;
@@ -59,7 +59,7 @@ namespace PrefMovieApi
             Config.logger.Log(LogLevel.Info, "TheBestMovies method activated");
 
             // setting movies with the best average vote
-            var movies = GeneralInfo.client.DiscoverMoviesAsync()
+            var movies = Config.client.DiscoverMoviesAsync()
                 .WhereVoteAverageIsAtLeast(8)
                 .Query().Result;
 
@@ -84,7 +84,7 @@ namespace PrefMovieApi
             DateTime threeMonthsAgo = today.AddMonths(-3);
 
             // The new once movies from last 3 months
-            var tvShows = GeneralInfo.client.DiscoverTvShowsAsync()
+            var tvShows = Config.client.DiscoverTvShowsAsync()
                 .WhereFirstAirDateIsAfter(threeMonthsAgo)
                 .WhereFirstAirDateIsBefore(today)
                 .Query().Result;
@@ -105,7 +105,7 @@ namespace PrefMovieApi
             Config.logger.Log(LogLevel.Info, "TheBestSeries method activated");
 
             // setting tvShows with the best average vote
-            var tvShows = GeneralInfo.client.DiscoverTvShowsAsync()
+            var tvShows = Config.client.DiscoverTvShowsAsync()
                 .WhereVoteAverageIsAtLeast(8)
                 .Query().Result;
 

@@ -308,13 +308,13 @@ namespace PrefMovieApi
         /// Getting movies as object
         /// </summary>
         /// <returns>Object of movies</returns>
-        private DiscoverMovie SetListOfMovies() => GeneralInfo.client.DiscoverMoviesAsync();
+        private DiscoverMovie SetListOfMovies() => Config.client.DiscoverMoviesAsync();
 
         /// <summary>
         /// Getting tvshows as object
         /// </summary>
         /// <returns>Object of tvshows</returns>
-        private DiscoverTv SetListOfTvShows() => GeneralInfo.client.DiscoverTvShowsAsync();
+        private DiscoverTv SetListOfTvShows() => Config.client.DiscoverTvShowsAsync();
 
         /// <summary>
         /// Taking random elements from object as DiscoverTv and converting into query

@@ -36,12 +36,12 @@ namespace PrefMovieApi
 
             if (element.MediaType == MediaType.Movie)
             {
-                var movie = GeneralInfo.client.GetMovieAsync(element.Id).Result;
+                var movie = Config.client.GetMovieAsync(element.Id).Result;
                 SettingContent(movie);
             }
             else
             {
-                var tvShow = GeneralInfo.client.GetTvShowAsync(element.Id).Result;
+                var tvShow = Config.client.GetTvShowAsync(element.Id).Result;
                 SettingContent(tvShow);
             }
         }
@@ -54,12 +54,12 @@ namespace PrefMovieApi
 
             if (element.MediaType == MediaType.Movie)
             {
-                var movie = GeneralInfo.client.GetMovieAsync(element.Id).Result;
+                var movie = Config.client.GetMovieAsync(element.Id).Result;
                 SettingContent(movie);
             }
             else
             {
-                var tvShow = GeneralInfo.client.GetTvShowAsync(element.Id).Result;
+                var tvShow = Config.client.GetTvShowAsync(element.Id).Result;
                 SettingContent(tvShow);
             }
         }

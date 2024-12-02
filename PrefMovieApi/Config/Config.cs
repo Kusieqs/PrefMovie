@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using TMDbLib.Client;
 
 namespace PrefMovieApi
 {
@@ -27,6 +28,9 @@ namespace PrefMovieApi
 
         // List of every logs messages
         public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
+
+        // Client object
+        public static TMDbClient client = null;
 
         // Style for infomration about element
         public static Style styleThemeOfElement;

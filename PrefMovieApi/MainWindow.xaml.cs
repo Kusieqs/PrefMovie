@@ -28,6 +28,7 @@ namespace PrefMovieApi
         {
             InitializeComponent();
 
+            // Downwriting resources to Config file
             Config.styleForButton = FindResource("ButtonImage") as Style;
             Config.styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
             Config.styleForPosterButton = FindResource("PosterButton") as Style;
@@ -76,6 +77,7 @@ namespace PrefMovieApi
             {
                 // Error Log
                 Config.logger.Log(LogLevel.Error, ex.Message);
+                Config.logger.ShowErrors();
                 Close();
             }
         }
@@ -88,6 +90,7 @@ namespace PrefMovieApi
         private void ExitWindow(object sender, EventArgs e)
         {
             Config.logger.Log(LogLevel.Info, "Closing window");
+            Config.logger.ShowErrors();
             Close();
         }
 
