@@ -17,22 +17,16 @@ using System.Windows.Shapes;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy Library.xaml
-    /// </summary>
-    /// <summary>
-    /// Logika interakcji dla klasy Library.xaml
-    /// </summary>
     public partial class Library : UserControl
     {
+        // List of parameters of objects
         public static List<ElementParameters> titles = new List<ElementParameters>();
-        public static List<string> existingWindows = new List<string>(); // !!!!!!!!!!!!!!!!
-        public static JsonFile jsonFile = new JsonFile();
+
         public Library()
         {
             InitializeComponent();
 
-            titles = jsonFile.DeserializeLibrary();
+            titles = Config.jsonFile.DeserializeLibrary();
             if (titles.Count > 0)
             {
                 Config.logger.Log(LogLevel.Info, "In file is more than 0 titles");
@@ -71,7 +65,7 @@ namespace PrefMovieApi
                 ToolTipService.SetInitialShowDelay(titleButton, 0);
                 FavoriteMovies.Children.Add(titleButton);
             }
-            jsonFile.SerializeLibrary();
+            Config.jsonFile.SerializeLibrary();
         }
 
         /// <summary>
@@ -115,8 +109,11 @@ namespace PrefMovieApi
                 Button button = sender as Button;
                 ElementParameters element = titles.Where(x => x.Id == (int)button.Tag).FirstOrDefault();
 
-                if (!existingWindows.Any())
+                if (!Config.existingWindows.Any(x => x == element.Id.ToString()))
                 {
+                    // Adding control to list
+                    Config.existingWindows.Add(element.Id.ToString());
+
                     DetailInformation detailInformation;
                     if (Config.buttons.TryGetValue(button.Tag.ToString(), out Button value))
                     {

@@ -32,6 +32,12 @@ namespace PrefMovieApi
         // Client object
         public static TMDbClient client = null;
 
+        // Special object to create jsonFile
+        public static JsonFile jsonFile = new JsonFile();
+
+        // List to control which window is open
+        public static List<string> existingWindows = new List<string>();
+
         // Style for infomration about element
         public static Style styleThemeOfElement;
 

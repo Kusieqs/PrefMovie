@@ -130,6 +130,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void ExitWindow(object sender, RoutedEventArgs e)
         {
+            Config.existingWindows.Remove(element.Id.ToString());
             Close();
         }
 

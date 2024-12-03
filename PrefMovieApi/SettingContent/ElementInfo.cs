@@ -17,7 +17,7 @@ namespace PrefMovieApi
         /// Setting information about movie.
         /// </summary>
         /// <param name="mainStackPanel">Stack panel where it will be</param>
-        /// <param name="randomMoviesOrTvShows">IEnumerable<dynamic> with diffrent class</param>
+        /// <param name="randomMoviesOrTvShows">IEnumerable<dynamic> with 2 type of class (SearchMovie, SearchTv) class</param>
         /// <returns>Stack panel with inputed information about movies</returns>
         public static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<dynamic> randomMoviesOrTvShows)
         {
@@ -74,15 +74,17 @@ namespace PrefMovieApi
         /// <returns>Poster</returns>
         public static Button PosterDiploy(out string idOfElement, dynamic movieOrTvShow)
         {
+
             idOfElement = $"{movieOrTvShow.Id}";
-            // Tworzenie ImageBrush dla plakatu
+
+            // Creating ImageBrush
             ImageBrush posterBrush = new ImageBrush
             {
                 ImageSource = CreatingImage.SetPoster(movieOrTvShow),
                 Stretch = Stretch.UniformToFill
             };
 
-            // Tworzenie przycisku
+            // Creating button
             Button button = new Button
             {
                 Tag = idOfElement,
@@ -213,6 +215,7 @@ namespace PrefMovieApi
                         break;
                 }
 
+                // Checking empty text
                 if (string.IsNullOrEmpty(text.Text))
                 {
                     string nameOfTheme = i == 0 ? "Title" : i == 1 ? "Date Relase" : "Genre";
@@ -272,7 +275,6 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private static void AddingElementToLibraryOrDeleting(object sender, RoutedEventArgs e)
         {
-
             Button button = sender as Button;
             if (Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
@@ -286,7 +288,6 @@ namespace PrefMovieApi
                 button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
                 MainWindow.library.AddingNewElement(int.Parse(button.Tag.ToString()));
             }
-
         }
 
         /// <summary>
@@ -301,15 +302,26 @@ namespace PrefMovieApi
             {
                 Button button = sender as Button;
                 ElementParameters element = Config.IdForMovie.Where(x => x.Id == int.Parse(button.Tag.ToString())).FirstOrDefault();
-                DetailInformation detailInformation = new DetailInformation(element, Config.buttons[button.Tag.ToString()]);
-                detailInformation.Show();
 
+                if (!Config.existingWindows.Any(x => x == element.Id.ToString()))
+                {
+                    // Adding control to list
+                    Config.existingWindows.Add(element.Id.ToString());
+                    DetailInformation detailInformation = new DetailInformation(element, Config.buttons[button.Tag.ToString()]);
+
+                    // Opening new window
+                    Config.existingWindows.Add(element.Id.ToString());
+                    detailInformation.Show();
+                }
+                else
+                {
+                    Config.logger.Log(LogLevel.Warn, "Window is existing");
+                }
             }
             catch (Exception ex)
             {
                 Config.logger.Log(LogLevel.Error, ex.Message);
             }
         }
-
     }
 }

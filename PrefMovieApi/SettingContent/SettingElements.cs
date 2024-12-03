@@ -21,7 +21,8 @@ namespace PrefMovieApi
     {
 
         // random object
-        public static Random random = new Random();
+        
+        private readonly static Random random = new Random();
 
         /// <summary>
         /// Setting StackPanel with diffrent latest movies to main window
@@ -123,20 +124,29 @@ namespace PrefMovieApi
         /// <returns>list of elements</returns>
         private static IEnumerable<dynamic> CheckSameId<T>(SearchContainer<T> elements) where T : class
         {
-            Config.logger.Log(LogLevel.Info, "Checking elements with same id");
-            List<T> list = new List<T>();
-            do
+            try
             {
-                dynamic element = elements.Results.OrderBy(x => random.Next()).First();
-
-                if (!Config.buttons.Any(x => x.Key.ToString() == element.Id.ToString()))
+                Config.logger.Log(LogLevel.Info, "Checking elements with same id");
+                List<T> list = new List<T>();
+                do
                 {
-                    list.Add(element);
-                    Config.buttons.Add(element.Id.ToString(), null);
-                }
-            } while (list.Count < 8);
+                    dynamic element = elements.Results.OrderBy(x => random.Next()).First();
 
-            return list.AsEnumerable<T>();
+                    if (!Config.buttons.Any(x => x.Key.ToString() == element.Id.ToString()))
+                    {
+                        list.Add(element);
+                        Config.buttons.Add(element.Id.ToString(), null);
+                    }
+                } while (list.Count < 8);
+
+                return list.AsEnumerable<T>();
+            }
+            catch (Exception ex)
+            {
+                Config.logger.Log(LogLevel.Error, ex.Message);
+                MessageBox.Show("Critical error","Error",MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
         }
     }
 }
