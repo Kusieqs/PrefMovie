@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PrefMovieApi.Setup;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 using TMDbLib.Objects.TvShows;
@@ -109,16 +110,16 @@ namespace PrefMovieApi
         private void LoadButton()
         {
             Config.logger.Log(LogLevel.Info, "Loading buttons");
-            Close.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/closeIcon.png", UriKind.Relative));
+            Close.Source = new BitmapImage(new Uri(SetupPaths.CLOSE, UriKind.Relative));
 
             if (Library.titles.Any(x => x.Id == element.Id))
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.STAR, UriKind.Relative));
                 IsButtonEnter = true;
             }
             else
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.EMPTY_STAR, UriKind.Relative));
                 IsButtonEnter = false;
             }
         }
@@ -143,23 +144,23 @@ namespace PrefMovieApi
         {
             if (IsButtonEnter)
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.EMPTY_STAR, UriKind.Relative));
                 IsButtonEnter = false;
 
                 if (Config.buttons.Any(x => x.Key == element.Id.ToString()))
                 {
-                    mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                    mainWindowButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
                 }
                 MainWindow.library.DeletingNewElement(element.Id);
             }
             else
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.STAR, UriKind.Relative));
                 IsButtonEnter = true;
 
                 if (Config.buttons.Any(x => x.Key == element.Id.ToString()))
                 {
-                    mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
+                    mainWindowButton.Content = CreatingImage.SettingImage(SetupPaths.STAR);
                 }
                 MainWindow.library.AddingNewElement(element.Id);
             }
@@ -175,11 +176,11 @@ namespace PrefMovieApi
         {
             if (IsButtonEnter)
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.EMPTY_STAR, UriKind.Relative));
             }
             else
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.STAR, UriKind.Relative));
             }
         }
 
@@ -192,11 +193,11 @@ namespace PrefMovieApi
         {
             if (IsButtonEnter)
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.STAR, UriKind.Relative));
             }
             else
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.EMPTY_STAR, UriKind.Relative));
             }
         }
 

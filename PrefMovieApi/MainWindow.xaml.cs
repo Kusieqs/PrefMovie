@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PrefMovieApi.Setup;
 using TMDbLib.Objects.Movies;
 
 namespace PrefMovieApi
@@ -34,13 +35,13 @@ namespace PrefMovieApi
             Config.styleForPosterButton = FindResource("PosterButton") as Style;
 
             // Logger checking
-            if (Config.logger is FileLogger && !File.Exists(Config.PATH_TO_LOG))
+            if (Config.logger is FileLogger && !File.Exists(SetupPaths.PATH_TO_LOG))
             {
-                File.WriteAllText(Config.PATH_TO_LOG, "");
+                File.WriteAllText(SetupPaths.PATH_TO_LOG, "");
             }
             else if (Config.logger is FileLogger)
             {
-                File.AppendAllText(Config.PATH_TO_LOG, "\n\n");
+                File.AppendAllText(SetupPaths.PATH_TO_LOG, "\n\n");
                 Config.logger.Log(LogLevel.Info, "New log");
             }
             else

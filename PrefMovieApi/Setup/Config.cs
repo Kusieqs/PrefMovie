@@ -7,21 +7,15 @@ using System.Windows;
 using System.Windows.Controls;
 using TMDbLib.Client;
 
-namespace PrefMovieApi
+namespace PrefMovieApi.Setup
 {
-    public static class Config
+    internal class Config
     {
         // Api Key
         public const string API_KEY_TO_TMDB = "";
 
         // base url to posters
         public const string BASE_URL = "https://image.tmdb.org/t/p/w500";
-
-        // Path to log file
-        public const string PATH_TO_LOG = "log.txt";
-
-        // Path to json
-        public const string PATH_TO_JSON = "LibraryFile.txt";
 
         // Interface as logger
         public static ILogger logger = new FileLogger();

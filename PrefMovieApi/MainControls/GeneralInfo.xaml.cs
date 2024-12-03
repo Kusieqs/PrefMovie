@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PrefMovieApi.Setup;
 using TMDbLib.Client;
 using TMDbLib.Objects.Discover;
 using TMDbLib.Objects.Find;

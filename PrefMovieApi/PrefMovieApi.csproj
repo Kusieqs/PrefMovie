@@ -98,7 +98,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Config\Config.cs" />
     <Compile Include="DetailInformationWindow\DetailInformation.xaml.cs">
       <DependentUpon>DetailInformation.xaml</DependentUpon>
     </Compile>
@@ -120,6 +119,8 @@
       <DependentUpon>SortingOutput.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainControls\Sorting\SortingParameters.cs" />
+    <Compile Include="Setup\Config.cs" />
+    <Compile Include="Setup\SetupPaths.cs" />
     <Page Include="DetailInformationWindow\DetailInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

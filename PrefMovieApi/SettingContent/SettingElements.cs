@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Rectangle = System.Windows.Shapes.Rectangle;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using TMDbLib.Objects.General;
+using PrefMovieApi.Setup;
 
 namespace PrefMovieApi
 {

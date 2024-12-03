@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PrefMovieApi.Setup;
 
 namespace PrefMovieApi
 {
@@ -28,7 +29,6 @@ namespace PrefMovieApi
         private bool isFilmSorting = false; // Control for film sorting method
         private bool isTvShowsSorting = false; // Control for TvShow sorting method
         private int selectedStars = 0; // Count of selected stars
-        private bool starClick = false;
         private ContentControl mainContent; // content for searching
         public Sorting(ContentControl content)
         {
@@ -86,16 +86,16 @@ namespace PrefMovieApi
             {
                 arrowsAsButtons[keys] = false;
             }
-            RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/up.png");
-            RelaseDateDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/down.png");
-            VoteAverageUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/up.png");
-            VoteAverageDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/down.png");
+            RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
+            RelaseDateDownButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
+            VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
+            VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
 
             selectedStars = 0;
             for (int i = 1; i <= 5; i++)
             {
                 var starButton = FindName($"Star{i}") as Button;
-                starButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                starButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
             }
 
             DateFrom.SelectedDate = null;
@@ -159,13 +159,13 @@ namespace PrefMovieApi
             {
                 // Random sorting for ascending date
                 arrowsAsButtons["RelaseDateUpButton"] = true;
-                RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillUp.png");
+                RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
             }
             else if (number == 2)
             {
                 // Random sorting for descending date
                 arrowsAsButtons["RelaseDateDownButton"] = true;
-                RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillDown.png");
+                RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
             }
 
             // Choosing random sorting of average vote
@@ -174,13 +174,13 @@ namespace PrefMovieApi
             {
                 // Random sorting for ascending date
                 arrowsAsButtons["VoteAverageUpButton"] = true;
-                VoteAverageUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillUp.png");
+                VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
             }
             else if (number == 2)
             {
                 // Random sorting for descending date
                 arrowsAsButtons["VoteAverageDownButton"] = true;
-                VoteAverageDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillDown.png");
+                VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
             }
 
             // Choosing how many stars will be fill
@@ -310,8 +310,8 @@ namespace PrefMovieApi
             {
                 arrowsAsButtons["RelaseDateDownButton"] = false;
             }
-            RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillUp.png");
-            RelaseDateDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/down.png");
+            RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
+            RelaseDateDownButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
             arrowsAsButtons["RelaseDateUpButton"] = true;
         }
         private void RelaseDateClickDown(object sender, RoutedEventArgs e)
@@ -320,8 +320,8 @@ namespace PrefMovieApi
             {
                 arrowsAsButtons["RelaseDateUpButton"] = false;
             }
-            RelaseDateDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillDown.png");
-            RelaseDateUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/up.png");
+            RelaseDateDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
+            RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
             arrowsAsButtons["RelaseDateDownButton"] = true;
         }
         private void AverageVoteClickUp(object sender, RoutedEventArgs e)
@@ -330,8 +330,8 @@ namespace PrefMovieApi
             {
                 arrowsAsButtons["VoteAverageDownButton"] = false;
             }
-            VoteAverageUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillUp.png");
-            VoteAverageDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/down.png");
+            VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
+            VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
             arrowsAsButtons["VoteAverageUpButton"] = true;
         }
         private void AverageVoteClickDown(object sender, RoutedEventArgs e)
@@ -340,8 +340,8 @@ namespace PrefMovieApi
             {
                 arrowsAsButtons["VoteAverageUpButton"] = false;
             }
-            VoteAverageDownButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillDown.png");
-            VoteAverageUpButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/up.png");
+            VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
+            VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
             arrowsAsButtons["VoteAverageDownButton"] = true;
         }
         private void MouseLeaveUp(object sender, MouseEventArgs e)
@@ -349,7 +349,7 @@ namespace PrefMovieApi
             Button button = sender as Button;
             if (!arrowsAsButtons[button.Name])
             {
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/up.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
             }
         }
         private void MouseEnterUp(object sender, MouseEventArgs e)
@@ -357,7 +357,7 @@ namespace PrefMovieApi
             Button button = sender as Button;
             if (!arrowsAsButtons[button.Name])
             {
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillUp.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.UP);
             }
         }
         private void MouseLeaveDown(object sender, MouseEventArgs e)
@@ -365,7 +365,7 @@ namespace PrefMovieApi
             Button button = sender as Button;
             if (!arrowsAsButtons[button.Name])
             {
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/down.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
             }
         }
         private void MouseEnterDown(object sender, MouseEventArgs e)
@@ -373,7 +373,7 @@ namespace PrefMovieApi
             Button button = sender as Button;
             if (!arrowsAsButtons[button.Name])
             {
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/fillDown.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
             }
         }
         private void MenuMouseLeave(object sender, MouseEventArgs e)
@@ -426,7 +426,7 @@ namespace PrefMovieApi
                 for (int i = 1; i <= 5; i++)
                 {
                     var starButton = FindName($"Star{i}") as Button;
-                    starButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                    starButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
                 }
             }
             else
@@ -436,13 +436,13 @@ namespace PrefMovieApi
                     var starButton = FindName($"Star{i}") as Button;
                     if (i <= count)
                     {
-                        starButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
+                        starButton.Content = CreatingImage.SettingImage(SetupPaths.STAR);
                         starButton.Width = 30;
                         starButton.Height = 30;
                     }
                     else
                     {
-                        starButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                        starButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
                         starButton.Width = 30;
                         starButton.Height = 30;
                     }

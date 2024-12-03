@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PrefMovieApi.Setup;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace PrefMovieApi
             {
                 Config.logger.Log(LogLevel.Info, "Library is NOT empty");
                 string jsonSerialize = JsonConvert.SerializeObject(Library.titles);
-                File.WriteAllText(Config.PATH_TO_JSON, jsonSerialize);
+                File.WriteAllText(SetupPaths.PATH_TO_JSON, jsonSerialize);
             }
             else
             {
@@ -37,10 +38,10 @@ namespace PrefMovieApi
         public List<ElementParameters> DeserializeLibrary()
         {
             Config.logger.Log(LogLevel.Info, "DeserializeLibrary Activated");
-            if (File.Exists(Config.PATH_TO_JSON))
+            if (File.Exists(SetupPaths.PATH_TO_JSON))
             {
                 Config.logger.Log(LogLevel.Info, "Reading file");
-                string readerFile = File.ReadAllText(Config.PATH_TO_JSON);
+                string readerFile = File.ReadAllText(SetupPaths.PATH_TO_JSON);
                 return JsonConvert.DeserializeObject<List<ElementParameters>>(readerFile);
             }
             else

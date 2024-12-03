@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using PrefMovieApi.Setup;
 using TMDbLib.Objects.Search;
 
 namespace PrefMovieApi
@@ -140,7 +141,7 @@ namespace PrefMovieApi
             // Creating button as star
             Button favoriteButton = new Button()
             {
-                Content = CreatingImage.SettingImage(isInLibrary == true ? "/PrefMovieApi;component/Images/star.png" : "/PrefMovieApi;component/Images/emptyStar.png"),
+                Content = CreatingImage.SettingImage(isInLibrary == true ? SetupPaths.STAR : SetupPaths.EMPTY_STAR),
                 Tag = idOfElement.ToString(),
                 Width = 30,
                 Height = 30,
@@ -239,12 +240,12 @@ namespace PrefMovieApi
             if (Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
                 // Creating image as star
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
             }
             else
             {
                 // Creating image as star
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.STAR);
             }
         }
 
@@ -259,12 +260,12 @@ namespace PrefMovieApi
             if (Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
                 // Creating image as star
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.STAR);
             }
             else
             {
                 // Creating image as star
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
             }
         }
 
@@ -279,13 +280,13 @@ namespace PrefMovieApi
             if (Library.titles.Any(x => x.Id == int.Parse(button.Tag.ToString())))
             {
                 Config.logger.Log(LogLevel.Info, "Deleting element");
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
                 MainWindow.library.DeletingNewElement(int.Parse(button.Tag.ToString()));
             }
             else
             {
                 Config.logger.Log(LogLevel.Info, "Adding element");
-                button.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
+                button.Content = CreatingImage.SettingImage(SetupPaths.STAR);
                 MainWindow.library.AddingNewElement(int.Parse(button.Tag.ToString()));
             }
         }
