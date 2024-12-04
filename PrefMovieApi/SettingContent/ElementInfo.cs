@@ -31,7 +31,7 @@ namespace PrefMovieApi
                 {
                     Orientation = Orientation.Horizontal,
                     Margin = new Thickness(20, 0, 10, 0),
-                    Width = 440
+                    Width = 410
                 };
 
                 // Grid for poster with average vote and button
@@ -75,7 +75,6 @@ namespace PrefMovieApi
         /// <returns>Poster</returns>
         public static Button PosterDiploy(out string idOfElement, dynamic movieOrTvShow)
         {
-
             idOfElement = $"{movieOrTvShow.Id}";
 
             // Creating ImageBrush

@@ -16,6 +16,10 @@ namespace PrefMovieApi.Setup
 
         public const string EMPTY_STAR = "/PrefMovieApi;component/Images/grayStar.png";
 
+        public const string WHITE_STAR = "/PrefMovieApi;component/Images/star.png";
+
+        public const string EMPTY_WHITE_STAR = "/PrefMovieApi;component/Images/emptyStar.png";
+
         public const string EMPTY_DOWN = "/PrefMovieApi;component/Images/down.png";
 
         public const string EMPTY_UP = "/PrefMovieApi;component/Images/up.png";

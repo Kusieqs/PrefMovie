@@ -9,7 +9,7 @@ namespace PrefMovieApi
 {
     public class SortingParameters
     {
-        public readonly Dictionary<string, bool> ArrowsAsButtons;// Dicitonary of button which is true
+        public readonly Dictionary<string, bool> ArrowsAsButtons;
         public readonly bool IsFilmSorting;
         public readonly bool IsTvShowsSorting;
         public readonly string Genre;
@@ -22,34 +22,19 @@ namespace PrefMovieApi
             ArrowsAsButtons = arrowsAsButtons;
             IsFilmSorting = isFilmSorting;
             IsTvShowsSorting = isTvShowsSorting;
-
-            if (genre != null)
-            {
-                Genre = genre.ToString();
-            }
-            else
-            {
-                Genre = null;
-            }
-
+            Genre = genre?.ToString(); 
             SelectedStars = selectedStars;
             DateFrom = dateFrom;
             DateTo = dateTo;
         }
 
-        public string ConvertGenre(Type type)
-        {
-            string convertGenre;
-            if(type == typeof(MoviesGenre))
-            {
-                convertGenre = Genre.Replace(' ', '_');
-            }
-            else
-            {
-                convertGenre = Genre.Replace(' ', '_').Replace("and", "AND");
-            }
-            return convertGenre;
-        }
+        /// <summary>
+        /// Converting genre into enum
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns>Correct enum genre</returns>
+        public string ConvertGenre(Type type) => type == typeof(MoviesGenre) ? 
+            Genre.Replace(' ', '_') : Genre.Replace(' ', '_').Replace("and", "AND");
 
     }
 }

@@ -18,18 +18,27 @@ namespace PrefMovieApi
 {
     public partial class Sorting : UserControl
     {
+        // Dictionary for infomration about sorting method
         private Dictionary<string, bool> arrowsAsButtons = new Dictionary<string, bool>()
         {
             ["RelaseDateUpButton"] = false,
             ["RelaseDateDownButton"] = false,
             ["VoteAverageUpButton"] = false,
             ["VoteAverageDownButton"] = false,
-        }; // Dictionary for infomration about sorting method
+        };
 
-        private bool isFilmSorting = false; // Control for film sorting method
-        private bool isTvShowsSorting = false; // Control for TvShow sorting method
-        private int selectedStars = 0; // Count of selected stars
-        private ContentControl mainContent; // content for searching
+        // Control for film sorting method
+        private bool isFilmSorting = false;
+
+        // Control for TvShow sorting method
+        private bool isTvShowsSorting = false;
+
+        // Count of selected stars
+        private int selectedStars = 0;
+
+        // content for searching
+        private ContentControl mainContent; 
+
         public Sorting(ContentControl content)
         {
             Config.logger.Log(LogLevel.Info, "Sorting content was loaded");
@@ -74,6 +83,7 @@ namespace PrefMovieApi
         private void ClearSortingButton(object sender = null, RoutedEventArgs e = null)
         {
             Config.logger.Log(LogLevel.Info, "Clearing all sorting information");
+
             isFilmSorting = false;
             isTvShowsSorting = false;
             FilmButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
@@ -113,128 +123,135 @@ namespace PrefMovieApi
             ClearSortingButton();
             Random random = new Random();
 
-            int number = random.Next(0, 3);
-            if (number == 1)
+            try
             {
-                // Choosing film for random main sector
-                isFilmSorting = true;
-                FilmButton.Background = new SolidColorBrush(Colors.Gray);
-
-                // Loading combo box with genres 
-                LoadingComboBox(true);
-                int enumCount = Enum.GetNames(typeof(MoviesGenre)).Length;
-                int selectorGenre = random.Next(-1, enumCount);
-                if (selectorGenre == -1)
+                int number = random.Next(0, 3);
+                if (number == 1)
                 {
-                    Genre.SelectedItem = null;
+                    // Choosing film for random main sector
+                    isFilmSorting = true;
+                    FilmButton.Background = new SolidColorBrush(Colors.Gray);
+
+                    // Loading combo box with genres 
+                    LoadingComboBox(true);
+                    int enumCount = Enum.GetNames(typeof(MoviesGenre)).Length;
+                    int selectorGenre = random.Next(-1, enumCount);
+                    if (selectorGenre == -1)
+                    {
+                        Genre.SelectedItem = null;
+                    }
+                    else
+                    {
+                        Genre.SelectedItem = Genre.Items[selectorGenre];
+                    }
                 }
-                else
+                else if (number == 2)
                 {
-                    Genre.SelectedItem = Genre.Items[selectorGenre];
-                }
-            }
-            else if (number == 2)
-            {
-                // Choosing TvShows for random main sector
-                isTvShowsSorting = true;
-                TvShowButton.Background = new SolidColorBrush(Colors.Gray);
+                    // Choosing TvShows for random main sector
+                    isTvShowsSorting = true;
+                    TvShowButton.Background = new SolidColorBrush(Colors.Gray);
 
-                // Loading combo box with genres 
-                LoadingComboBox();
-                int enumCount = Enum.GetNames(typeof(TvShowsGenre)).Length;
-                int selectorGenre = random.Next(-1, enumCount);
-                if (selectorGenre == -1)
-                {
-                    Genre.SelectedItem = null;
-                }
-                else
-                {
-                    Genre.SelectedItem = Genre.Items[selectorGenre];
-                }
-            }
-
-            // Choosing random sorting of relase date 
-            number = random.Next(0, 3);
-            if (number == 1)
-            {
-                // Random sorting for ascending date
-                arrowsAsButtons["RelaseDateUpButton"] = true;
-                RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
-            }
-            else if (number == 2)
-            {
-                // Random sorting for descending date
-                arrowsAsButtons["RelaseDateDownButton"] = true;
-                RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
-            }
-
-            // Choosing random sorting of average vote
-            number = random.Next(0, 3);
-            if (number == 1)
-            {
-                // Random sorting for ascending date
-                arrowsAsButtons["VoteAverageUpButton"] = true;
-                VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
-            }
-            else if (number == 2)
-            {
-                // Random sorting for descending date
-                arrowsAsButtons["VoteAverageDownButton"] = true;
-                VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
-            }
-
-            // Choosing how many stars will be fill
-            selectedStars = random.Next(0, 6);
-            HighlightStars(selectedStars);
-
-            // Choosing date from
-            bool isFromRelase = random.Next(0, 2) == 1;
-            int fromYear = 0;
-            int fromMonth = 0;
-            if (isFromRelase)
-            {
-                fromYear = random.Next(1980, DateTime.Now.Year + 1);
-                if (fromYear == DateTime.Now.Year)
-                {
-                    fromMonth = random.Next(1, DateTime.Now.Month + 1);
-                }
-                else
-                {
-                    fromMonth = random.Next(1, 13);
+                    // Loading combo box with genres 
+                    LoadingComboBox();
+                    int enumCount = Enum.GetNames(typeof(TvShowsGenre)).Length;
+                    int selectorGenre = random.Next(-1, enumCount);
+                    if (selectorGenre == -1)
+                    {
+                        Genre.SelectedItem = null;
+                    }
+                    else
+                    {
+                        Genre.SelectedItem = Genre.Items[selectorGenre];
+                    }
                 }
 
-                DateFrom.SelectedDate = new DateTime(fromYear, fromMonth, 1);
-            }
+                // Choosing random sorting of relase date 
+                number = random.Next(0, 3);
+                if (number == 1)
+                {
+                    // Random sorting for ascending date
+                    arrowsAsButtons["RelaseDateUpButton"] = true;
+                    RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
+                }
+                else if (number == 2)
+                {
+                    // Random sorting for descending date
+                    arrowsAsButtons["RelaseDateDownButton"] = true;
+                    RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
+                }
 
-            // Choosing date to
-            bool isToRelase = random.Next(0, 2) == 1;
-            int toYear;
-            int toMonth;
-            if (isToRelase)
+                // Choosing random sorting of average vote
+                number = random.Next(0, 3);
+                if (number == 1)
+                {
+                    // Random sorting for ascending date
+                    arrowsAsButtons["VoteAverageUpButton"] = true;
+                    VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
+                }
+                else if (number == 2)
+                {
+                    // Random sorting for descending date
+                    arrowsAsButtons["VoteAverageDownButton"] = true;
+                    VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
+                }
+
+                // Choosing how many stars will be fill
+                selectedStars = random.Next(0, 6);
+                HighlightStars(selectedStars);
+
+                // Choosing date from
+                bool isFromRelase = random.Next(0, 2) == 1;
+                int fromYear = 0;
+                int fromMonth = 0;
+                if (isFromRelase)
+                {
+                    fromYear = random.Next(1980, DateTime.Now.Year + 1);
+                    if (fromYear == DateTime.Now.Year)
+                    {
+                        fromMonth = random.Next(1, DateTime.Now.Month + 1);
+                    }
+                    else
+                    {
+                        fromMonth = random.Next(1, 13);
+                    }
+
+                    DateFrom.SelectedDate = new DateTime(fromYear, fromMonth, 1);
+                }
+
+                // Choosing date to
+                bool isToRelase = random.Next(0, 2) == 1;
+                int toYear;
+                int toMonth;
+                if (isToRelase)
+                {
+                    int selectToYear = isFromRelase == true ? fromYear : 1980;
+                    toYear = random.Next(selectToYear, DateTime.Now.Year + 1);
+
+                    int selectToMonth = isFromRelase == true ? fromMonth : 1;
+
+                    if (fromYear == DateTime.Now.Year)
+                    {
+                        toMonth = random.Next(selectToMonth, DateTime.Now.Month + 1);
+                    }
+                    else
+                    {
+                        toMonth = random.Next(1, 13);
+                    }
+
+                    DateTo.SelectedDate = new DateTime(toYear, toMonth, 1);
+                }
+
+                Config.logger.Log(LogLevel.Info, $"Random Sorting parameters:" +
+                    $"\n{nameof(isFilmSorting)} {isFilmSorting}, {nameof(isTvShowsSorting)} {isTvShowsSorting}" +
+                    $"\n{nameof(Genre)} {Genre.SelectedItem}" +
+                    $"\nRelaseDateUpButton {arrowsAsButtons["RelaseDateUpButton"]}, RelaseDateDownButton {arrowsAsButtons["RelaseDateDownButton"]}" +
+                    $"\nVoteAverageUpButton {arrowsAsButtons["VoteAverageUpButton"]},VoteAverageDownButton {arrowsAsButtons["VoteAverageDownButton"]}" +
+                    $"\nDate from {DateFrom.SelectedDate}, Date to {DateTo.SelectedDate}");
+            }
+            catch (Exception ex)
             {
-                int selectToYear = isFromRelase == true ? fromYear : 1980;
-                toYear = random.Next(selectToYear, DateTime.Now.Year + 1);
-
-                int selectToMonth = isFromRelase == true ? fromMonth : 1;
-
-                if (fromYear == DateTime.Now.Year)
-                {
-                    toMonth = random.Next(selectToMonth, DateTime.Now.Month + 1);
-                }
-                else
-                {
-                    toMonth = random.Next(1, 13);
-                }
-
-                DateTo.SelectedDate = new DateTime(toYear, toMonth, 1);
+                Config.logger.Log(LogLevel.Error, ex.Message);
             }
-
-            Config.logger.Log(LogLevel.Info, $"Random Sorting parameters:" +
-                $"\n{nameof(isFilmSorting)} {isFilmSorting}, {nameof(isTvShowsSorting)} {isTvShowsSorting}" +
-                $"\n{nameof(Genre)} {Genre.SelectedItem}" +
-                $"\nRelaseDateUpButton {arrowsAsButtons["RelaseDateUpButton"]}, RelaseDateDownButton {arrowsAsButtons["RelaseDateDownButton"]}" +
-                $"\nVoteAverageUpButton {arrowsAsButtons["VoteAverageUpButton"]},VoteAverageDownButton {arrowsAsButtons["VoteAverageDownButton"]}" +
-                $"\nDate from {DateFrom.SelectedDate}, Date to {DateTo.SelectedDate}");
 
         }
 
@@ -300,6 +317,40 @@ namespace PrefMovieApi
             if (Genre.Items.Count == 0)
             {
                 Config.logger.Log(LogLevel.Warn, "Empty Combobox");
+            }
+        }
+
+        /// <summary>
+        /// Selecting how many stars will be filled
+        /// </summary>
+        /// <param name="count">number of star</param>
+        private void HighlightStars(int count)
+        {
+            Config.logger.Log(LogLevel.Info, "Filling stars as buttons");
+
+            if (count == 0)
+            {
+                Config.logger.Log(LogLevel.Warn, "Number of stars is 0");
+                for (int i = 1; i <= 5; i++)
+                {
+                    var starButton = FindName($"Star{i}") as Button;
+                    starButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_WHITE_STAR, 30);
+                }
+            }
+            else
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    var starButton = FindName($"Star{i}") as Button;
+                    if (i <= count)
+                    {
+                        starButton.Content = CreatingImage.SettingImage(SetupPaths.WHITE_STAR, 30);
+                    }
+                    else
+                    {
+                        starButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_WHITE_STAR, 30);
+                    }
+                }
             }
         }
 
@@ -411,43 +462,5 @@ namespace PrefMovieApi
             HighlightStars(selectedStars);
         }
         #endregion
-
-        /// <summary>
-        /// Selecting how many stars will be filled
-        /// </summary>
-        /// <param name="count">number of star</param>
-        private void HighlightStars(int count)
-        {
-            Config.logger.Log(LogLevel.Info, "Filling stars as buttons");
-
-            if (count == 0)
-            {
-                Config.logger.Log(LogLevel.Warn, "Number of stars is 0");
-                for (int i = 1; i <= 5; i++)
-                {
-                    var starButton = FindName($"Star{i}") as Button;
-                    starButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
-                }
-            }
-            else
-            {
-                for (int i = 1; i <= 5; i++)
-                {
-                    var starButton = FindName($"Star{i}") as Button;
-                    if (i <= count)
-                    {
-                        starButton.Content = CreatingImage.SettingImage(SetupPaths.STAR);
-                        starButton.Width = 30;
-                        starButton.Height = 30;
-                    }
-                    else
-                    {
-                        starButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
-                        starButton.Width = 30;
-                        starButton.Height = 30;
-                    }
-                }
-            }
-        }
     }
 }
