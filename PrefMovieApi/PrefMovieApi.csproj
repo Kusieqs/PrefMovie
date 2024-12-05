@@ -104,6 +104,7 @@
     <Compile Include="ElementParameters.cs" />
     <Compile Include="GenreEnums\MediaType.cs" />
     <Compile Include="MainControls\Sorting\GettingElements.cs" />
+    <Compile Include="MainControls\Sorting\RandomSelector.cs" />
     <Compile Include="SettingContent\CreatingImage.cs" />
     <Compile Include="SettingContent\ElementInfo.cs" />
     <Compile Include="GenreEnums\MovieGenre.cs" />

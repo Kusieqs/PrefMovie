@@ -44,12 +44,20 @@ namespace PrefMovieApi.MainControls.Sorting
         private static void SetStars(DiscoverTv discoverTv)
         {
             double stars = SortingParameters.SelectedStars * 2;
-            discoverTv = discoverTv.WhereVoteAverageIsAtMost(stars);
+            if(stars == 10)
+            {
+                stars = 9.9;
+            }
+            discoverTv = discoverTv.WhereVoteAverageIsAtMost(stars).WhereVoteAverageIsAtLeast(0.1);
         }
         private static void SetStars(DiscoverMovie discoverMovie)
         {
             double stars = SortingParameters.SelectedStars * 2;
-            discoverMovie = discoverMovie.WhereVoteAverageIsAtMost(stars);
+            if (stars == 10)
+            {
+                stars = 9.9;
+            }
+            discoverMovie = discoverMovie.WhereVoteAverageIsAtMost(stars).WhereVoteAverageIsAtLeast(0.1);
         }
 
         private static void SetDate(DiscoverTv discoverTv)

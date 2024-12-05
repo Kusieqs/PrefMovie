@@ -19,37 +19,35 @@ using TMDbLib.Objects.TvShows;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy DetailInformation.xaml
-    /// </summary>
     public partial class DetailInformation : Window
     {
+        // Parameters of element
         private readonly ElementParameters element;
+
+        // Special control for button enter
         private bool IsButtonEnter;
+
+        // Button object two modify some parameters
         private Button mainWindowButton;
+
         public DetailInformation(ElementParameters element, Button button)
         {
-            Config.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
-            this.element = element;
             this.mainWindowButton = button;
-            InitializeComponent();
-            LoadButton();
-
-            if (element.MediaType == MediaType.Movie)
-            {
-                var movie = Config.client.GetMovieAsync(element.Id).Result;
-                SettingContent(movie);
-            }
-            else
-            {
-                var tvShow = Config.client.GetTvShowAsync(element.Id).Result;
-                SettingContent(tvShow);
-            }
+            this.element = element;
+            Constructor();
         }
         public DetailInformation(ElementParameters element)
         {
-            Config.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
             this.element = element;
+            Constructor();
+        }
+
+        /// <summary>
+        /// Constructor which join two constructors into one
+        /// </summary>
+        private void Constructor()
+        {
+            Config.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
             InitializeComponent();
             LoadButton();
 
@@ -101,7 +99,6 @@ namespace PrefMovieApi
             List<Genre> genres = elementInfo.Genres;
             string[] description = genres.Select(x => x.Name).ToArray();
             Genres.Text = string.Join(",", description);
-
         }
 
         /// <summary>

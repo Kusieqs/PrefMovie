@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PrefMovieApi.MainControls.Sorting;
 using PrefMovieApi.Setup;
 
 namespace PrefMovieApi
@@ -121,7 +122,13 @@ namespace PrefMovieApi
         {
             // Cleaning sorting buttons
             ClearSortingButton();
+
             Random random = new Random();
+
+            ///
+            RandomSelector randomSelector = new RandomSelector(this);
+
+            ///
 
             try
             {
@@ -164,7 +171,6 @@ namespace PrefMovieApi
                         Genre.SelectedItem = Genre.Items[selectorGenre];
                     }
                 }
-
                 // Choosing random sorting of relase date 
                 number = random.Next(0, 3);
                 if (number == 1)
@@ -198,7 +204,6 @@ namespace PrefMovieApi
                 // Choosing how many stars will be fill
                 selectedStars = random.Next(0, 6);
                 HighlightStars(selectedStars);
-
                 // Choosing date from
                 bool isFromRelase = random.Next(0, 2) == 1;
                 int fromYear = 0;
@@ -289,11 +294,10 @@ namespace PrefMovieApi
         /// Loading combo box with genres
         /// </summary>
         /// <param name="isItFilm"></param>
-        private void LoadingComboBox(bool isItFilm = false)
+        public void LoadingComboBox(bool isItFilm = false)
         {
             Config.logger.Log(LogLevel.Info, "Loading combobox with items");
 
-            // TODO: Optymalizacja metody
             Genre.Items.Clear();
             Genre.IsEnabled = true;
 
@@ -313,18 +317,13 @@ namespace PrefMovieApi
                     Genre.Items.Add(genre.Replace('_', ' ').Replace("AND", "and"));
                 }
             }
-
-            if (Genre.Items.Count == 0)
-            {
-                Config.logger.Log(LogLevel.Warn, "Empty Combobox");
-            }
         }
 
         /// <summary>
         /// Selecting how many stars will be filled
         /// </summary>
         /// <param name="count">number of star</param>
-        private void HighlightStars(int count)
+        public void HighlightStars(int count)
         {
             Config.logger.Log(LogLevel.Info, "Filling stars as buttons");
 
