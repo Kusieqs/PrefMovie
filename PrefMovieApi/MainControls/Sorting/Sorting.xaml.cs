@@ -19,20 +19,8 @@ namespace PrefMovieApi
 {
     public partial class Sorting : UserControl
     {
-        // Dictionary for infomration about sorting method
-        private Dictionary<string, bool> arrowsAsButtons = new Dictionary<string, bool>()
-        {
-            ["RelaseDateUpButton"] = false,
-            ["RelaseDateDownButton"] = false,
-            ["VoteAverageUpButton"] = false,
-            ["VoteAverageDownButton"] = false,
-        };
-
-        // Control for film sorting method
-        private bool isFilmSorting = false;
-
-        // Control for TvShow sorting method
-        private bool isTvShowsSorting = false;
+        // RandomSelector object
+        private RandomSelector randomSelector = new RandomSelector();
 
         // Count of selected stars
         private int selectedStars = 0;
@@ -60,9 +48,9 @@ namespace PrefMovieApi
             {
                 Config.buttons.Clear();
                 SortingParameters sortingParameters = new SortingParameters
-                    (arrowsAsButtons,
-                    isFilmSorting,
-                    isTvShowsSorting,
+                    (randomSelector.arrowsAsButtons,
+                    randomSelector.isFilmSorting,
+                    randomSelector.isTvShowsSorting,
                     Genre?.SelectedItem,
                     selectedStars,
                     DateFrom?.SelectedDate,
@@ -85,17 +73,17 @@ namespace PrefMovieApi
         {
             Config.logger.Log(LogLevel.Info, "Clearing all sorting information");
 
-            isFilmSorting = false;
-            isTvShowsSorting = false;
+            randomSelector.isFilmSorting = false;
+            randomSelector.isTvShowsSorting = false;
             FilmButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
             TvShowButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
 
             Genre.IsEnabled = false;
             Genre.SelectedItem = null;
 
-            foreach (var keys in arrowsAsButtons.Keys.ToList())
+            foreach (var keys in randomSelector.arrowsAsButtons.Keys.ToList())
             {
-                arrowsAsButtons[keys] = false;
+                randomSelector.arrowsAsButtons[keys] = false;
             }
             RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
             RelaseDateDownButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
@@ -123,134 +111,15 @@ namespace PrefMovieApi
             // Cleaning sorting buttons
             ClearSortingButton();
 
-            Random random = new Random();
-
-            ///
-            RandomSelector randomSelector = new RandomSelector(this);
-
-            ///
-
             try
             {
-                int number = random.Next(0, 3);
-                if (number == 1)
-                {
-                    // Choosing film for random main sector
-                    isFilmSorting = true;
-                    FilmButton.Background = new SolidColorBrush(Colors.Gray);
-
-                    // Loading combo box with genres 
-                    LoadingComboBox(true);
-                    int enumCount = Enum.GetNames(typeof(MoviesGenre)).Length;
-                    int selectorGenre = random.Next(-1, enumCount);
-                    if (selectorGenre == -1)
-                    {
-                        Genre.SelectedItem = null;
-                    }
-                    else
-                    {
-                        Genre.SelectedItem = Genre.Items[selectorGenre];
-                    }
-                }
-                else if (number == 2)
-                {
-                    // Choosing TvShows for random main sector
-                    isTvShowsSorting = true;
-                    TvShowButton.Background = new SolidColorBrush(Colors.Gray);
-
-                    // Loading combo box with genres 
-                    LoadingComboBox();
-                    int enumCount = Enum.GetNames(typeof(TvShowsGenre)).Length;
-                    int selectorGenre = random.Next(-1, enumCount);
-                    if (selectorGenre == -1)
-                    {
-                        Genre.SelectedItem = null;
-                    }
-                    else
-                    {
-                        Genre.SelectedItem = Genre.Items[selectorGenre];
-                    }
-                }
-                // Choosing random sorting of relase date 
-                number = random.Next(0, 3);
-                if (number == 1)
-                {
-                    // Random sorting for ascending date
-                    arrowsAsButtons["RelaseDateUpButton"] = true;
-                    RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
-                }
-                else if (number == 2)
-                {
-                    // Random sorting for descending date
-                    arrowsAsButtons["RelaseDateDownButton"] = true;
-                    RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
-                }
-
-                // Choosing random sorting of average vote
-                number = random.Next(0, 3);
-                if (number == 1)
-                {
-                    // Random sorting for ascending date
-                    arrowsAsButtons["VoteAverageUpButton"] = true;
-                    VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
-                }
-                else if (number == 2)
-                {
-                    // Random sorting for descending date
-                    arrowsAsButtons["VoteAverageDownButton"] = true;
-                    VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
-                }
-
-                // Choosing how many stars will be fill
-                selectedStars = random.Next(0, 6);
-                HighlightStars(selectedStars);
-                // Choosing date from
-                bool isFromRelase = random.Next(0, 2) == 1;
-                int fromYear = 0;
-                int fromMonth = 0;
-                if (isFromRelase)
-                {
-                    fromYear = random.Next(1980, DateTime.Now.Year + 1);
-                    if (fromYear == DateTime.Now.Year)
-                    {
-                        fromMonth = random.Next(1, DateTime.Now.Month + 1);
-                    }
-                    else
-                    {
-                        fromMonth = random.Next(1, 13);
-                    }
-
-                    DateFrom.SelectedDate = new DateTime(fromYear, fromMonth, 1);
-                }
-
-                // Choosing date to
-                bool isToRelase = random.Next(0, 2) == 1;
-                int toYear;
-                int toMonth;
-                if (isToRelase)
-                {
-                    int selectToYear = isFromRelase == true ? fromYear : 1980;
-                    toYear = random.Next(selectToYear, DateTime.Now.Year + 1);
-
-                    int selectToMonth = isFromRelase == true ? fromMonth : 1;
-
-                    if (fromYear == DateTime.Now.Year)
-                    {
-                        toMonth = random.Next(selectToMonth, DateTime.Now.Month + 1);
-                    }
-                    else
-                    {
-                        toMonth = random.Next(1, 13);
-                    }
-
-                    DateTo.SelectedDate = new DateTime(toYear, toMonth, 1);
-                }
+                randomSelector = new RandomSelector(this);
 
                 Config.logger.Log(LogLevel.Info, $"Random Sorting parameters:" +
-                    $"\n{nameof(isFilmSorting)} {isFilmSorting}, {nameof(isTvShowsSorting)} {isTvShowsSorting}" +
+                    $"\n{nameof(randomSelector.isFilmSorting)} {randomSelector.isFilmSorting}, {nameof(randomSelector.isTvShowsSorting)} {randomSelector.isTvShowsSorting}" +
                     $"\n{nameof(Genre)} {Genre.SelectedItem}" +
-                    $"\nRelaseDateUpButton {arrowsAsButtons["RelaseDateUpButton"]}, RelaseDateDownButton {arrowsAsButtons["RelaseDateDownButton"]}" +
-                    $"\nVoteAverageUpButton {arrowsAsButtons["VoteAverageUpButton"]},VoteAverageDownButton {arrowsAsButtons["VoteAverageDownButton"]}" +
+                    $"\nRelaseDateUpButton {randomSelector.arrowsAsButtons["RelaseDateUpButton"]}, RelaseDateDownButton {randomSelector.arrowsAsButtons["RelaseDateDownButton"]}" +
+                    $"\nVoteAverageUpButton {randomSelector.arrowsAsButtons["VoteAverageUpButton"]},VoteAverageDownButton {randomSelector.arrowsAsButtons["VoteAverageDownButton"]}" +
                     $"\nDate from {DateFrom.SelectedDate}, Date to {DateTo.SelectedDate}");
             }
             catch (Exception ex)
@@ -267,8 +136,8 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void FilmSelectorClick(object sender, RoutedEventArgs e)
         {
-            isFilmSorting = true;
-            isTvShowsSorting = false;
+            randomSelector.isFilmSorting = true;
+            randomSelector.isTvShowsSorting = false;
 
             FilmButton.Background = new SolidColorBrush(Colors.Gray);
             TvShowButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
@@ -282,8 +151,8 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void TvShowSelectorClick(object sender, RoutedEventArgs e)
         {
-            isFilmSorting = false;
-            isTvShowsSorting = true;
+            randomSelector.isFilmSorting = false;
+            randomSelector.isTvShowsSorting = true;
 
             TvShowButton.Background = new SolidColorBrush(Colors.Gray);
             FilmButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF484848"));
@@ -356,48 +225,48 @@ namespace PrefMovieApi
         #region Filling and unfilling diffrent buttons
         private void RelaseDateClickUp(object sender, RoutedEventArgs e)
         {
-            if (arrowsAsButtons["RelaseDateDownButton"])
+            if (randomSelector.arrowsAsButtons["RelaseDateDownButton"])
             {
-                arrowsAsButtons["RelaseDateDownButton"] = false;
+                randomSelector.arrowsAsButtons["RelaseDateDownButton"] = false;
             }
             RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
             RelaseDateDownButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
-            arrowsAsButtons["RelaseDateUpButton"] = true;
+            randomSelector.arrowsAsButtons["RelaseDateUpButton"] = true;
         }
         private void RelaseDateClickDown(object sender, RoutedEventArgs e)
         {
-            if (arrowsAsButtons["RelaseDateUpButton"])
+            if (randomSelector.arrowsAsButtons["RelaseDateUpButton"])
             {
-                arrowsAsButtons["RelaseDateUpButton"] = false;
+                randomSelector.arrowsAsButtons["RelaseDateUpButton"] = false;
             }
             RelaseDateDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
             RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
-            arrowsAsButtons["RelaseDateDownButton"] = true;
+            randomSelector.arrowsAsButtons["RelaseDateDownButton"] = true;
         }
         private void AverageVoteClickUp(object sender, RoutedEventArgs e)
         {
-            if (arrowsAsButtons["VoteAverageDownButton"])
+            if (randomSelector.arrowsAsButtons["VoteAverageDownButton"])
             {
-                arrowsAsButtons["VoteAverageDownButton"] = false;
+                randomSelector.arrowsAsButtons["VoteAverageDownButton"] = false;
             }
             VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.UP);
             VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
-            arrowsAsButtons["VoteAverageUpButton"] = true;
+            randomSelector.arrowsAsButtons["VoteAverageUpButton"] = true;
         }
         private void AverageVoteClickDown(object sender, RoutedEventArgs e)
         {
-            if (arrowsAsButtons["VoteAverageUpButton"])
+            if (randomSelector.arrowsAsButtons["VoteAverageUpButton"])
             {
-                arrowsAsButtons["VoteAverageUpButton"] = false;
+                randomSelector.arrowsAsButtons["VoteAverageUpButton"] = false;
             }
             VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
             VoteAverageUpButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
-            arrowsAsButtons["VoteAverageDownButton"] = true;
+            randomSelector.arrowsAsButtons["VoteAverageDownButton"] = true;
         }
         private void MouseLeaveUp(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            if (!arrowsAsButtons[button.Name])
+            if (!randomSelector.arrowsAsButtons[button.Name])
             {
                 button.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_UP);
             }
@@ -405,7 +274,7 @@ namespace PrefMovieApi
         private void MouseEnterUp(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            if (!arrowsAsButtons[button.Name])
+            if (!randomSelector.arrowsAsButtons[button.Name])
             {
                 button.Content = CreatingImage.SettingImage(SetupPaths.UP);
             }
@@ -413,7 +282,7 @@ namespace PrefMovieApi
         private void MouseLeaveDown(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            if (!arrowsAsButtons[button.Name])
+            if (!randomSelector.arrowsAsButtons[button.Name])
             {
                 button.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_DOWN);
             }
@@ -421,7 +290,7 @@ namespace PrefMovieApi
         private void MouseEnterDown(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            if (!arrowsAsButtons[button.Name])
+            if (!randomSelector.arrowsAsButtons[button.Name])
             {
                 button.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
             }
@@ -429,7 +298,7 @@ namespace PrefMovieApi
         private void MenuMouseLeave(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
-            if ((button.Name == "FilmButton" && isFilmSorting) || (button.Name == "TvShowButton" && isTvShowsSorting))
+            if ((button.Name == "FilmButton" && randomSelector.isFilmSorting) || (button.Name == "TvShowButton" && randomSelector.isTvShowsSorting))
             {
                 button.Background = new SolidColorBrush(Colors.Gray);
             }

@@ -11,11 +11,14 @@ namespace PrefMovieApi.MainControls.Sorting
 {
     internal class RandomSelector
     {
+        // is film control on
         public bool isFilmSorting { get; set; } = false;
-        public bool isTvShowsSorting { get;set; } = false;
+
+        // is tvshow control on
+        public bool isTvShowsSorting { get; set; } = false;
 
         // Dictionary for infomration about sorting method
-        private Dictionary<string, bool> arrowsAsButtons = new Dictionary<string, bool>()
+        public Dictionary<string, bool> arrowsAsButtons { get; set; } = new Dictionary<string, bool>()
         {
             ["RelaseDateUpButton"] = false,
             ["RelaseDateDownButton"] = false,
@@ -23,31 +26,39 @@ namespace PrefMovieApi.MainControls.Sorting
             ["VoteAverageDownButton"] = false,
         };
 
+        private Random random = new Random();
+
+        // Window as object
         private PrefMovieApi.Sorting sorting { get; set; }
 
         public RandomSelector(PrefMovieApi.Sorting sorting) 
         {
+            Config.logger.Log(LogLevel.Info,"Random selector activated");
+
             this.sorting = sorting;
-            Random random = new Random();
-            CheckingMode(random.Next(0, 3));
-
+            SelectingMode();
             int enumCount = 0;
-            DownWritingEnums(ref enumCount, random);
+            DownWritingEnums(ref enumCount);
 
-            SelectingSortingDate(random);
-            SelectingVote(random);
+            SelectingSortingDate();
+
+            SelectingVote();
 
             //Choosing how many stars will be fill
             int selectedStars = random.Next(0, 6);
             sorting.HighlightStars(selectedStars);
 
-            SelectingDate(random);
-
+            SelectingDate();
         }
 
-        private void CheckingMode(int random)
+        public RandomSelector() { }
+
+        /// <summary>
+        /// Selecting random mode for sorting
+        /// </summary>
+        private void SelectingMode()
         {
-            switch(random)
+            switch(random.Next(0, 3))
             {
                 case 0: 
                     isFilmSorting = true; 
@@ -61,7 +72,12 @@ namespace PrefMovieApi.MainControls.Sorting
                     break;
             }
         }
-        private void DownWritingEnums(ref int enumCount, Random random)
+
+        /// <summary>
+        /// Selecting index of genre
+        /// </summary>
+        /// <param name="enumCount">cout of genres in enum file</param>
+        private void DownWritingEnums(ref int enumCount)
         {
             // Loading combo box
             sorting.LoadingComboBox(isFilmSorting);
@@ -77,7 +93,11 @@ namespace PrefMovieApi.MainControls.Sorting
                 sorting.Genre.SelectedItem = sorting.Genre.Items[selectorGenre];
             }
         }
-        private void SelectingSortingDate(Random random)
+
+        /// <summary>
+        /// Selecting desc or asc for sorting of date
+        /// </summary>
+        private void SelectingSortingDate()
         {
             int number = random.Next(0, 3);
             if (number == 1)
@@ -93,7 +113,11 @@ namespace PrefMovieApi.MainControls.Sorting
                 sorting.RelaseDateUpButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
             }
         }
-        private void SelectingVote(Random random)
+
+        /// <summary>
+        /// Selecting desc or adc for soritng by vote
+        /// </summary>
+        private void SelectingVote()
         {
             // Choosing random sorting of average vote
             int number = random.Next(0, 3);
@@ -110,7 +134,11 @@ namespace PrefMovieApi.MainControls.Sorting
                 sorting.VoteAverageDownButton.Content = CreatingImage.SettingImage(SetupPaths.DOWN);
             }
         }
-        private void SelectingDate(Random random)
+
+        /// <summary>
+        /// Selecting date for selector
+        /// </summary>
+        private void SelectingDate()
         {
             bool isFromRelase = random.Next(0, 2) == 1;
             int fromYear = 0;
