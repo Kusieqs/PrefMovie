@@ -15,15 +15,11 @@ using System.Windows.Shapes;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy NoConnection.xaml
-    /// </summary>
     public partial class NoConnection : UserControl
     {
         public NoConnection()
         {
             InitializeComponent();
-
         }
     }
 }

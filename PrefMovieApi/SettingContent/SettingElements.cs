@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Rectangle = System.Windows.Shapes.Rectangle;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using TMDbLib.Objects.General;
+using PrefMovieApi.Setup;
 
 namespace PrefMovieApi
 {
@@ -21,7 +22,8 @@ namespace PrefMovieApi
     {
 
         // random object
-        public static Random random = new Random();
+        
+        private readonly static Random random = new Random();
 
         /// <summary>
         /// Setting StackPanel with diffrent latest movies to main window
@@ -30,16 +32,16 @@ namespace PrefMovieApi
         /// <returns>Stack panel with proposal movies</returns>
         public static StackPanel TheLatestMovies(StackPanel mainStackPanel)
         {
-            MainWindow.logger.Log(LogLevel.Info, "TheNewOnceMovies method activated");
+            Config.logger.Log(LogLevel.Info, "TheNewOnceMovies method activated");
 
             // Setting date for -3 months ago
             DateTime today = DateTime.Today;
             DateTime threeMonthsAgo = today.AddMonths(-3);
 
             // The new once movies from last 3 months
-            var movies = GeneralInfo.client.DiscoverMoviesAsync()
-                .WhereReleaseDateIsAfter(threeMonthsAgo)  
-                .WhereReleaseDateIsBefore(today) 
+            var movies = Config.client.DiscoverMoviesAsync()
+                .WhereReleaseDateIsAfter(threeMonthsAgo)
+                .WhereReleaseDateIsBefore(today)
                 .Query().Result;
 
             // Taking 8 random films 
@@ -56,10 +58,10 @@ namespace PrefMovieApi
         /// <returns>Stack panel with proposal movies</returns>
         public static StackPanel TheBestMovies(StackPanel mainStackPanel)
         {
-            MainWindow.logger.Log(LogLevel.Info, "TheBestMovies method activated");
+            Config.logger.Log(LogLevel.Info, "TheBestMovies method activated");
 
             // setting movies with the best average vote
-            var movies = GeneralInfo.client.DiscoverMoviesAsync()
+            var movies = Config.client.DiscoverMoviesAsync()
                 .WhereVoteAverageIsAtLeast(8)
                 .Query().Result;
 
@@ -77,14 +79,14 @@ namespace PrefMovieApi
         /// <returns>Stack panel with proposal tvShows</returns>
         public static StackPanel TheLatestSeries(StackPanel mainStackPanel)
         {
-            MainWindow.logger.Log(LogLevel.Info, "TheLatestSeries method activated");
+            Config.logger.Log(LogLevel.Info, "TheLatestSeries method activated");
 
             // Setting date for -3 months ago
             DateTime today = DateTime.Today;
             DateTime threeMonthsAgo = today.AddMonths(-3);
 
             // The new once movies from last 3 months
-            var tvShows = GeneralInfo.client.DiscoverTvShowsAsync()
+            var tvShows = Config.client.DiscoverTvShowsAsync()
                 .WhereFirstAirDateIsAfter(threeMonthsAgo)
                 .WhereFirstAirDateIsBefore(today)
                 .Query().Result;
@@ -102,10 +104,10 @@ namespace PrefMovieApi
         /// <returns>Stack panel with proposal tvShows</returns>
         public static StackPanel TheBestSeries(StackPanel mainStackPanel)
         {
-            MainWindow.logger.Log(LogLevel.Info, "TheBestSeries method activated");
+            Config.logger.Log(LogLevel.Info, "TheBestSeries method activated");
 
             // setting tvShows with the best average vote
-            var tvShows = GeneralInfo.client.DiscoverTvShowsAsync()
+            var tvShows = Config.client.DiscoverTvShowsAsync()
                 .WhereVoteAverageIsAtLeast(8)
                 .Query().Result;
 
@@ -123,20 +125,29 @@ namespace PrefMovieApi
         /// <returns>list of elements</returns>
         private static IEnumerable<dynamic> CheckSameId<T>(SearchContainer<T> elements) where T : class
         {
-            MainWindow.logger.Log(LogLevel.Info, "Checking elements with same id");
-            List<T> list = new List<T>();
-            do
+            try
             {
-                dynamic element = elements.Results.OrderBy(x => random.Next()).First();
-
-                if (!Config.buttons.Any(x => x.Key.ToString() == element.Id.ToString()))
+                Config.logger.Log(LogLevel.Info, "Checking elements with same id");
+                List<T> list = new List<T>();
+                do
                 {
-                    list.Add(element);
-                    Config.buttons.Add(element.Id.ToString(), null);
-                }
-            } while (list.Count < 8);
+                    dynamic element = elements.Results.OrderBy(x => random.Next()).First();
 
-            return list.AsEnumerable<T>();
+                    if (!Config.buttons.Any(x => x.Key.ToString() == element.Id.ToString()))
+                    {
+                        list.Add(element);
+                        Config.buttons.Add(element.Id.ToString(), null);
+                    }
+                } while (list.Count < 8);
+
+                return list.AsEnumerable<T>();
+            }
+            catch (Exception ex)
+            {
+                Config.logger.Log(LogLevel.Error, ex.Message);
+                MessageBox.Show("Critical error","Error",MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PrefMovieApi.Setup;
 using TMDbLib.Client;
 using TMDbLib.Objects.Discover;
 using TMDbLib.Objects.Find;
@@ -12,21 +13,26 @@ using TMDbLib.Objects.Movies;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy GeneralInfo.xaml
-    /// </summary>
-
     public partial class GeneralInfo : UserControl
     {
-        // Client object
-        public static TMDbClient client = null;
-
         // Delegate for loading content page
         public delegate void LoadContent(object sender, RoutedEventArgs e);
         public LoadContent loadContent;
 
-        // Main window
-        public Window mainWindow;
+        // MainWindow object
+        private Window mainWindow;
+
+        // Control to checking mouse down
+        private bool isMouseDown = false;
+
+        // Setting point of start position
+        private Point mouseStartPosition;
+
+        // Setting offset of scroll viewer
+        private double scrollViewerStartOffset;
+
+        // Scrollviewer object
+        private ScrollViewer scrollViewer;
 
         public GeneralInfo(Window mainWindow)
         {
@@ -38,27 +44,27 @@ namespace PrefMovieApi
                 new LoadContent(SetTheBestMovie),
                 new LoadContent(SetLatestTvShow),
                 new LoadContent(SetTheBestTvShow)
-                );
+            );
 
             this.mainWindow = mainWindow;
 
             try
             {
                 // Connect to API TMDb
-                client = new TMDbClient(Config.API_KEY_TO_TMDB);
-                client.DefaultLanguage = "en";
+                Config.client = new TMDbClient(Config.API_KEY_TO_TMDB);
+                Config.client.DefaultLanguage = "en";
 
                 // Checking that the API key is correct
-                var testRequest = client.GetMovieAsync(550).Result;
+                var testRequest = Config.client.GetMovieAsync(550).Result;
                 if (testRequest == null)
                 {
-                    MainWindow.logger.Log(LogLevel.Error, "Test request is null");
+                    Config.logger.Log(LogLevel.Error, "Test request is null");
                     throw new FormatException();
                 }
-                MainWindow.logger.Log(LogLevel.Info, "API is correct");
+                Config.logger.Log(LogLevel.Info, "API is correct");
 
                 // Setting new style for infomration
-                MainWindow.logger.Log(LogLevel.Info, "Style for infomrations about elemnts was loaded");
+                Config.logger.Log(LogLevel.Info, "Style for infomrations about elemnts was loaded");
 
                 // Setting movies
                 loadContent(null, null);
@@ -66,7 +72,8 @@ namespace PrefMovieApi
             catch (Exception ex)
             {
                 MessageBox.Show("Crticial Error!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                MainWindow.logger.Log(LogLevel.Error, ex.Message);
+                Config.logger.Log(LogLevel.Error, ex.Message);
+                Config.logger.ShowErrors();
                 mainWindow.Close();
             }
 
@@ -126,24 +133,25 @@ namespace PrefMovieApi
         /// <param name="sender">Object as button</param>
         private void RemoveFromDictionary(object sender)
         {
-            if (sender != null && int.TryParse((sender as Button).Tag.ToString(), out int result) && Config.buttons.Count > 0)
+            try
             {
-                var keys = Config.buttons.Keys.Skip(result * 8).Take(8).ToList();
-                foreach (var key in keys)
+                if (sender != null && int.TryParse((sender as Button).Tag.ToString(), out int result) && Config.buttons.Count > 0)
                 {
-                    Config.buttons.Remove(key);
+                    var keys = Config.buttons.Keys.Skip(result * 8).Take(8).ToList();
+                    foreach (var key in keys)
+                    {
+                        Config.buttons.Remove(key);
+                    }
                 }
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Crticial Error!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Config.logger.Log(LogLevel.Error, $"Removing from dictionary are not correct: {ex.Message}");
             }
         }
 
         #region Scroll viewer logic
-        /// <summary>
-        /// Methods to Scroll Viewer to scroll by button on mouse
-        /// </summary>
-        private bool isMouseDown = false;
-        private Point mouseStartPosition;
-        private double scrollViewerStartOffset;
-        private ScrollViewer scrollViewer;
 
         /// <summary>
         ///  Blocking mouse with override position of mouse

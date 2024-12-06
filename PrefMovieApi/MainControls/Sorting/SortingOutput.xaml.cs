@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using PrefMovieApi.MainControls.Sorting;
+using PrefMovieApi.Setup;
 using TMDbLib.Objects.Discover;
 using TMDbLib.Objects.Search;
 
@@ -11,11 +13,12 @@ namespace PrefMovieApi
 {
     public partial class SortingOutput : UserControl
     {
+        // Object of soritng parameters
+        public readonly SortingParameters SortingParameters; 
 
-        public readonly SortingParameters SortingParameters; // Object of soritng parameters
         public SortingOutput(SortingParameters sortingParameters)
         {
-            MainWindow.logger.Log(LogLevel.Info, $"Sorting of proposed films activated");
+            Config.logger.Log(LogLevel.Info, $"Sorting of proposed films activated");
             InitializeComponent();
             SortingParameters = sortingParameters;
 
@@ -67,150 +70,40 @@ namespace PrefMovieApi
         /// <returns>IEnumerable list of proposed elements</returns>
         private IEnumerable<SearchMovieTvBase> GetMedia(MediaType mediaType, int countOfElements = 12)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Getting media of movie or TvShow");
+            Config.logger.Log(LogLevel.Info, "Getting media of movie or TvShow");
             try
             {
-                Random random = new Random();
+                // Setting which list will be 
                 dynamic discover = mediaType == MediaType.Movie ? (dynamic)SetListOfMovies() : SetListOfTvShows();
-                SetGenre(discover);
-                SetOrdering(discover);
 
-                if (SortingParameters.SelectedStars > 0)
-                {
-                    SetStars(discover);
-                }
+                // Sorting by parameters
+                discover = GettingElements.SetSorting(discover, SortingParameters);
 
-                SetDate(discover);
-                return ConvertToObject(discover, countOfElements, random);
+                return ConvertToObject(discover, countOfElements, new Random());
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, $"Message: {ex.Message}");
+                Config.logger.Log(LogLevel.Error, $"Message: {ex.Message}");
                 return null;
             }
         }
 
-        #region Sorting features
-        private void SetGenre(DiscoverTv discoverTv)
-        {
-            if(SortingParameters.Genre != null)
-            {
-                List<int> listOfGenre = new List<int>() { (int)(TvShowsGenre)Enum.Parse(typeof(TvShowsGenre), SortingParameters.ConvertGenre(typeof(TvShowsGenre))) };
-                discoverTv = discoverTv.WhereGenresInclude(listOfGenre);
-            }
-        }
-        private void SetGenre(DiscoverMovie discoverMovie)
-        {
-            if(SortingParameters.Genre != null)
-            {
-                List<int> listOfGenre = new List<int>() { (int)(MoviesGenre)Enum.Parse(typeof(MoviesGenre), SortingParameters.ConvertGenre(typeof(MoviesGenre))) };
-                discoverMovie = discoverMovie.IncludeWithAllOfGenre(listOfGenre);
-            }
-        }
-
-        private void SetStars(DiscoverTv discoverTv)
-        {
-            double stars = SortingParameters.SelectedStars * 2;
-            discoverTv = discoverTv.WhereVoteAverageIsAtMost(stars);
-        }
-        private void SetStars(DiscoverMovie discoverMovie)
-        {
-            double stars = SortingParameters.SelectedStars * 2;
-            discoverMovie = discoverMovie.WhereVoteAverageIsAtMost(stars);
-        }
-
-        private void SetDate(DiscoverTv discoverTv)
-        {
-            if (SortingParameters.DateFrom.HasValue)
-            {
-                discoverTv = discoverTv.WhereFirstAirDateIsAfter(SortingParameters.DateFrom.Value);
-            }
-
-            if (SortingParameters.DateTo.HasValue)
-            {
-                discoverTv = discoverTv.WhereFirstAirDateIsBefore(SortingParameters.DateTo.Value);
-            }
-        }
-        private void SetDate(DiscoverMovie discoverMovie)
-        {
-            if (SortingParameters.DateFrom.HasValue)
-            {
-                discoverMovie = discoverMovie.WhereReleaseDateIsAfter(SortingParameters.DateFrom.Value);
-            }
-
-            if (SortingParameters.DateTo.HasValue)
-            {
-                discoverMovie = discoverMovie.WhereReleaseDateIsBefore(SortingParameters.DateTo.Value);
-            }
-        }
-
-        private void SetOrdering(DiscoverTv discoverTv)
-        {
-            foreach (var arrow in SortingParameters.ArrowsAsButtons)
-            {
-                if (arrow.Value)
-                {
-                    switch (arrow.Key)
-                    {
-                        case "RelaseDateUpButton":
-                            discoverTv = discoverTv.OrderBy(DiscoverTvShowSortBy.PrimaryReleaseDate);
-                            break;
-                        case "RelaseDateDownButton":
-                            discoverTv = discoverTv.OrderBy(DiscoverTvShowSortBy.PrimaryReleaseDateDesc);
-                            break;
-                        case "VoteAverageUpButton":
-                            discoverTv = discoverTv.OrderBy(DiscoverTvShowSortBy.VoteAverage);
-                            break;
-                        case "VoteAverageDownButton":
-                            discoverTv = discoverTv.OrderBy(DiscoverTvShowSortBy.VoteAverageDesc);
-                            break;
-                    }
-                }
-            }
-        }
-        private void SetOrdering(DiscoverMovie discoverMovie)
-        {
-            foreach (var arrow in SortingParameters.ArrowsAsButtons)
-            {
-                if (arrow.Value)
-                {
-                    switch (arrow.Key)
-                    {
-                        case "RelaseDateUpButton":
-                            discoverMovie = discoverMovie.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.ReleaseDate);
-                            break;
-                        case "RelaseDateDownButton":
-                            discoverMovie = discoverMovie.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.ReleaseDateDesc);
-                            break;
-                        case "VoteAverageUpButton":
-                            discoverMovie = discoverMovie.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.VoteAverage);
-                            break;
-                        case "VoteAverageDownButton":
-                            discoverMovie = discoverMovie.OrderBy(TMDbLib.Objects.Discover.DiscoverMovieSortBy.VoteAverageDesc);
-                            break;
-                    }
-                }
-            }
-        }
-
-        #endregion
-
         /// <summary>
-        /// REFACTORING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (very common metod in elementInfo.cs)
+        /// Setting stack panel with sorted elements
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="loopCount"></param>
         /// <param name="values"></param>
         private void SetStackPanel<T>(int loopCount, IEnumerable<T> values)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Setting elements to window");
+            Config.logger.Log(LogLevel.Info, "Setting elements to window");
             var listOfElements = values.ToList();
             try
             {
                 if (listOfElements.Count == 0)
                 {
                     MainStackPanelForProposal.Height += 320;
-                    MainWindow.logger.Log(LogLevel.Warn, "list of sorting is empty");
+                    Config.logger.Log(LogLevel.Warn, "list of sorting is empty");
 
                     // Adding special textblock to stackpanel
                     TextBlock textBlock = new TextBlock()
@@ -254,12 +147,12 @@ namespace PrefMovieApi
                             // Grid for poster with average vote and button
                             Grid posterGrid = new Grid();
                             string idOfElement;
-                            posterGrid.Children.Add(ElementInfo.PosterDiploy(out idOfElement,listOfElements[indexOfFilm]));
+                            posterGrid.Children.Add(ElementInfo.PosterDiploy(out idOfElement, listOfElements[indexOfFilm]));
                             posterGrid.Children.Add(ElementInfo.AverageRateDiploy(listOfElements[indexOfFilm]));
 
                             dynamic movieOrTV = listOfElements[indexOfFilm];
 
-                            bool isInLibrary = Library.titles.Any(x => x.Id == (listOfElements[indexOfFilm] is SearchMovie 
+                            bool isInLibrary = Library.titles.Any(x => x.Id == (listOfElements[indexOfFilm] is SearchMovie
                             ? movieOrTV.Id : movieOrTV.Id));
 
                             posterGrid.Children.Add(ElementInfo.FavortieElementDiploy(idOfElement, isInLibrary));
@@ -296,25 +189,36 @@ namespace PrefMovieApi
                         MainStackPanelForProposal.Children.Add(elements);
                     }
                 }
-            
+
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, $"Sorting: {ex.Message}");
+                Config.logger.Log(LogLevel.Error, $"Sorting: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Refresh click of button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshClick(object sender, RoutedEventArgs e)
+        {
+            Config.buttons.Clear();
+            CreatingInstantOfList();
         }
 
         /// <summary>
         /// Getting movies as object
         /// </summary>
         /// <returns>Object of movies</returns>
-        private DiscoverMovie SetListOfMovies() => GeneralInfo.client.DiscoverMoviesAsync();
+        private DiscoverMovie SetListOfMovies() => Config.client.DiscoverMoviesAsync();
 
         /// <summary>
         /// Getting tvshows as object
         /// </summary>
         /// <returns>Object of tvshows</returns>
-        private DiscoverTv SetListOfTvShows() => GeneralInfo.client.DiscoverTvShowsAsync();
+        private DiscoverTv SetListOfTvShows() => Config.client.DiscoverTvShowsAsync();
 
         /// <summary>
         /// Taking random elements from object as DiscoverTv and converting into query
@@ -336,15 +240,5 @@ namespace PrefMovieApi
         public IEnumerable<SearchMovieTvBase> ConvertToObject(DiscoverMovie discoverMovie, int countOfElements, Random random)
                 => discoverMovie.Query().Result.Results.OrderBy(x => random.Next()).Take(countOfElements);
 
-        /// <summary>
-        /// Refresh click of button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RefreshClick(object sender, RoutedEventArgs e)
-        {
-            Config.buttons.Clear();
-            CreatingInstantOfList();
-        }
     }
 }

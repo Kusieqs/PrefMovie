@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Controls;
+using PrefMovieApi.Setup;
 
 namespace PrefMovieApi
 {
@@ -16,13 +17,20 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static Image SettingImage(string path)
+        public static Image SettingImage(string path, int size = 0)
         {
             Image image = new Image()
             {
                 Source = new BitmapImage(new Uri(path, UriKind.Relative)),
                 Stretch = Stretch.UniformToFill
             };
+
+            // Checking custom size for image
+            if(size != 0)
+            {
+                image.Width = size;
+                image.Height = size;
+            }    
 
             return image;
         }

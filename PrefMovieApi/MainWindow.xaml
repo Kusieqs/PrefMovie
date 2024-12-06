@@ -19,16 +19,16 @@
             <Border Grid.RowSpan="2" Background="White" CornerRadius="10,0,0,0" Panel.ZIndex ="1" Margin="0,60,0,40" MouseDown="BorderClick"/>
             <Border Grid.RowSpan="2" Background="White" CornerRadius="10,10,0,0" Panel.ZIndex ="0" Margin="0,0,0,40" MouseDown="BorderClick">
                 <Grid Cursor="Hand">
-                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,10,0" Click="ExitWindow" Height="30" Width="30">
+                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,10,0" Click="ExitWindow" Height="40" Width="40">
                         <Image Source="Images/closeIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
                     </Button>
-                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,60,0" Click="RefreshWindow" RenderTransformOrigin="0.5,0.5" Height="31" Width="31">
-                        <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" Width="32" Height="32" IsHitTestVisible="False"/>
+                    <Button Style="{StaticResource ButtonImage}" Margin="0,10,70,0" Click="RefreshWindow" Height="41" Width="41">
+                        <Image Source="Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" Width="43" Height="43" IsHitTestVisible="False"/>
                     </Button>
                 </Grid>
             </Border>
             <Border Grid.Row="0" Background="Gray" CornerRadius="10,0,100,0" Margin="0,0,300,0" Panel.ZIndex="0" MouseDown="BorderClick">
-                <TextBlock Text="PrefMovie" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="50" Margin="35,0,0,0"/>
+                <TextBlock Text="PrefMovie" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="55" Margin="60,0,0,0"/>
             </Border>
             <Border Grid.Row="1" Background="#FF636262" CornerRadius="10,0,10,10" Panel.ZIndex ="1">
                 <Grid>

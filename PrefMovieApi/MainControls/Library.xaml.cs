@@ -14,25 +14,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PrefMovieApi.Setup;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy Library.xaml
-    /// </summary>
     public partial class Library : UserControl
     {
+        // List of parameters of objects
         public static List<ElementParameters> titles = new List<ElementParameters>();
-        public static List<string> existingWindows = new List<string>(); // !!!!!!!!!!!!!!!!
-        public static JsonFile jsonFile = new JsonFile();
+
         public Library()
         {
             InitializeComponent();
 
-            titles = jsonFile.DeserializeLibrary();
-            if(titles.Count > 0 )
+            titles = Config.jsonFile.DeserializeLibrary();
+            if (titles.Count > 0)
             {
-                MainWindow.logger.Log(LogLevel.Info, "In file is more than 0 titles");
+                Config.logger.Log(LogLevel.Info, "In file is more than 0 titles");
                 LoadFavoriteMovies();
             }
         }
@@ -68,7 +66,7 @@ namespace PrefMovieApi
                 ToolTipService.SetInitialShowDelay(titleButton, 0);
                 FavoriteMovies.Children.Add(titleButton);
             }
-            jsonFile.SerializeLibrary();
+            Config.jsonFile.SerializeLibrary();
         }
 
         /// <summary>
@@ -80,7 +78,7 @@ namespace PrefMovieApi
             ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
             titles.Add(element);
 
-            MainWindow.logger.Log(LogLevel.Info, $"Adding new element to library: {element.Id}");
+            Config.logger.Log(LogLevel.Info, $"Adding new element to library: {element.Id}");
             LoadFavoriteMovies();
         }
 
@@ -96,7 +94,7 @@ namespace PrefMovieApi
 
             titles = newList.Intersect(titles).ToList();
 
-            MainWindow.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Id}");
+            Config.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Id}");
             LoadFavoriteMovies();
         }
 
@@ -105,36 +103,39 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void OpenElement(object sender,  RoutedEventArgs e)
+        public void OpenElement(object sender, RoutedEventArgs e)
         {
             try
             {
                 Button button = sender as Button;
                 ElementParameters element = titles.Where(x => x.Id == (int)button.Tag).FirstOrDefault();
 
-                if (!existingWindows.Any())
+                if (!Config.existingWindows.Any(x => x == element.Id.ToString()))
                 {
+                    // Adding control to list
+                    Config.existingWindows.Add(element.Id.ToString());
+
                     DetailInformation detailInformation;
                     if (Config.buttons.TryGetValue(button.Tag.ToString(), out Button value))
                     {
-                        MainWindow.logger.Log(LogLevel.Info, "Opening new element as window with element info and button");
+                        Config.logger.Log(LogLevel.Info, "Opening new element as window with element info and button");
                         detailInformation = new DetailInformation(element, value);
                     }
                     else
                     {
-                        MainWindow.logger.Log(LogLevel.Info, "Opening new element as window with element info");
+                        Config.logger.Log(LogLevel.Info, "Opening new element as window with element info");
                         detailInformation = new DetailInformation(element);
                     }
                     detailInformation.Show();
                 }
                 else
                 {
-                    MainWindow.logger.Log(LogLevel.Warn, "Window is existing");
+                    Config.logger.Log(LogLevel.Warn, "Window is existing");
                 }
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, ex.Message);
+                Config.logger.Log(LogLevel.Error, ex.Message);
             }
         }
     }

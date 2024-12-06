@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using TMDbLib.Client;
 
-namespace PrefMovieApi
+namespace PrefMovieApi.Setup
 {
-    public static class Config
+    internal class Config
     {
         // Api Key
         public const string API_KEY_TO_TMDB = "";
@@ -16,11 +17,20 @@ namespace PrefMovieApi
         // base url to posters
         public const string BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-        // Path to log file
-        public const string PATH_TO_LOG = "log.txt";
+        // Interface as logger
+        public static ILogger logger = new FileLogger();
 
-        // Path to json
-        public const string PATH_TO_JSON = "LibraryFile.txt";
+        // List of every logs messages
+        public static List<(LogLevel, string)> loggerMessages = new List<(LogLevel, string)>();
+
+        // Client object
+        public static TMDbClient client = null;
+
+        // Special object to create jsonFile
+        public static JsonFile jsonFile = new JsonFile();
+
+        // List to control which window is open
+        public static List<string> existingWindows = new List<string>();
 
         // Style for infomration about element
         public static Style styleThemeOfElement;

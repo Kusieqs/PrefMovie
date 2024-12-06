@@ -12,54 +12,53 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PrefMovieApi.Setup;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 using TMDbLib.Objects.TvShows;
 
 namespace PrefMovieApi
 {
-    /// <summary>
-    /// Logika interakcji dla klasy DetailInformation.xaml
-    /// </summary>
     public partial class DetailInformation : Window
     {
-        private readonly ElementParameters element; 
+        // Parameters of element
+        private readonly ElementParameters element;
+
+        // Special control for button enter
         private bool IsButtonEnter;
+
+        // Button object two modify some parameters
         private Button mainWindowButton;
+
         public DetailInformation(ElementParameters element, Button button)
         {
-            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
-            this.element = element;
             this.mainWindowButton = button;
-            InitializeComponent();
-            LoadButton();
-
-            if (element.MediaType == MediaType.Movie)
-            {
-                var movie = GeneralInfo.client.GetMovieAsync(element.Id).Result;
-                SettingContent(movie);
-            }
-            else
-            {
-                var tvShow = GeneralInfo.client.GetTvShowAsync(element.Id).Result;
-                SettingContent(tvShow);
-            }
+            this.element = element;
+            Constructor();
         }
         public DetailInformation(ElementParameters element)
         {
-            MainWindow.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
             this.element = element;
+            Constructor();
+        }
+
+        /// <summary>
+        /// Constructor which join two constructors into one
+        /// </summary>
+        private void Constructor()
+        {
+            Config.logger.Log(LogLevel.Info, $"Open new window to search {element.Id}");
             InitializeComponent();
             LoadButton();
 
             if (element.MediaType == MediaType.Movie)
             {
-                var movie = GeneralInfo.client.GetMovieAsync(element.Id).Result;
+                var movie = Config.client.GetMovieAsync(element.Id).Result;
                 SettingContent(movie);
             }
             else
             {
-                var tvShow = GeneralInfo.client.GetTvShowAsync(element.Id).Result;
+                var tvShow = Config.client.GetTvShowAsync(element.Id).Result;
                 SettingContent(tvShow);
             }
         }
@@ -70,7 +69,7 @@ namespace PrefMovieApi
         /// <param name="elementInfo">element with informations</param>
         private void SettingContent(dynamic elementInfo)
         {
-            MainWindow.logger.Log(LogLevel.Info, "Setting content into new page");
+            Config.logger.Log(LogLevel.Info, "Setting content into new page");
 
             // Setting title on the top of window
             Title.Text = elementInfo is TvShow ? elementInfo.Name : elementInfo.Title;
@@ -100,7 +99,6 @@ namespace PrefMovieApi
             List<Genre> genres = elementInfo.Genres;
             string[] description = genres.Select(x => x.Name).ToArray();
             Genres.Text = string.Join(",", description);
-
         }
 
         /// <summary>
@@ -108,17 +106,17 @@ namespace PrefMovieApi
         /// </summary>
         private void LoadButton()
         {
-            MainWindow.logger.Log(LogLevel.Info, "Loading buttons");
-            Close.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/closeIcon.png", UriKind.Relative));
+            Config.logger.Log(LogLevel.Info, "Loading buttons");
+            Close.Source = new BitmapImage(new Uri(SetupPaths.CLOSE, UriKind.Relative));
 
             if (Library.titles.Any(x => x.Id == element.Id))
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.STAR, UriKind.Relative));
                 IsButtonEnter = true;
             }
             else
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.EMPTY_STAR, UriKind.Relative));
                 IsButtonEnter = false;
             }
         }
@@ -130,6 +128,7 @@ namespace PrefMovieApi
         /// <param name="e"></param>
         private void ExitWindow(object sender, RoutedEventArgs e)
         {
+            Config.existingWindows.Remove(element.Id.ToString());
             Close();
         }
 
@@ -142,23 +141,23 @@ namespace PrefMovieApi
         {
             if (IsButtonEnter)
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.EMPTY_STAR, UriKind.Relative));
                 IsButtonEnter = false;
 
-                if(Config.buttons.Any(x => x.Key == element.Id.ToString()))
+                if (Config.buttons.Any(x => x.Key == element.Id.ToString()))
                 {
-                    mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/emptyStar.png");
+                    mainWindowButton.Content = CreatingImage.SettingImage(SetupPaths.EMPTY_STAR);
                 }
                 MainWindow.library.DeletingNewElement(element.Id);
             }
             else
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.STAR, UriKind.Relative));
                 IsButtonEnter = true;
 
-                if(Config.buttons.Any(x => x.Key == element.Id.ToString()))
+                if (Config.buttons.Any(x => x.Key == element.Id.ToString()))
                 {
-                    mainWindowButton.Content = CreatingImage.SettingImage("/PrefMovieApi;component/Images/star.png");
+                    mainWindowButton.Content = CreatingImage.SettingImage(SetupPaths.STAR);
                 }
                 MainWindow.library.AddingNewElement(element.Id);
             }
@@ -174,11 +173,11 @@ namespace PrefMovieApi
         {
             if (IsButtonEnter)
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.EMPTY_STAR, UriKind.Relative));
             }
             else
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.STAR, UriKind.Relative));
             }
         }
 
@@ -191,11 +190,11 @@ namespace PrefMovieApi
         {
             if (IsButtonEnter)
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStarFill.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.STAR, UriKind.Relative));
             }
             else
             {
-                StarPicture.Source = new BitmapImage(new Uri("/PrefMovieApi;component/Images/grayStar.png", UriKind.Relative));
+                StarPicture.Source = new BitmapImage(new Uri(SetupPaths.EMPTY_STAR, UriKind.Relative));
             }
         }
 
@@ -210,15 +209,16 @@ namespace PrefMovieApi
             {
                 if (e.ChangedButton == MouseButton.Left)
                 {
-                    MainWindow.logger.Log(LogLevel.Info, "Window is changing place on screen");
-                    this.DragMove();
+                    Config.logger.Log(LogLevel.Info, "Window is changing place on screen");
+                    DragMove();
                 }
             }
             catch (Exception ex)
             {
-                MainWindow.logger.Log(LogLevel.Error, ex.ToString());
+                Config.logger.Log(LogLevel.Error, ex.ToString());
             }
         }
     }
 }
+
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using PrefMovieApi.Setup;
 
 namespace PrefMovieApi
 {
@@ -27,8 +28,9 @@ namespace PrefMovieApi
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Config.logger.Log(LogLevel.Warn, ex.Message);
                 return false;
             }
         }
