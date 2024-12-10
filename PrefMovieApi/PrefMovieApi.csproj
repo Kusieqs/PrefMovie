@@ -102,18 +102,19 @@
       <DependentUpon>DetailInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="ElementParameters.cs" />
-    <Compile Include="GenreEnums\MediaType.cs" />
+    <Compile Include="Enums\MediaType.cs" />
+    <Compile Include="Enums\SeasonName.cs" />
     <Compile Include="MainControls\Sorting\GettingElements.cs" />
     <Compile Include="MainControls\Sorting\RandomSelector.cs" />
     <Compile Include="SettingContent\CreatingImage.cs" />
     <Compile Include="SettingContent\ElementInfo.cs" />
-    <Compile Include="GenreEnums\MovieGenre.cs" />
+    <Compile Include="Enums\MovieGenre.cs" />
     <Compile Include="JsonLoading\JsonFile.cs" />
     <Compile Include="MainControls\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingContent\SettingElements.cs" />
-    <Compile Include="GenreEnums\TvShowGenre.cs" />
+    <Compile Include="Enums\TvShowGenre.cs" />
     <Compile Include="MainControls\Sorting\Sorting.xaml.cs">
       <DependentUpon>Sorting.xaml</DependentUpon>
     </Compile>

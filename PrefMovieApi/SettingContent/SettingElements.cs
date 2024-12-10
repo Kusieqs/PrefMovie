@@ -118,6 +118,19 @@ namespace PrefMovieApi
         }
 
         /// <summary>
+        /// Setting StackPanel with diffrent season movies and tvShows to main window
+        /// </summary>
+        /// <param name="mainStackPanel"></param>
+        /// <returns></returns>
+        public static StackPanel SeasonPrefering(StackPanel mainStackPanel)
+        {
+            Config.logger.Log(LogLevel.Info, "SeasonPrefering method activated");
+
+            // Napisac metode w element info do konca.
+            return null;
+        }
+
+        /// <summary>
         /// Checking same id of elements.
         /// </summary>
         /// <typeparam name="T">Type of class</typeparam>
@@ -148,6 +161,38 @@ namespace PrefMovieApi
                 MessageBox.Show("Critical error","Error",MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
+        }
+
+        private static SeasonName? SettingSeasonByDate()
+        {
+            DateTime date = DateTime.Now;
+
+            var seasons = new List<(DateTime Start, DateTime End, SeasonName Name)>
+            {   (new DateTime(date.Year, 1, 1), new DateTime(date.Year, 1, 2), SeasonName.NewYear),
+                (new DateTime(date.Year, 1, 3), new DateTime(date.Year, 2, 12), SeasonName.Carnival),
+                (new DateTime(date.Year, 2, 13), new DateTime(date.Year, 2, 16), SeasonName.Valentine),
+                (new DateTime(date.Year, 2, 17), new DateTime(date.Year, 3, 15), SeasonName.Winter),
+                (new DateTime(date.Year, 3, 16), new DateTime(date.Year, 4, 25), SeasonName.Easter),
+                (new DateTime(date.Year, 4, 26), new DateTime(date.Year, 6, 20), SeasonName.Spring),
+                (new DateTime(date.Year, 6, 21), new DateTime(date.Year, 8, 20), SeasonName.Summer),
+                (new DateTime(date.Year, 8, 21), new DateTime(date.Year, 9, 22), SeasonName.BackToSchool),
+                (new DateTime(date.Year, 9, 23), new DateTime(date.Year, 10, 25), SeasonName.Autumn),
+                (new DateTime(date.Year, 10, 26), new DateTime(date.Year, 11, 3), SeasonName.Halloween),
+                (new DateTime(date.Year, 11, 4), new DateTime(date.Year, 12, 3), SeasonName.Autumn),
+                (new DateTime(date.Year, 12, 4), new DateTime(date.Year, 12, 27), SeasonName.Christmas),
+                (new DateTime(date.Year, 12, 28), new DateTime(date.Year, 12, 31), SeasonName.NewYear),
+            };
+
+            foreach (var season in seasons)
+            {
+                if (date >= season.Start && date <= season.End)
+                {
+                    return season.Name;
+                }
+            }
+
+            Config.logger.Log(LogLevel.Error, "Lack of date");
+            return null;
         }
     }
 }

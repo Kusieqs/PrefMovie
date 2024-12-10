@@ -43,7 +43,8 @@ namespace PrefMovieApi
                 new LoadContent(SetLatestMovie),
                 new LoadContent(SetTheBestMovie),
                 new LoadContent(SetLatestTvShow),
-                new LoadContent(SetTheBestTvShow)
+                new LoadContent(SetTheBestTvShow),
+                new LoadContent(SetSeasonPrefering)
             );
 
             this.mainWindow = mainWindow;
@@ -125,6 +126,18 @@ namespace PrefMovieApi
             RemoveFromDictionary(sender);
             TheBestSeries.Children.Clear();
             TheBestSeries = SettingElements.TheBestSeries(TheBestSeries);
+        }
+
+        /// <summary>
+        /// Setting season prefering elements
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetSeasonPrefering(object sender, RoutedEventArgs e)
+        {
+            RemoveFromDictionary(sender);
+            SeasonPrefering.Children.Clear();
+            SeasonPrefering = SettingElements.SeasonPrefering(SeasonPrefering);
         }
 
         /// <summary>

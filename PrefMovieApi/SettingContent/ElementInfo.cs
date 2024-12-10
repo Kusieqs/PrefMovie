@@ -68,6 +68,56 @@ namespace PrefMovieApi
             return mainStackPanel;
         }
 
+        public static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<dynamic> randomMovies, IEnumerable<dynamic> randomTvShows)
+        {
+            Config.logger.Log(LogLevel.Info, "SetInformationToStackPanel activated");
+
+            foreach (var movieOrTvShow in randomMoviesOrTvShows)
+            {
+                // Setting stack panel for poster and informations 
+                StackPanel itemStackPanel = new StackPanel()
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(20, 0, 10, 0),
+                    Width = 410
+                };
+
+                // Grid for poster with average vote and button
+                string idOfElement;
+                Grid posterGrid = new Grid();
+                posterGrid.Children.Add(PosterDiploy(out idOfElement, movieOrTvShow));
+                posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
+
+                bool isInLibrary = Library.titles.Any(x => x.Id == movieOrTvShow.Id);
+                posterGrid.Children.Add(FavortieElementDiploy(idOfElement, isInLibrary));
+
+                // Add the bordered poster to the item stack panel
+                itemStackPanel.Children.Add(posterGrid);
+
+
+                // Setting stack panel for information of movie
+                StackPanel informationMovie = new StackPanel()
+                {
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(20, 10, 0, 0)
+                };
+
+                // Adding infomration about element
+                informationMovie = SettingInformationAboutElement(movieOrTvShow, randomMoviesOrTvShows, informationMovie);
+                itemStackPanel.Children.Add(informationMovie);
+                mainStackPanel.Children.Add(itemStackPanel);
+
+                MediaType media = movieOrTvShow is SearchMovie ? MediaType.Movie : MediaType.TvShow;
+                string title = movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name;
+
+                Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title));
+            }
+
+            return mainStackPanel;
+        }
+
+
+
         /// <summary>
         /// Creating special rectangle to radius corners in poster
         /// </summary>
