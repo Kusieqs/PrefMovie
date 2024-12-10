@@ -10,6 +10,50 @@
         <Grid Width="1050">
             <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Vertical">
+
+                    <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
+                        <Grid Height="60">
+                            <TextBlock Text="Movies for You" Style="{StaticResource ThemeOfElements}"/>
+                            <Button Click="SetLatestMovie" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}" Tag="0">
+                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Border CornerRadius="0,0,20,20" Background="Gray" Margin="0,0,0,10">
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                                  MouseDown="ScrollViewerMouseDown" 
+                                                  MouseMove="ScrollViewerMouseMove" 
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer" Margin="10,10,10,10">
+                            <StackPanel x:Name="PreferdMovies" Height="290" Orientation="Horizontal"/>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
+                        <Grid Height="60">
+                            <TextBlock Text="Tv shows for You" Style="{StaticResource ThemeOfElements}"/>
+                            <Button Click="SetLatestMovie" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}" Tag="0">
+                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Border CornerRadius="0,0,20,20" Background="Gray" Margin="0,0,0,10">
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                                  MouseDown="ScrollViewerMouseDown" 
+                                                  MouseMove="ScrollViewerMouseMove" 
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer" Margin="10,10,10,10">
+                            <StackPanel x:Name="PreferdTvShows" Height="290" Orientation="Horizontal"/>
+                        </ScrollViewer>
+                    </Border>
+                    
+                    
+                    
+                   
+                    
+                    
+                    
+                    
                     <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
                         <Grid Height="60">
                             <TextBlock Text="The latest movies" Style="{StaticResource ThemeOfElements}"/>
@@ -27,6 +71,7 @@
                             <StackPanel x:Name="TheNewOnceMovies" Height="290" Orientation="Horizontal"/>
                         </ScrollViewer>
                     </Border>
+                    
                     <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
                         <Grid Height="60">
                             <TextBlock Text="The best movies" Style="{StaticResource ThemeOfElements}"/>
@@ -44,6 +89,7 @@
                             <StackPanel x:Name="TheBestMovies" Height="290" Orientation="Horizontal"/>
                         </ScrollViewer>
                     </Border>
+                    
                     <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
                         <Grid Height="60">
                             <TextBlock Text="The latest tv shows" Style="{StaticResource ThemeOfElements}"/>
@@ -61,6 +107,7 @@
                             <StackPanel x:Name="TheNewOnceSeries" Height="290" Orientation="Horizontal"/>
                         </ScrollViewer>
                     </Border>
+                    
                     <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
                         <Grid Height="60">
                             <TextBlock Text="The best tv shows" Style="{StaticResource ThemeOfElements}"/>
@@ -78,6 +125,29 @@
                             <StackPanel x:Name="TheBestSeries" Height="290" Orientation="Horizontal"/>
                         </ScrollViewer>
                     </Border>
+
+
+
+
+
+                    <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
+                        <Grid Height="60">
+                            <TextBlock Text="Season prefering" Style="{StaticResource ThemeOfElements}"/>
+                            <Button Click="SetLatestMovie" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}" Tag="0">
+                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Border CornerRadius="0,0,20,20" Background="Gray" Margin="0,0,0,10">
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
+                                                  MouseDown="ScrollViewerMouseDown" 
+                                                  MouseMove="ScrollViewerMouseMove" 
+                                                  MouseUp="ScrollViewerMouseUp"
+                                                  PreviewMouseWheel="ParentScrollViewer" Margin="10,10,10,10">
+                            <StackPanel x:Name="SeasonPrefering" Height="290" Orientation="Horizontal"/>
+                        </ScrollViewer>
+                    </Border>
+                    
                 </StackPanel>
             </ScrollViewer>
         </Grid>
