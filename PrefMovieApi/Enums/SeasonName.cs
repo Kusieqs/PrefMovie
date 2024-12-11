@@ -1,4 +1,4 @@
-﻿enum SeasonName
+﻿public enum SeasonName
 {
     Winter,
     Spring,

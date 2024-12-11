@@ -15,6 +15,9 @@ using Rectangle = System.Windows.Shapes.Rectangle;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using TMDbLib.Objects.General;
 using PrefMovieApi.Setup;
+using System.Collections;
+using TMDbLib.Client;
+using System.Windows.Forms;
 
 namespace PrefMovieApi
 {
@@ -126,8 +129,23 @@ namespace PrefMovieApi
         {
             Config.logger.Log(LogLevel.Info, "SeasonPrefering method activated");
 
-            // Napisac metode w element info do konca.
-            return null;
+            var currentSeason = SettingSeasonByDate();
+
+            var tvShows = Config.client.DiscoverTvShowsAsync()
+                .WhereVoteAverageIsAtLeast(6) 
+                .WhereGenresInclude(GetGenres(currentSeason))
+                .Query().Result;
+
+            var movies = Config.client.DiscoverMoviesAsync()
+                .WhereVoteAverageIsAtLeast(6)
+                .IncludeWithAllOfGenre(GetGenres(currentSeason))
+                .Query().Result;
+
+
+            var randomTvShows = CheckSameId(tvShows,4);
+            var randomMovies = CheckSameId(movies,4);
+
+            return mainStackPanel = ElementInfo.SetInformationToStackPanel(mainStackPanel, randomMovies as IEnumerable<SearchMovie>, randomTvShows as IEnumerable<SearchTv>);
         }
 
         /// <summary>
@@ -136,7 +154,7 @@ namespace PrefMovieApi
         /// <typeparam name="T">Type of class</typeparam>
         /// <param name="elements">Collection of elements</param>
         /// <returns>list of elements</returns>
-        private static IEnumerable<dynamic> CheckSameId<T>(SearchContainer<T> elements) where T : class
+        private static IEnumerable<dynamic> CheckSameId<T>(SearchContainer<T> elements, int count = 8) where T : class
         {
             try
             {
@@ -151,14 +169,13 @@ namespace PrefMovieApi
                         list.Add(element);
                         Config.buttons.Add(element.Id.ToString(), null);
                     }
-                } while (list.Count < 8);
+                } while (list.Count < count);
 
                 return list.AsEnumerable<T>();
             }
             catch (Exception ex)
             {
                 Config.logger.Log(LogLevel.Error, ex.Message);
-                MessageBox.Show("Critical error","Error",MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
         }
@@ -193,6 +210,38 @@ namespace PrefMovieApi
 
             Config.logger.Log(LogLevel.Error, "Lack of date");
             return null;
+        }
+
+        private static IEnumerable<int> GetGenres(SeasonName? season)
+        {
+            switch(season)
+            {
+                case SeasonName.NewYear:
+                    return new List<int>() { };
+                case SeasonName.Carnival:
+                    return new List<int>() { };
+                case SeasonName.Valentine:
+                    return new List<int>() { };
+                case SeasonName.Winter:
+                    return new List<int>() { };
+                case SeasonName.Easter:
+                    return new List<int>() { };
+                case SeasonName.Spring:
+                    return new List<int>() { };
+                case SeasonName.Summer:
+                    return new List<int>() { };
+                case SeasonName.BackToSchool:
+                    return new List<int>() { };
+                case SeasonName.Autumn:
+                    return new List<int>() { };
+                case SeasonName.Halloween:
+                    return new List<int>() { };
+                case SeasonName.Christmas:
+                    return new List<int>() { };
+                default:
+                    Config.logger.Log(LogLevel.Error, "List of genres is empty");
+                    return null;
+            }
         }
     }
 }
