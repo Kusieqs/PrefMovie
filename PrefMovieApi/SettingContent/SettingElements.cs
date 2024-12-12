@@ -132,13 +132,13 @@ namespace PrefMovieApi
             var currentSeason = SettingSeasonByDate();
 
             var tvShows = Config.client.DiscoverTvShowsAsync()
-                .WhereVoteAverageIsAtLeast(6) 
-                .WhereGenresInclude(GetGenres(currentSeason))
+                .WhereVoteAverageIsAtLeast(7) 
+                .WhereGenresInclude(GetGenres(currentSeason, false))
                 .Query().Result;
 
             var movies = Config.client.DiscoverMoviesAsync()
-                .WhereVoteAverageIsAtLeast(6)
-                .IncludeWithAllOfGenre(GetGenres(currentSeason))
+                .WhereVoteAverageIsAtLeast(7)
+                .IncludeWithAllOfGenre(GetGenres(currentSeason, true))
                 .Query().Result;
 
 
@@ -212,35 +212,67 @@ namespace PrefMovieApi
             return null;
         }
 
-        private static IEnumerable<int> GetGenres(SeasonName? season)
+        private static IEnumerable<int> GetGenres(SeasonName? season, bool isItMovie)
         {
-            switch(season)
+            if(isItMovie)
             {
-                case SeasonName.NewYear:
-                    return new List<int>() { };
-                case SeasonName.Carnival:
-                    return new List<int>() { };
-                case SeasonName.Valentine:
-                    return new List<int>() { };
-                case SeasonName.Winter:
-                    return new List<int>() { };
-                case SeasonName.Easter:
-                    return new List<int>() { };
-                case SeasonName.Spring:
-                    return new List<int>() { };
-                case SeasonName.Summer:
-                    return new List<int>() { };
-                case SeasonName.BackToSchool:
-                    return new List<int>() { };
-                case SeasonName.Autumn:
-                    return new List<int>() { };
-                case SeasonName.Halloween:
-                    return new List<int>() { };
-                case SeasonName.Christmas:
-                    return new List<int>() { };
-                default:
-                    Config.logger.Log(LogLevel.Error, "List of genres is empty");
-                    return null;
+                switch (season)
+                {
+                    case SeasonName.NewYear:
+                        return new List<int>() { 10770 };
+                    case SeasonName.Carnival:
+                        return new List<int>() { 28, 12, 16, 14 };
+                    case SeasonName.Valentine:
+                        return new List<int>() { 10749 };
+                    case SeasonName.Winter:
+                        return new List<int>() { 28, 53, 80 };
+                    case SeasonName.Spring:
+                        return new List<int>() { 12, 16, 9648, 37 };
+                    case SeasonName.Summer:
+                        return new List<int>() { 12, 16 };
+                    case SeasonName.BackToSchool:
+                        return new List<int>() { 12, 35 };
+                    case SeasonName.Autumn:
+                        return new List<int>() { 10749, 14, 80 };
+                    case SeasonName.Halloween:
+                        return new List<int>() { 27 };
+                    case SeasonName.Christmas:
+                    case SeasonName.Easter:
+                        return new List<int>() { 35, 16, 10751 };
+                    default:
+                        Config.logger.Log(LogLevel.Error, "List of genres is empty");
+                        return null;
+                }
+            }
+            else
+            {
+                switch (season)
+                {
+                    case SeasonName.NewYear:
+                        return new List<int>() { 10763, 10762 };
+                    case SeasonName.Carnival:
+                        return new List<int>() { 10762, 10759, 16, 35 };
+                    case SeasonName.Valentine:
+                        return new List<int>() { 18 };
+                    case SeasonName.Winter:
+                        return new List<int>() { 18, 80, 99 };
+                    case SeasonName.Spring:
+                        return new List<int>() { 16, 35, 10763 };
+                    case SeasonName.Summer:
+                        return new List<int>() { 16, 10759, 10764 };
+                    case SeasonName.BackToSchool:
+                        return new List<int>() { 10762, 10764 };
+                    case SeasonName.Autumn:
+                        return new List<int>() { 18, 80 };
+                    case SeasonName.Halloween:
+                        return new List<int>() { 80 };
+                    case SeasonName.Easter:
+                    case SeasonName.Christmas:
+                        return new List<int>() { 10751, 16, 35 };
+                    default:
+                        Config.logger.Log(LogLevel.Error, "List of genres is empty");
+                        return null;
+                }
             }
         }
     }
