@@ -106,6 +106,7 @@
     <Compile Include="Enums\SeasonName.cs" />
     <Compile Include="MainControls\Sorting\GettingElements.cs" />
     <Compile Include="MainControls\Sorting\RandomSelector.cs" />
+    <Compile Include="PreferingElements.cs" />
     <Compile Include="SettingContent\CreatingImage.cs" />
     <Compile Include="SettingContent\ElementInfo.cs" />
     <Compile Include="Enums\MovieGenre.cs" />

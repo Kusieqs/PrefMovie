@@ -71,6 +71,13 @@ namespace PrefMovieApi
             return mainStackPanel;
         }
 
+        /// <summary>
+        /// Setting information about movie and tvShows.
+        /// </summary>
+        /// <param name="mainStackPanel">Stack panel where it will be</param>
+        /// <param name="searchMovie">IEnumerable<SearchMovie> with elements</param>
+        /// <param name="searchTv">IEnumerable<SearchTv> with elements</param>
+        /// <returns>Stack panel with inputed information about movie and tvShow</returns>
         public static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<SearchMovie> searchMovie, IEnumerable<SearchTv> searchTv)
         {
             Config.logger.Log(LogLevel.Info, "SetInformationToStackPanel (Double class) activated");
@@ -129,8 +136,6 @@ namespace PrefMovieApi
             }
             return mainStackPanel;
         }
-
-
 
         /// <summary>
         /// Creating special rectangle to radius corners in poster

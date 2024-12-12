@@ -180,6 +180,11 @@ namespace PrefMovieApi
             }
         }
 
+
+        /// <summary>
+        /// Setting season name, choosing by date
+        /// </summary>
+        /// <returns>Season enum</returns>
         private static SeasonName? SettingSeasonByDate()
         {
             DateTime date = DateTime.Now;
@@ -212,6 +217,12 @@ namespace PrefMovieApi
             return null;
         }
 
+        /// <summary>
+        /// Choosing which list will be added to sorting by genres
+        /// </summary>
+        /// <param name="season"></param>
+        /// <param name="isItMovie"></param>
+        /// <returns>List of ints of genres</returns>
         private static IEnumerable<int> GetGenres(SeasonName? season, bool isItMovie)
         {
             if(isItMovie)

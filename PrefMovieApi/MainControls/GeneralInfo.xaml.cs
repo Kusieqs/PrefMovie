@@ -44,7 +44,8 @@ namespace PrefMovieApi
                 new LoadContent(SetTheBestMovie),
                 new LoadContent(SetLatestTvShow),
                 new LoadContent(SetTheBestTvShow),
-                new LoadContent(SetSeasonPrefering)
+                new LoadContent(SetSeasonPrefering),
+                new LoadContent(SetPrefering)
             );
 
             this.mainWindow = mainWindow;
@@ -138,6 +139,32 @@ namespace PrefMovieApi
             RemoveFromDictionary(sender);
             SeasonPrefering.Children.Clear();
             SeasonPrefering = SettingElements.SeasonPrefering(SeasonPrefering);
+        }
+
+        /// <summary>
+        /// Setting prefering elements by library
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetPrefering(object sender, RoutedEventArgs e)
+        {
+            if(Library.titles.Count > 0)
+            {
+                RemoveFromDictionary(sender);
+                if(PreferingElements.isElementsExist)
+                {
+                    ContentStackPanel.Children.RemoveRange(0, 2);
+                }
+                else
+                {
+                    Config.logger.Log(LogLevel.Warn, "Lack of elements to delete");
+                }
+
+                var borders = PreferingElements.CreatePreferingElements();
+
+                ContentStackPanel.Children.Insert(0, borders.Item1);
+                ContentStackPanel.Children.Insert(1, borders.Item2);
+            }
         }
 
         /// <summary>
