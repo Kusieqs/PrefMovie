@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
+using PrefMovieApi.Setup;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace PrefMovieApi
 {
     public static class PreferingElements
     {
-        public static bool isElementsExist = false;
 
-        public static (Border, Border) CreatePreferingElements()
-        {
-            /// Stworzenie dwoch borderow z tym co zawsze
-            return (null, null);
-        }
     }
 }

@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 using PrefMovieApi.Setup;
 using TMDbLib.Client;
 using TMDbLib.Objects.Discover;
@@ -10,6 +12,7 @@ using TMDbLib.Objects.Find;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Languages;
 using TMDbLib.Objects.Movies;
+using System.Drawing;
 
 namespace PrefMovieApi
 {
@@ -33,6 +36,9 @@ namespace PrefMovieApi
 
         // Scrollviewer object
         private ScrollViewer scrollViewer;
+
+        // Control to element whose exist
+        public static bool isElementsExist = false;
 
         public GeneralInfo(Window mainWindow)
         {
@@ -146,7 +152,7 @@ namespace PrefMovieApi
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SetPrefering(object sender, RoutedEventArgs e)
+        public void SetPrefering(object sender, RoutedEventArgs e)
         {
             if(Library.titles.Count > 0)
             {
@@ -160,7 +166,7 @@ namespace PrefMovieApi
                     Config.logger.Log(LogLevel.Warn, "Lack of elements to delete");
                 }
 
-                var borders = PreferingElements.CreatePreferingElements();
+                var borders = CreatePreferingElements();
 
                 ContentStackPanel.Children.Insert(0, borders.Item1);
                 ContentStackPanel.Children.Insert(1, borders.Item2);
@@ -190,6 +196,95 @@ namespace PrefMovieApi
                 Config.logger.Log(LogLevel.Error, $"Removing from dictionary are not correct: {ex.Message}");
             }
         }
+
+
+        public (Border, Border) CreatePreferingElements()
+        {
+            Border themeBorder = new Border()
+            {
+                CornerRadius = new CornerRadius(30, 30, 0, 0),
+                Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF484848"),
+                Margin = new Thickness(0, 15, 0, 0),
+            };
+
+            themeBorder.Child = SettingGridForTheme();
+
+            Border contentElements = new Border()
+            {
+                CornerRadius = new CornerRadius(0, 0, 20, 20),
+                Background = new SolidColorBrush(Colors.Gray),
+                Margin = new Thickness(0,0,0,10)
+            };
+
+            contentElements.Child = SettingScrollViewerForContent();
+            return (themeBorder, contentElements);
+        }
+
+
+        private Grid SettingGridForTheme()
+        {
+            Grid grid = new Grid()
+            {
+                Height = 60,
+            };
+
+            TextBlock theme = new TextBlock()
+            {
+                Style = Config.styleForThemeGeneral,
+                Text = "---"
+            };
+
+            grid.Children.Add(theme);
+
+
+            Button refreshButton = new Button
+            {
+                Height = 40,
+                Width = 40,
+                Style = Config.styleRefreshButton,
+                Tag = 0
+            };
+
+            Image refreshIcon = new Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/PrefMovieApi;component/Images/refreshIcon.png")),
+                Cursor = System.Windows.Input.Cursors.Hand
+            };
+            RenderOptions.SetBitmapScalingMode(refreshIcon, BitmapScalingMode.HighQuality);
+            refreshButton.Content = refreshIcon;
+            refreshButton.Click += SetPrefering;
+
+            grid.Children.Add(refreshButton);
+
+            return grid;
+        }
+
+        private ScrollViewer SettingScrollViewerForContent()
+        {
+            ScrollViewer scrollViewer = new ScrollViewer()
+            {
+                VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden,
+                Margin = new Thickness(10)
+            };
+
+            scrollViewer.MouseDown += ScrollViewerMouseDown;
+            scrollViewer.MouseMove += ScrollViewerMouseMove;
+            scrollViewer.MouseUp += ScrollViewerMouseUp;
+            scrollViewer.PreviewMouseWheel += ParentScrollViewer;
+
+            StackPanel stackPanel = new StackPanel()
+            {
+                Name = "Preferd",
+                Height = 290,
+                Orientation = Orientation.Horizontal,
+            };
+
+            scrollViewer.Content = stackPanel;
+
+            return scrollViewer;
+        }
+
 
         #region Scroll viewer logic
 
