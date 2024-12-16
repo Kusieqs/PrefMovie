@@ -10,26 +10,7 @@
         <Grid Width="1050">
             <ScrollViewer x:Name="MainContentMoviesPref" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Vertical" Name="ContentStackPanel">
-                    
-                    <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
-                        <Grid Height="60">
-                            <TextBlock Text="----" Style="{StaticResource ThemeOfElements}"/>
-                            <Button Click="SetLatestMovie" Height="40" Width="40" Style="{StaticResource ButtonRefreshScroll}" Tag="0">
-                                <Image Source="/PrefMovieApi;component/Images/refreshIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand"/>
-                            </Button>
-                        </Grid>
-                    </Border>
-                    <Border CornerRadius="0,0,20,20" Background="Gray" Margin="0,0,0,10">
-                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" 
-                                                  MouseDown="ScrollViewerMouseDown" 
-                                                  MouseMove="ScrollViewerMouseMove" 
-                                                  MouseUp="ScrollViewerMouseUp"
-                                                  PreviewMouseWheel="ParentScrollViewer" Margin="10,10,10,10">
-                            <StackPanel x:Name="Preferd" Height="290" Orientation="Horizontal"/>
-                        </ScrollViewer>
-                    </Border>
-                    
-                    
+                           
                     <Border CornerRadius="30,30,0,0" Background="#FF484848" Margin="0,15,0,0">
                         <Grid Height="60">
                             <TextBlock Text="The latest movies" Style="{StaticResource ThemeOfElements}"/>

@@ -13,6 +13,8 @@ using TMDbLib.Objects.General;
 using TMDbLib.Objects.Languages;
 using TMDbLib.Objects.Movies;
 using System.Drawing;
+using Point = System.Windows.Point;
+using Image = System.Windows.Controls.Image;
 
 namespace PrefMovieApi
 {
@@ -157,7 +159,8 @@ namespace PrefMovieApi
             if(Library.titles.Count > 0)
             {
                 RemoveFromDictionary(sender);
-                if(PreferingElements.isElementsExist)
+
+                if(PreferingElements.isElementExist)
                 {
                     ContentStackPanel.Children.RemoveRange(0, 2);
                 }
@@ -167,7 +170,7 @@ namespace PrefMovieApi
                 }
 
                 var borders = CreatePreferingElements();
-
+                isElementsExist = true;
                 ContentStackPanel.Children.Insert(0, borders.Item1);
                 ContentStackPanel.Children.Insert(1, borders.Item2);
             }
@@ -273,13 +276,7 @@ namespace PrefMovieApi
             scrollViewer.MouseUp += ScrollViewerMouseUp;
             scrollViewer.PreviewMouseWheel += ParentScrollViewer;
 
-            StackPanel stackPanel = new StackPanel()
-            {
-                Name = "Preferd",
-                Height = 290,
-                Orientation = Orientation.Horizontal,
-            };
-
+            StackPanel stackPanel = PreferingElements.StackPanelWithContent();
             scrollViewer.Content = stackPanel;
 
             return scrollViewer;
