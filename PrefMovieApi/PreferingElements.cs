@@ -28,17 +28,32 @@ namespace PrefMovieApi
             };
 
 
-            /// JSON zrobic tak zeby nam zczytywalo genres i bedzie G
+            (int,int) genres = PreferingGenres();
 
 
             return stackPanel;
         }
 
 
-        private static void PreferingGenres()
+        private static (int,int) PreferingGenres()
         {
+            Dictionary<int,int> keyValuePairsMovie = new Dictionary<int,int>();
+            Dictionary<int,int> keyValuePairsTvShow = new Dictionary<int, int>();
 
+            foreach (var element in Library.titles)
+            {
+            }
+
+
+            int topKey1 = topTwo[0].Key;
+            int topKey2 = topTwo[1].Key;
+
+            return (topKey1, topKey2);
         }
+
+
+
+
 
         private static void PreferingDates()
         {

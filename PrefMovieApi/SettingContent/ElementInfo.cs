@@ -65,7 +65,7 @@ namespace PrefMovieApi
                 MediaType media = movieOrTvShow is SearchMovie ? MediaType.Movie : MediaType.TvShow;
                 string title = movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name;
 
-                Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title));
+                Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title, movieOrTvShow.GenreIds));
             }
 
             return mainStackPanel;
@@ -130,7 +130,7 @@ namespace PrefMovieApi
                         MediaType media = movieOrTvShow is SearchMovie ? MediaType.Movie : MediaType.TvShow;
                         string title = movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name;
 
-                        Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title));
+                        Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title, movieOrTvShow.GenreIds));
                     }
                 }
             }
