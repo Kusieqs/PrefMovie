@@ -27,8 +27,30 @@ namespace PrefMovieApi
                 Orientation = Orientation.Horizontal,
             };
 
-
             (int,int) genres = PreferingGenres();
+
+
+            int whichIsBigger = 0;
+            double scale = ScaleOfELements(ref whichIsBigger);
+            int numberOfElements = 10;
+            int movies;
+            int tvShows;
+
+            if(whichIsBigger == 0)
+            {
+                movies = 5;
+                tvShows = 5;
+            }
+            else if(whichIsBigger == 1) 
+            {
+                tvShows = (int)Math.Round(scale * numberOfElements);
+                movies = numberOfElements - tvShows;
+            }
+            else
+            {
+                movies = (int)Math.Round(scale * numberOfElements);
+                tvShows = numberOfElements - movies;
+            }
 
 
             return stackPanel;
@@ -37,32 +59,56 @@ namespace PrefMovieApi
 
         private static (int,int) PreferingGenres()
         {
-            Dictionary<int,int> keyValuePairsMovie = new Dictionary<int,int>();
-            Dictionary<int,int> keyValuePairsTvShow = new Dictionary<int, int>();
-
-            foreach (var element in Library.titles)
-            {
-            }
-
-
-            int topKey1 = topTwo[0].Key;
-            int topKey2 = topTwo[1].Key;
-
+            int topKey1 = GetGenre(Library.titles.Where(x => x.MediaType == MediaType.Movie).ToList());
+            int topKey2 = GetGenre(Library.titles.Where(x => x.MediaType == MediaType.TvShow).ToList());
             return (topKey1, topKey2);
         }
 
-
-
-
-
-        private static void PreferingDates()
+        private static int GetGenre(List<ElementParameters> parameters)
         {
+            Dictionary<int, int> keyValuePairs = new Dictionary<int, int>();
+            foreach(var element in parameters)
+            {
+                foreach(var genres in element.Genres)
+                {
+                    if(keyValuePairs.ContainsKey(genres))
+                    {
+                        keyValuePairs[genres]++;
+                    }
+                    else
+                    {
+                        keyValuePairs.Add(genres, 1);
+                    }
+                }
+            }
 
+            if (keyValuePairs.Count == 0)
+            {
+                return 0;
+            }
+            var order = keyValuePairs.OrderBy(x => x.Value).First().Key;
+            return order;
         }
 
-        private static void ScaleOfELements()
+        private static double ScaleOfELements(ref int whichIsBigger)
         {
+            int movieScale = Library.titles.Where(x => x.MediaType == MediaType.Movie).Count();
+            int tvShowScale = Library.titles.Where(x => x.MediaType == MediaType.TvShow).Count();
 
+            whichIsBigger = movieScale == tvShowScale ? 0 : movieScale > tvShowScale ? 1 : tvShowScale > movieScale ? -1 : 0;
+
+            if (whichIsBigger == 0)
+            {
+                return 0.5;
+            }
+            else if (whichIsBigger == 1)
+            {
+                return movieScale / tvShowScale;
+            }
+            else
+            {
+                return tvShowScale / movieScale;
+            }
         }
     }
 }
