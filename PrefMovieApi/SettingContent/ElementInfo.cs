@@ -90,7 +90,7 @@ namespace PrefMovieApi
             {
                 IEnumerable<dynamic> list = item as IEnumerable<dynamic>;
 
-                if (item is IEnumerable<SearchMovie>|| item is IEnumerable<SearchTv>)
+                if (item is IEnumerable<SearchMovie> || item is IEnumerable<SearchTv>)
                 {
                     foreach (var movieOrTvShow in list)
                     {

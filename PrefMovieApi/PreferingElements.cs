@@ -27,7 +27,7 @@ namespace PrefMovieApi
                 Orientation = Orientation.Horizontal,
             };
 
-            (int,int) genres = PreferingGenres();
+            (IEnumerable<int>,IEnumerable<int>) genres = PreferingGenres();
 
 
             int whichIsBigger = 0;
@@ -36,7 +36,11 @@ namespace PrefMovieApi
             int movies;
             int tvShows;
 
-            if(whichIsBigger == 0)
+            movies = 5;
+            tvShows = 5;
+
+            /*
+            if (whichIsBigger == 0)
             {
                 movies = 5;
                 tvShows = 5;
@@ -44,24 +48,30 @@ namespace PrefMovieApi
             else if(whichIsBigger == 1) 
             {
                 tvShows = (int)Math.Round(scale * numberOfElements);
+                MessageBox.Show($"{tvShows} 1");
                 movies = numberOfElements - tvShows;
             }
             else
             {
                 movies = (int)Math.Round(scale * numberOfElements);
+                MessageBox.Show($"{movies} 2");
                 tvShows = numberOfElements - movies;
             }
+            */
 
-
-            return stackPanel;
+            return stackPanel = SettingElements.PreferingForUser(stackPanel, genres, movies, tvShows);
         }
 
 
-        private static (int,int) PreferingGenres()
+        private static (IEnumerable<int>,IEnumerable<int>) PreferingGenres()
         {
             int topKey1 = GetGenre(Library.titles.Where(x => x.MediaType == MediaType.Movie).ToList());
+            IEnumerable<int> movies = new List<int> { topKey1 };
+
             int topKey2 = GetGenre(Library.titles.Where(x => x.MediaType == MediaType.TvShow).ToList());
-            return (topKey1, topKey2);
+            IEnumerable<int> tvShows = new List<int> { topKey2 };
+
+            return (movies, tvShows);
         }
 
         private static int GetGenre(List<ElementParameters> parameters)
@@ -94,6 +104,10 @@ namespace PrefMovieApi
         {
             int movieScale = Library.titles.Where(x => x.MediaType == MediaType.Movie).Count();
             int tvShowScale = Library.titles.Where(x => x.MediaType == MediaType.TvShow).Count();
+
+            movieScale = movieScale == 0 ? 1: movieScale;
+            tvShowScale = tvShowScale == 0 ? 1 : tvShowScale;
+
 
             whichIsBigger = movieScale == tvShowScale ? 0 : movieScale > tvShowScale ? 1 : tvShowScale > movieScale ? -1 : 0;
 

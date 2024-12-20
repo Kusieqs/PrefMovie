@@ -149,6 +149,40 @@ namespace PrefMovieApi
         }
 
         /// <summary>
+        /// Setting StackPanel with diffrent season movies and tvShows to main window (mixing them on one panel)
+        /// </summary>
+        /// <param name="mainStackPanel">Stack panel where diffrent elemnts will input</param>
+        /// <param name="genres">Genres to sort elements</param>
+        /// <param name="scaleMovie">Scale of how many movies will be input</param>
+        /// <param name="scaleTvShow">Scale of how many tvShows will be input</param>
+        /// <returns>Stack panel with movies and tvshows</returns>
+        public static StackPanel PreferingForUser(StackPanel mainStackPanel, (IEnumerable<int>, IEnumerable<int>) genres, int scaleMovie, int scaleTvShow)
+        {
+            Config.logger.Log(LogLevel.Info, "PreferingForUser method activated");
+
+            var moviesElements = Config.client.DiscoverMoviesAsync()
+                .WhereVoteAverageIsAtLeast(7)
+                .IncludeWithAllOfGenre(genres.Item1)
+                .Query()
+                .Result;
+
+            var tvShowElements = Config.client.DiscoverTvShowsAsync()
+                .WhereVoteAverageIsAtLeast(7)
+                .WhereGenresInclude(genres.Item2)
+                .Query()
+                .Result;
+
+            
+
+            var randomMovies = CheckSameId(moviesElements, scaleMovie);
+            var randomTvShows = CheckSameId(tvShowElements, scaleTvShow);
+
+
+            return mainStackPanel = ElementInfo.SetInformationToStackPanel(mainStackPanel, randomMovies as IEnumerable<SearchMovie>, randomTvShows as IEnumerable<SearchTv>);
+        }
+
+
+        /// <summary>
         /// Checking same id of elements.
         /// </summary>
         /// <typeparam name="T">Type of class</typeparam>
@@ -160,7 +194,8 @@ namespace PrefMovieApi
             {
                 Config.logger.Log(LogLevel.Info, "Checking elements with same id");
                 List<T> list = new List<T>();
-                do
+
+                while(list.Count < count)
                 {
                     dynamic element = elements.Results.OrderBy(x => random.Next()).First();
 
@@ -169,7 +204,7 @@ namespace PrefMovieApi
                         list.Add(element);
                         Config.buttons.Add(element.Id.ToString(), null);
                     }
-                } while (list.Count < count);
+                }
 
                 return list.AsEnumerable<T>();
             }
