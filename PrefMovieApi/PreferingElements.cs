@@ -29,7 +29,7 @@ namespace PrefMovieApi
 
             (IEnumerable<int>,IEnumerable<int>) genres = PreferingGenres();
 
-
+            isElementExist = true;
             int whichIsBigger = 0;
             double scale = ScaleOfELements(ref whichIsBigger);
             int numberOfElements = 10;

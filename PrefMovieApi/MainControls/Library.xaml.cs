@@ -88,13 +88,11 @@ namespace PrefMovieApi
         /// <param name="id">id of button</param>
         public void DeletingNewElement(int id)
         {
-            /// TODO: Problem z usunieciem danego elementu z listy? nie porównuje mi dobrego elemntu
-            ElementParameters element = new ElementParameters(Config.IdForMovie.Where(x => x.Id == id).FirstOrDefault());
             List<ElementParameters> newList = titles.Where(x => x.Id != id).ToList();
 
             titles = newList.Intersect(titles).ToList();
 
-            Config.logger.Log(LogLevel.Info, $"Deleting new element to library: {element.Id}");
+            Config.logger.Log(LogLevel.Info, $"Deleting new element to library: {id}");
             LoadFavoriteMovies();
         }
 

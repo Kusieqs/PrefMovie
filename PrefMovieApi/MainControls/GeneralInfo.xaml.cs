@@ -15,6 +15,7 @@ using TMDbLib.Objects.Movies;
 using System.Drawing;
 using Point = System.Windows.Point;
 using Image = System.Windows.Controls.Image;
+using System.Data;
 
 namespace PrefMovieApi
 {
@@ -41,6 +42,7 @@ namespace PrefMovieApi
 
         // Control to element whose exist
         public static bool isElementsExist = false;
+
 
         public GeneralInfo(Window mainWindow)
         {
@@ -220,6 +222,8 @@ namespace PrefMovieApi
             };
 
             contentElements.Child = SettingScrollViewerForContent();
+
+
             return (themeBorder, contentElements);
         }
 
@@ -234,7 +238,7 @@ namespace PrefMovieApi
             TextBlock theme = new TextBlock()
             {
                 Style = Config.styleForThemeGeneral,
-                Text = "---"
+                Text = "Special for you!"
             };
 
             grid.Children.Add(theme);
