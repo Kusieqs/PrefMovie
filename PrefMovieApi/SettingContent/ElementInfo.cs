@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using PrefMovieApi.Setup;
+using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
 
 namespace PrefMovieApi
@@ -62,9 +65,75 @@ namespace PrefMovieApi
                 MediaType media = movieOrTvShow is SearchMovie ? MediaType.Movie : MediaType.TvShow;
                 string title = movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name;
 
-                Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title));
+                Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title, movieOrTvShow.GenreIds));
             }
 
+            return mainStackPanel;
+        }
+
+        /// <summary>
+        /// Setting information about movie and tvShows.
+        /// </summary>
+        /// <param name="mainStackPanel">Stack panel where it will be</param>
+        /// <param name="searchMovie">IEnumerable<SearchMovie> with elements</param>
+        /// <param name="searchTv">IEnumerable<SearchTv> with elements</param>
+        /// <returns>Stack panel with inputed information about movie and tvShow</returns>
+        public static StackPanel SetInformationToStackPanel(StackPanel mainStackPanel, IEnumerable<SearchMovie> searchMovie, IEnumerable<SearchTv> searchTv)
+        {
+            Config.logger.Log(LogLevel.Info, "SetInformationToStackPanel (Double class) activated");
+
+            List<object> combinedList = new List<object>();
+            combinedList.Add(searchMovie);
+            combinedList.Add(searchTv);
+
+            foreach (var item in combinedList)
+            {
+                IEnumerable<dynamic> list = item as IEnumerable<dynamic>;
+
+                if (item is IEnumerable<SearchMovie> || item is IEnumerable<SearchTv>)
+                {
+                    foreach (var movieOrTvShow in list)
+                    {
+                        // Setting stack panel for poster and informations 
+                        StackPanel itemStackPanel = new StackPanel()
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(20, 0, 10, 0),
+                            Width = 410
+                        };
+
+                        // Grid for poster with average vote and button
+                        string idOfElement;
+                        Grid posterGrid = new Grid();
+                        posterGrid.Children.Add(PosterDiploy(out idOfElement, movieOrTvShow));
+                        posterGrid.Children.Add(AverageRateDiploy(movieOrTvShow));
+
+                        bool isInLibrary = Library.titles.Any(x => x.Id == movieOrTvShow.Id);
+                        posterGrid.Children.Add(FavortieElementDiploy(idOfElement, isInLibrary));
+
+                        // Add the bordered poster to the item stack panel
+                        itemStackPanel.Children.Add(posterGrid);
+
+
+                        // Setting stack panel for information of movie
+                        StackPanel informationMovie = new StackPanel()
+                        {
+                            Orientation = Orientation.Vertical,
+                            Margin = new Thickness(20, 10, 0, 0)
+                        };
+
+                        // Adding infomration about element
+                        informationMovie = SettingInformationAboutElement(movieOrTvShow, list, informationMovie);
+                        itemStackPanel.Children.Add(informationMovie);
+                        mainStackPanel.Children.Add(itemStackPanel);
+
+                        MediaType media = movieOrTvShow is SearchMovie ? MediaType.Movie : MediaType.TvShow;
+                        string title = movieOrTvShow is SearchMovie ? movieOrTvShow.Title : movieOrTvShow.Name;
+
+                        Config.IdForMovie.Add(new ElementParameters(media, movieOrTvShow.Id, title, movieOrTvShow.GenreIds));
+                    }
+                }
+            }
             return mainStackPanel;
         }
 

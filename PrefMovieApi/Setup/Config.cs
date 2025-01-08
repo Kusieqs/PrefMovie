@@ -41,6 +41,12 @@ namespace PrefMovieApi.Setup
         // Style for poster button
         public static Style styleForPosterButton;
 
+        // Style for theme textblock in general
+        public static Style styleForThemeGeneral;
+
+        // Style for button of refresh
+        public static Style styleRefreshButton;
+
         // Special List to read movies
         public static List<ElementParameters> IdForMovie = new List<ElementParameters>();
 

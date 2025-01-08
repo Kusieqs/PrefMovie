@@ -28,11 +28,7 @@ namespace PrefMovieApi
         public MainWindow()
         {
             InitializeComponent();
-
-            // Downwriting resources to Config file
-            Config.styleForButton = FindResource("ButtonImage") as Style;
-            Config.styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
-            Config.styleForPosterButton = FindResource("PosterButton") as Style;
+            LoadingStyles();
 
             // Logger checking
             if (Config.logger is FileLogger && !File.Exists(SetupPaths.PATH_TO_LOG))
@@ -119,6 +115,18 @@ namespace PrefMovieApi
                 Config.logger.Log(LogLevel.Info, "Window is changing place on screen");
                 DragMove();
             }
+        }
+
+        /// <summary>
+        /// Downwriting resources to Config file
+        /// </summary>
+        private void LoadingStyles()
+        {
+            Config.styleForButton = FindResource("ButtonImage") as Style;
+            Config.styleThemeOfElement = FindResource("InfomrationAboutMovieOrShow") as Style;
+            Config.styleForPosterButton = FindResource("PosterButton") as Style;
+            Config.styleForThemeGeneral = FindResource("ThemeOfElements") as Style;
+            Config.styleRefreshButton = FindResource("ButtonRefreshScroll") as Style;
         }
     }
 }
